@@ -1,0 +1,11 @@
+<aside class="menu has-background-light" style="min-height: calc(100vh - 3.25rem);">
+    <ng-container *ngFor="let module of modules">
+      <p class="menu-label">{{ module.name }}</p>
+      <ul class="menu-list">
+        <li *ngFor="let page of module.pages">
+          <a [routerLink]="page.path">{{ page.name }}</a>
+        </li>
+      </ul>
+    </ng-container>
+  </aside>
+  
