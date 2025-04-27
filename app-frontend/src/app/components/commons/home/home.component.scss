@@ -1,0 +1,14 @@
+.sidebar {
+    width: 220px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .sidebar.is-collapsed {
+    width: 0px;
+  }
+  
+  .content {
+    transition: all 0.3s ease;
+  }
+  
