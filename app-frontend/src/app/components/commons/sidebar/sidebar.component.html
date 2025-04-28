@@ -1,0 +1,12 @@
+<aside class="menu">
+  @for(module of modules; track $index) {
+    <p class="menu-label ml-2">{{ module.name }}</p>
+    <ul class="menu-list">
+      @for(page of module.pages; track $index) {
+      <li>
+        <a (click)="redirectTo(page)" [ngClass]="{ 'is-active': this.activePage === page.name }">{{ page.name }}</a>
+      </li>
+      }
+    </ul>
+  }
+  </aside>
