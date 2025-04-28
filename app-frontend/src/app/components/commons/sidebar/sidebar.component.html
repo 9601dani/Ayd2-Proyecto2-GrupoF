@@ -1,11 +1,12 @@
-<aside class="menu has-background-light" style="min-height: calc(100vh - 3.25rem);">
-    <ng-container *ngFor="let module of modules">
-      <p class="menu-label">{{ module.name }}</p>
-      <ul class="menu-list">
-        <li *ngFor="let page of module.pages">
-          <a [routerLink]="page.path">{{ page.name }}</a>
-        </li>
-      </ul>
-    </ng-container>
+<aside class="menu">
+  @for(module of modules; track $index) {
+    <p class="menu-label ml-2">{{ module.name }}</p>
+    <ul class="menu-list">
+      @for(page of module.pages; track $index) {
+      <li>
+        <a (click)="redirectTo(page)" [ngClass]="{ 'is-active': this.activePage === page.name }">{{ page.name }}</a>
+      </li>
+      }
+    </ul>
+  }
   </aside>
-  

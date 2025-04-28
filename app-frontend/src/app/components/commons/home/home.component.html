@@ -1,20 +1,10 @@
-<app-toolbar (toggleSidebar)="toggleSidebar()"></app-toolbar>
-
-<div class="columns is-gapless" style="min-height: calc(100vh - 3.25rem);">
-  
-    <div class="column sidebar" [ngClass]="{ 'is-2-desktop is-3-tablet': !sidebarCollapsed, 'is-hidden': sidebarCollapsed }">
-      <app-sidebar [modules]="modules"></app-sidebar>
-    </div>
-  
-    <div class="column" [ngClass]="{ 'is-10-desktop is-9-tablet': !sidebarCollapsed, 'is-12': sidebarCollapsed }">
-      <section class="section">
-        <div class="container">
-          <h1 class="title">Bienvenido</h1>
-          <p class="subtitle">Selecciona algo del menú lateral.</p>
-        </div>
-      </section>
-    </div>
-  
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Bienvenido</h1>
+        <p class="subtitle">Selecciona algo del menú lateral.</p>
+      </div>
+    </section>
   </div>
-  
-  
+</app-template>

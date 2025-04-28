@@ -4,21 +4,12 @@
         <strong>Mi Proyecto</strong>
       </a>
     </div>
-  
+
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          
-          <a class="button is-light is-hidden-desktop" (click)="onToggleSidebar()">
-            ☰
-          </a>
-  
-          <a class="button is-light">
-            Salir
-          </a>
-  
+          <ng-content select="[toggleButtons]"></ng-content>
         </div>
       </div>
     </div>
   </nav>
-  
