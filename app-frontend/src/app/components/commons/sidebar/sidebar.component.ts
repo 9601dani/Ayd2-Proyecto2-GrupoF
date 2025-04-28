@@ -1,7 +1,8 @@
-import { Component, Input } from '@angular/core';
-import { Module } from '../../../service/test/menu.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {MenuService, Module} from '../../../service/test/menu.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,6 +11,47 @@ import { RouterModule } from '@angular/router';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.scss'
 })
-export class SidebarComponent {
-  @Input() modules: Module[] = [];
+export class SidebarComponent implements OnInit, OnDestroy {
+  modules: Module[] = [];
+  activePage: string = "";
+  private subscription!: Subscription;
+
+  constructor(
+    private _menuService: MenuService,
+    private _router: Router
+  ) {
+  }
+
+  ngOnInit() {
+    this.getModules();
+    this.subscribeToBehavior();
+  }
+
+  subscribeToBehavior() {
+    this.subscription = this._menuService.getActivePage().subscribe({
+      next: (pageName: string) => {
+        this.activePage = pageName;
+      }
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  getModules() {
+    this._menuService.getMenuByRole(1).subscribe({
+      next: response => {
+        this.modules = response;
+      },
+      error: err => {
+        console.error(err);
+      }
+    })
+  }
+
+  redirectTo(page: any) {
+    this._menuService.emitActivePage(page.name);
+    this._router.navigate([page.path]);
+  }
 }

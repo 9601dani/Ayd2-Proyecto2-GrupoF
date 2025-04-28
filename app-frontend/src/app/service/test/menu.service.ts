@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, Observable, of} from 'rxjs';
 
 export interface Page {
   id: number;
@@ -19,6 +19,8 @@ export interface Module {
 })
 export class MenuService {
 
+  activePageSubject = new BehaviorSubject<string>("");
+
   constructor() {}
 
   getMenuByRole(roleId: number): Observable<Module[]> {
@@ -28,8 +30,8 @@ export class MenuService {
         name: 'Dashboard',
         path: '/dashboard',
         pages: [
-          { id: 1, name: 'Inicio', path: '/dashboard/home' },
-          { id: 2, name: 'Reportes', path: '/dashboard/reports' }
+          { id: 1, name: 'Inicio', path: '/home' },
+          { id: 2, name: 'Reportes', path: '/reports' }
         ]
       },
       {
@@ -43,5 +45,13 @@ export class MenuService {
     ];
 
     return of(menu);
+  }
+
+  emitActivePage(pageName: string) {
+    this.activePageSubject.next(pageName);
+  }
+
+  getActivePage() {
+    return this.activePageSubject.asObservable();
   }
 }
