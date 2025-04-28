@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,9 +9,5 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
-  @Output() toggleSidebar = new EventEmitter<void>();
 
-  onToggleSidebar() {
-    this.toggleSidebar.emit();
-  }
 }
