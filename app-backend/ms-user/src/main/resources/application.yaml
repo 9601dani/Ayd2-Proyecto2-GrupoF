@@ -5,9 +5,9 @@ spring:
   application:
     name: ms_user
   datasource:
-    url: ${DB_URL}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: ${DB_URL_USER}
+    username: ${DB_USERNAME_USER}
+    password: ${DB_PASSWORD_USER}
     hikari:
       maximum-pool-size: 2
       minimum-idle: 1
