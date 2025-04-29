@@ -2,7 +2,10 @@ pipeline {
     agent any
     tools {
         maven 'Maven'
-        jdk 'jdk-17'
+    }
+
+    environment {
+        JAVA_HOME = '/usr/lib/jvm/java-17-openjdk-amd64'
     }
 
     stages {
