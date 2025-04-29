@@ -18,7 +18,7 @@ pipeline {
         stage('Build Backend'){
             steps {
                 dir('app-backend') {
-                    sh 'mvn clean package verify'
+                    sh 'mvn clean install'
                 }
             }
         }
