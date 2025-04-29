@@ -16,6 +16,10 @@
 
   <modules>
     <module>gateway</module>
+<!--    <module>ms-user</module>-->
+<!--    <module>ms-company</module>-->
+<!--    <module>ms-project</module>-->
+    <module>report</module>
   </modules>
 
   <name>app-backend</name>
@@ -33,4 +37,22 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>0.8.12</version>
+        <executions>
+          <execution>
+            <id>prepare-agent</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
 </project>
