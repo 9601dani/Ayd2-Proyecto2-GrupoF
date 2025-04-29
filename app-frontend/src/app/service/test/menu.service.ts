@@ -39,7 +39,8 @@ export class MenuService {
         name: 'Usuarios',
         path: '/usuarios',
         pages: [
-          { id: 3, name: 'Lista de Usuarios', path: '/usuarios/list' }
+          { id: 3, name: 'Lista de Usuarios', path: '/list' },
+          { id: 4, name: 'Cerrar Sesion', path: '/login' }
         ]
       }
     ];

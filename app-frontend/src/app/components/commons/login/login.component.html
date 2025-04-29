@@ -1,0 +1,48 @@
+<div class="section has-background-white has-text-black is-flex is-justify-content-center is-align-items-center" style="height: 100vh;">
+    <div class="box auth-box">
+      
+      <div class="is-flex is-justify-content-center mb-4">
+        <button class="button is-small " (click)="isLogin = true">Iniciar Sesion</button>
+        <br>
+        <button class="button is-small " (click)="isLogin = false">Registrarse</button>
+      </div>
+  
+      <h2 class="title is-4 has-text-centered has-text-primary">{{ isLogin ? 'Inicia Sesion' : 'Registrate' }}</h2>
+  
+      <form (ngSubmit)="onSubmit()" #authForm="ngForm">
+        <div class="field">
+          <p class="control has-icons-left">
+            <input class="input input-custom" type="text" placeholder="Username" name="username" ngModel required>
+            <span class="icon is-small is-left has-text-primary">
+              <i class="fas fa-user"></i>
+            </span>
+          </p>
+        </div>
+  
+        <div class="field" *ngIf="!isLogin">
+          <p class="control has-icons-left">
+            <input class="input input-custom" type="email" placeholder="Correo Electronico" name="email" ngModel>
+            <span class="icon is-small is-left has-text-primary">
+              <i class="fas fa-phone"></i>
+            </span>
+          </p>
+        </div>
+  
+        <div class="field">
+          <p class="control has-icons-left">
+            <input class="input input-custom" type="password" placeholder="Contraseña" name="password" ngModel required>
+            <span class="icon is-small is-left has-text-primary">
+              <i class="fas fa-lock"></i>
+            </span>
+          </p>
+        </div>
+  
+        <div class="field">
+          <button class="button is-primary is-fullwidth has-text-white" type="submit">
+            {{ isLogin ? 'Iniciar Sesion' : 'Registrarse' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+  

@@ -1,0 +1,36 @@
+@import '../../../../styles.scss';
+
+.auth-box {
+  width: 400px;
+  background-color: white;
+  border: 2px solid $primary;
+  box-shadow: 0 0 8px $primary;
+  border-radius: 10px;
+  padding: 2rem;
+}
+
+.input-custom {
+  background-color: white;
+  color: #333;
+  border: 2px solid $primary;
+}
+
+.input-custom:focus {
+  border-color: $secondary;
+  box-shadow: 0 0 4px $secondary;
+}
+
+.icon {
+  color: $primary;
+}
+
+button.is-primary {
+  background-color: $primary;
+  color: white;
+  border: none;
+  font-weight: bold;
+}
+
+button.is-primary:hover {
+  background-color: darken($primary, 5%);
+}
