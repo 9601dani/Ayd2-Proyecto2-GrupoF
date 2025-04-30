@@ -1,0 +1,17 @@
+<div class="modal" [ngClass]="{ 'is-active': this.isActive }">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head is-family-primary">
+      <ng-content select="[modalTitle]"></ng-content>
+      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+    </header>
+    <section class="modal-card-body">
+      <ng-content select="[modalContent]"></ng-content>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <ng-content select="[modalButtons]"></ng-content>
+      </div>
+    </footer>
+  </div>
+</div>

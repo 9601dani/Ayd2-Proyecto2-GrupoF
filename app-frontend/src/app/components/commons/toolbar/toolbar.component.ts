@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {CommonService} from '../../../services/commons/common.service';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-toolbar',
@@ -9,5 +11,9 @@ import { Component } from '@angular/core';
   styleUrl: './toolbar.component.scss'
 })
 export class ToolbarComponent {
+
+  constructor(private _commonService: CommonService) {
+
+  }
 
 }
