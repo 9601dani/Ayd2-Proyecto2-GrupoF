@@ -10,17 +10,21 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <app-toolbar>
-      @if (isHandset$ | async) {
-        <div toggleButtons>
-          <a class="button is-light" (click)="drawer.toggle()">
-            ☰
-          </a>
+        <div userButton>
+          @if (isHandset$ | async) {
+            <a class="button is-light" (click)="drawer.toggle()">
+              ☰
+            </a>
 
-          <a class="button is-light">
-            Salir
+            <a class="button is-light">
+              Salir
+            </a>
+          }
+
+          <a class="button is-link" (click)="openModal()">
+            Iniciar Sesión
           </a>
         </div>
-      }
     </app-toolbar>
     <ng-content select="[body]"></ng-content>
   </mat-sidenav-content>

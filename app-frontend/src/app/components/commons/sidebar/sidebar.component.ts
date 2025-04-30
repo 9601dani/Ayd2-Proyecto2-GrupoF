@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {MenuService, Module} from '../../../service/test/menu.service';
+import {MenuService, Module} from '../../../services/test/menu.service';
 import { CommonModule } from '@angular/common';
 import {Router, RouterModule} from '@angular/router';
 import {Subscription} from 'rxjs';
+import {CommonService} from '../../../services/commons/common.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +18,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   private subscription!: Subscription;
 
   constructor(
+    private _commonService: CommonService,
     private _menuService: MenuService,
     private _router: Router
   ) {
@@ -28,7 +30,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   subscribeToBehavior() {
-    this.subscription = this._menuService.getActivePage().subscribe({
+    this.subscription = this._commonService.getActivePage().subscribe({
       next: (pageName: string) => {
         this.activePage = pageName;
       }
@@ -51,7 +53,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   redirectTo(page: any) {
-    this._menuService.emitActivePage(page.name);
+    this._commonService.emitActivePage(page.name);
     this._router.navigate([page.path]);
   }
 }
