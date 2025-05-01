@@ -1,0 +1,8 @@
+CREATE TABLE privileges(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    FK_Page INT NOT NULL,
+    FK_Role INT NOT NULL,
+    can_create BOOLEAN DEFAULT FALSE,
+    can_update BOOLEAN DEFAULT FALSE,
+    can_delete BOOLEAN DEFAULT FALSE
+);
