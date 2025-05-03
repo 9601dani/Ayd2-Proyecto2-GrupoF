@@ -19,6 +19,7 @@
     <module>ms-user</module>
     <module>ms-company</module>
     <module>ms-project</module>
+    <module>ms-upload</module>
     <module>report</module>
   </modules>
 
