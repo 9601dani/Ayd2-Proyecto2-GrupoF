@@ -27,21 +27,26 @@
       <artifactId>gateway</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
-<!--    <dependency>-->
-<!--      <groupId>com.codenbugs</groupId>-->
-<!--      <artifactId>ms-user</artifactId>-->
-<!--      <version>0.0.1-SNAPSHOT</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>com.codenbugs</groupId>-->
-<!--      <artifactId>ms-company</artifactId>-->
-<!--      <version>0.0.1-SNAPSHOT</version>-->
-<!--    </dependency>-->
-<!--    <dependency>-->
-<!--      <groupId>com.codenbugs</groupId>-->
-<!--      <artifactId>ms-project</artifactId>-->
-<!--      <version>0.0.1-SNAPSHOT</version>-->
-<!--    </dependency>-->
+    <dependency>
+      <groupId>com.codenbugs</groupId>
+      <artifactId>ms-user</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.codenbugs</groupId>
+      <artifactId>ms-company</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.codenbugs</groupId>
+      <artifactId>ms-project</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.codenbugs</groupId>
+      <artifactId>ms-upload</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
