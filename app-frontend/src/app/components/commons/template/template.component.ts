@@ -8,9 +8,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
-import {MenuService, Module} from '../../../service/test/menu.service';
+import {MenuService, Module} from '../../../services/test/menu.service';
 import {ToolbarComponent} from '../toolbar/toolbar.component';
 import {SidebarComponent} from "../sidebar/sidebar.component";
+import {CommonService} from '../../../services/commons/common.service';
 
 @Component({
   selector: 'app-template',
@@ -29,11 +30,14 @@ import {SidebarComponent} from "../sidebar/sidebar.component";
     ]
 })
 export class TemplateComponent implements OnInit {
-  sidebarCollapsed = false;
+
   modules: Module[] = [];
 
   private breakpointObserver = inject(BreakpointObserver);
-  constructor(private _menuService: MenuService) {}
+  constructor(
+    private _menuService: MenuService,
+    private _commonService: CommonService
+  ) {}
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
@@ -48,7 +52,7 @@ export class TemplateComponent implements OnInit {
     });
   }
 
-  toggleSidebar() {
-    this.sidebarCollapsed = !this.sidebarCollapsed;
+  openModal() {
+    this._commonService.emitActiveModal(true);
   }
 }

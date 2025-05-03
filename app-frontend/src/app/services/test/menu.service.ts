@@ -19,7 +19,6 @@ export interface Module {
 })
 export class MenuService {
 
-  activePageSubject = new BehaviorSubject<string>("");
 
   constructor() {}
 
@@ -47,11 +46,5 @@ export class MenuService {
     return of(menu);
   }
 
-  emitActivePage(pageName: string) {
-    this.activePageSubject.next(pageName);
-  }
 
-  getActivePage() {
-    return this.activePageSubject.asObservable();
-  }
 }
