@@ -27,20 +27,27 @@
                 <tr *ngFor="let user of users">
                   <td>{{ user.username }}</td>
                   <td>{{ user.email }}</td>
-                  <td>{{ user.salary_per_hour | currency: 'Q' }}</td>
+                  <td>{{ user.salaryPerHour | currency: 'Q' }}</td>
                   <td>
                     <span
                       class="tag"
-                      [ngClass]="{ 'is-success': user.is_enabled, 'is-danger': !user.is_enabled }"
+                      [ngClass]="{ 'is-success': user.isEnabled, 'is-danger': !user.isEnabled }"
                     >
-                      {{ user.is_enabled ? 'Activo' : 'Inactivo' }}
+                      {{ user.isEnabled ? 'Activo' : 'Inactivo' }}
                     </span>
                   </td>
-                  <td>{{ user.first_name }}</td>
+                  <td>{{ user.firstName }}</td>
                   <td>
                     <div class="buttons are-small">
                       <button class="button is-info" (click)="openModal('edit', user)">Editar</button>
-                      <button class="button is-danger" (click)="openModal('delete', user)">Eliminar</button>
+                      <button
+                      class="button"
+                      [ngClass]="user.isEnabled ? 'is-danger' : 'is-success'"
+                      (click)="openModal(user.isEnabled ? 'delete' : 'enable', user)"
+                    >
+                      {{ user.isEnabled ? 'Desactivar' : 'Activar' }}
+                    </button>
+                    
                     </div>
                   </td>
                 </tr>
@@ -77,11 +84,20 @@
   
     <div modalTitle class="modal-card-title" *ngIf="actualAction === 'delete'">Confirmar eliminación</div>
     <div modalContent *ngIf="actualAction === 'delete'">
-      <p>¿Deseas eliminar a <strong>{{ userSelected?.first_name }}</strong>?</p>
+      <p>¿Deseas eliminar a <strong>{{ userSelected?.firstName }}</strong>?</p>
     </div>
     <div modalButtons *ngIf="actualAction === 'delete'">
-      <button class="button is-danger" (click)="deleteUser()">Sí, eliminar</button>
+      <button class="button is-danger" (click)="deleteUser()">Sí, desactivar</button>
       <button class="button" (click)="closeModal()">Cancelar</button>
     </div>
+
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'enable'">Confirmar activación</div>
+    <div modalContent *ngIf="actualAction === 'enable'">
+      <p>¿Deseas activar a <strong>{{ userSelected?.firstName }}</strong>?</p>
+    </div>
+    <div modalButtons *ngIf="actualAction === 'enable'">
+      <button class="button is-success" (click)="enableUser()">Sí, activar</button>
+      <button class="button" (click)="closeModal()">Cancelar</button>
+    </div>   
   </app-modal>
   

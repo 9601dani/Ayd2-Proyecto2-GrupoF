@@ -4,18 +4,30 @@
     <div class="field">
       <label class="label">Username</label>
       <div class="control">
-        <input class="input" type="text" formControlName="username" placeholder="Nombre de usuario">
+        <input
+          class="input"
+          type="text"
+          formControlName="username"
+          placeholder="Nombre de usuario"
+          [readonly]="mode === 'edit'"
+        >
       </div>
       <p class="help is-danger" *ngIf="form.get('username')?.touched && form.get('username')?.invalid">
         El nombre de usuario es obligatorio.
       </p>
     </div>
-  
+
     <!-- Email -->
     <div class="field">
       <label class="label">Email</label>
       <div class="control">
-        <input class="input" type="email" formControlName="email" placeholder="Correo electrónico">
+        <input
+          class="input"
+          type="email"
+          formControlName="email"
+          placeholder="Correo electrónico"
+          [readonly]="mode === 'edit'"
+        >
       </div>
       <p class="help is-danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors">
         <span *ngIf="form.get('email')?.errors?.['required']">El correo es obligatorio.</span>
@@ -27,9 +39,9 @@
     <div class="field">
       <label class="label">Nombre</label>
       <div class="control">
-        <input class="input" type="text" formControlName="first_name" placeholder="Nombre">
+        <input class="input" type="text" formControlName="firstName" placeholder="Nombre">
       </div>
-      <p class="help is-danger" *ngIf="form.get('first_name')?.touched && form.get('first_name')?.invalid">
+      <p class="help is-danger" *ngIf="form.get('firstName')?.touched && form.get('firstName')?.invalid">
         El nombre es obligatorio.
       </p>
     </div>
@@ -38,9 +50,9 @@
     <div class="field">
       <label class="label">Apellido</label>
       <div class="control">
-        <input class="input" type="text" formControlName="last_name" placeholder="Apellido">
+        <input class="input" type="text" formControlName="lastName" placeholder="Apellido">
       </div>
-      <p class="help is-danger" *ngIf="form.get('last_name')?.touched && form.get('last_name')?.invalid">
+      <p class="help is-danger" *ngIf="form.get('lastName')?.touched && form.get('lastName')?.invalid">
         El apellido es obligatorio.
       </p>
     </div>
@@ -54,13 +66,13 @@
         type="number"
         min="0.01"
         step="0.01"
-        formControlName="salary_per_hour"
+        formControlName="salaryPerHour"
         placeholder="0.00"
         (keydown)="blockInvalidKeys($event)"
         (input)="limitDecimals($event)"
       >      
       </div>
-      <p class="help is-danger" *ngIf="form.get('salary_per_hour')?.touched && form.get('salary_per_hour')?.invalid">
+      <p class="help is-danger" *ngIf="form.get('salaryPerHour')?.touched && form.get('salaryPerHour')?.invalid">
         Ingrese un valor mayor a 0.
       </p>
     </div>
@@ -70,13 +82,13 @@
       <label class="label">Rol</label>
       <div class="control">
         <div class="select is-fullwidth">
-          <select formControlName="FK_Role">
+          <select formControlName="role">
             <option [ngValue]="null" disabled>Seleccione un rol</option>
             <option *ngFor="let rol of roles" [ngValue]="rol.id">{{ rol.name }}</option>
           </select>
         </div>
       </div>
-      <p class="help is-danger" *ngIf="form.get('FK_Role')?.touched && form.get('FK_Role')?.invalid">
+      <p class="help is-danger" *ngIf="form.get('role')?.touched && form.get('role')?.invalid">
         Seleccione un rol válido.
       </p>
     </div>

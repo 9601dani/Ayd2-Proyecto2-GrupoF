@@ -4,15 +4,18 @@ import { TemplateComponent } from '../../commons/template/template.component';
 import { ModalComponent } from '../../commons/modal/modal.component';
 import { CommonService } from '../../../services/commons/common.service';
 import { UserFormComponent } from '../user-form/user-form.component';
+import { UserService } from '../../../services/user.service';
+import Swal from 'sweetalert2';
+import { AlertService } from '../../../services/commons/alert.service';
 
 interface User {
   id: number;
   username: string;
   email: string;
-  salary_per_hour: number;
-  is_enabled: boolean;
-  first_name: string;
-  last_name: string;
+  salaryPerHour: number;
+  isEnabled: boolean;
+  firstName: string;
+  lastName: string;
 }
 
 @Component({
@@ -23,38 +26,31 @@ interface User {
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
-  users: User[] = [
-    {
-      id: 1,
-      username: 'admin',
-      email: 'admin@example.com',
-      salary_per_hour: 25.5,
-      is_enabled: true,
-      first_name: 'Juan',
-      last_name: 'Pérez'
-    },
-    {
-      id: 2,
-      username: 'user123',
-      email: 'user123@example.com',
-      salary_per_hour: 15,
-      is_enabled: false,
-      first_name: 'Ana',
-      last_name: 'Gómez'
-    }
-  ];
+  users: User[] = [];
 
-  roles = [
-    { id: 1, name: 'Administrador' },
-    { id: 2, name: 'Desarrollador' }
-  ];
+  roles = [];
 
-  actualAction: 'edit' | 'delete' | 'register' | null = null;
+  actualAction: 'edit' | 'delete' | 'register'| 'enable' | null = null;
   userSelected: any = null;
 
-  constructor(private _commonService: CommonService) {}
+  constructor(private _commonService: CommonService, private _userService:UserService,
+    private _alertService: AlertService
+  ) {}
 
-  openModal(action: 'edit' | 'delete' | 'register', user: any = null) {
+  ngOnInit(){
+    this._userService.getAllUsers().subscribe(response =>{
+      next:
+        this.users = response
+    })
+
+    this._userService.getAllRoles().subscribe(responde =>{
+      next:
+      this.roles = responde
+    })
+
+  }
+
+  openModal(action: 'edit' | 'delete' | 'register'| 'enable', user: any = null) {
     this.actualAction = action;
     this.userSelected = user;
     this._commonService.emitActiveModal(true);
@@ -68,24 +64,90 @@ export class RegisterComponent {
 
   deleteUser() {
     if (this.userSelected) {
-      //TODO logica para eliminar usuarios
-      console.log('deleted user ', this.userSelected.first_name)
-      this.closeModal()
+      this._userService.disabledUser(this.userSelected.username).subscribe({
+        next: (deletedUser) => {
+          const index = this.users.findIndex(u => u.id === deletedUser.id);
+          if (index !== -1) {
+            this.users[index] = deletedUser;
+          }
+          this._alertService.success(
+            "Actualización exitosa",
+            "Se desactivo el usuario " + deletedUser.username + " exitosamente"
+          );
+        },
+        error: (err) => {
+          this._alertService.error("Error al actualizar", err.message || "Ocurrió un error");
+        },
+        complete: () => {
+          this.closeModal();
+        }
+      });
     }
   }
 
   onRegister(data: any) {
-    const newUser = {
-      ...data,
-      id: Math.max(...this.users.map(u => u.id)) + 1
-    };
-    this.users.push(newUser);
-    this.closeModal();
+    this._userService.registerUser(data).subscribe({
+      next: (newUser) => {
+        this.users.push(newUser);
+        this._alertService.success(
+          "Registro exitoso",
+          "Se registró el usuario " + newUser.username + " exitosamente"
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          "Error al registrar",
+          err?.error?.message || "Ocurrió un error inesperado"
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      }
+    });
   }
+  
 
   onEdit(userData: any) {
-    console.log('Usuario editado:', userData);
-    // TODO: llamar al servicio para actualizar en la BD
-    this.closeModal();
+    this._userService.updateUser(userData).subscribe({
+      next: (updatedUser) => {
+        const index = this.users.findIndex(u => u.id === updatedUser.id);
+        if (index !== -1) {
+          this.users[index] = updatedUser;
+        }
+        this._alertService.success(
+          "Actualización exitosa",
+          "Se actualizó el usuario " + updatedUser.username + " exitosamente"
+        );
+      },
+      error: (err) => {
+        this._alertService.error("Error al actualizar", err.message || "Ocurrió un error");
+      },
+      complete: () => {
+        this.closeModal();
+      }
+    });
   }
+
+  enableUser() {
+    if (this.userSelected) {
+      this._userService.enableUser(this.userSelected.username).subscribe({
+        next: (enabledUser) => {
+          const index = this.users.findIndex(u => u.id === enabledUser.id);
+          if (index !== -1) {
+            this.users[index] = enabledUser;
+          }
+          this._alertService.success(
+            "Activación exitosa",
+            "Se activó el usuario " + enabledUser.username + " exitosamente"
+          );
+          this.closeModal();
+        },
+        error: (err) => {
+          this._alertService.error("Error al activar", err.message || "Ocurrió un error");
+        }
+      });
+    }
+  }
+  
+  
 }
