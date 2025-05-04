@@ -1,9 +1,17 @@
 package com.codenbugs.ms_company.model.module;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name ="pages")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Page {
 
     @Id
