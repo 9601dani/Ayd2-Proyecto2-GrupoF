@@ -1,0 +1,118 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Username -->
+    <div class="field">
+      <label class="label">Username</label>
+      <div class="control">
+        <input class="input" type="text" formControlName="username" placeholder="Nombre de usuario">
+      </div>
+      <p class="help is-danger" *ngIf="form.get('username')?.touched && form.get('username')?.invalid">
+        El nombre de usuario es obligatorio.
+      </p>
+    </div>
+  
+    <!-- Email -->
+    <div class="field">
+      <label class="label">Email</label>
+      <div class="control">
+        <input class="input" type="email" formControlName="email" placeholder="Correo electrónico">
+      </div>
+      <p class="help is-danger" *ngIf="form.get('email')?.touched && form.get('email')?.errors">
+        <span *ngIf="form.get('email')?.errors?.['required']">El correo es obligatorio.</span>
+        <span *ngIf="form.get('email')?.errors?.['email']">Formato de correo inválido, ej. ejemplo&#64;correo.com.</span>
+      </p>
+    </div>
+  
+    <!-- Nombre -->
+    <div class="field">
+      <label class="label">Nombre</label>
+      <div class="control">
+        <input class="input" type="text" formControlName="first_name" placeholder="Nombre">
+      </div>
+      <p class="help is-danger" *ngIf="form.get('first_name')?.touched && form.get('first_name')?.invalid">
+        El nombre es obligatorio.
+      </p>
+    </div>
+  
+    <!-- Apellido -->
+    <div class="field">
+      <label class="label">Apellido</label>
+      <div class="control">
+        <input class="input" type="text" formControlName="last_name" placeholder="Apellido">
+      </div>
+      <p class="help is-danger" *ngIf="form.get('last_name')?.touched && form.get('last_name')?.invalid">
+        El apellido es obligatorio.
+      </p>
+    </div>
+  
+    <!-- Salario -->
+    <div class="field">
+      <label class="label">Salario por hora</label>
+      <div class="control">
+        <input
+        class="input"
+        type="number"
+        min="0.01"
+        step="0.01"
+        formControlName="salary_per_hour"
+        placeholder="0.00"
+        (keydown)="blockInvalidKeys($event)"
+        (input)="limitDecimals($event)"
+      >      
+      </div>
+      <p class="help is-danger" *ngIf="form.get('salary_per_hour')?.touched && form.get('salary_per_hour')?.invalid">
+        Ingrese un valor mayor a 0.
+      </p>
+    </div>
+  
+    <!-- Rol -->
+    <div class="field">
+      <label class="label">Rol</label>
+      <div class="control">
+        <div class="select is-fullwidth">
+          <select formControlName="FK_Role">
+            <option [ngValue]="null" disabled>Seleccione un rol</option>
+            <option *ngFor="let rol of roles" [ngValue]="rol.id">{{ rol.name }}</option>
+          </select>
+        </div>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('FK_Role')?.touched && form.get('FK_Role')?.invalid">
+        Seleccione un rol válido.
+      </p>
+    </div>
+  
+    <!-- Contraseña -->
+    <div class="field" *ngIf="mode === 'register'">
+      <label class="label">Contraseña</label>
+      <div class="control has-icons-right">
+        <input
+          class="input"
+          [type]="showPassword ? 'text' : 'password'"
+          formControlName="password"
+          placeholder="Contraseña"
+        />
+        <span class="icon is-small is-right" style="pointer-events: all; cursor: pointer;" (click)="togglePasswordVisibility()">
+          <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+        </span>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('password')?.touched && form.get('password')?.errors">
+        <span *ngIf="form.get('password')?.errors?.['required']">La contraseña es obligatoria.</span>
+        <span *ngIf="form.get('password')?.errors?.['minlength']">Debe tener al menos 6 caracteres.</span>
+      </p>
+      
+    </div>
+  
+    <!-- Botones -->
+    <div class="field is-grouped is-justify-content-end mt-4">
+      <div class="control">
+        <button class="button is-success" type="submit" [disabled]="form.invalid">
+          {{ mode === 'register' ? 'Registrar' : 'Actualizar' }}
+        </button>
+      </div>
+      <div class="control">
+        <button class="button is-light" type="button" (click)="cancel.emit()">Cancelar</button>
+      </div>
+    </div>
+  
+  </form>
+  
