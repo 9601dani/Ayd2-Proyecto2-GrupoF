@@ -1,3 +1,13 @@
+security:
+  password-secret: ${PASSWORD_SECRET}
+
+jwt:
+  secret: ${JWT_SECRET}
+  zone: America/Guatemala
+  access-token:
+    expiration: 5
+  refresh-token:
+    expiration: 10_080
 
 server:
   port: 8001
@@ -11,9 +21,9 @@ spring:
     hikari:
       maximum-pool-size: 2
       minimum-idle: 1
-      idle-timeout: 60000
-      max-lifetime: 1800000
-      connection-timeout: 30000
+      idle-timeout: 60_000
+      max-lifetime: 180_0000
+      connection-timeout: 30_000
     driver-class-name: org.mariadb.jdbc.Driver
   jpa:
     hibernate:
