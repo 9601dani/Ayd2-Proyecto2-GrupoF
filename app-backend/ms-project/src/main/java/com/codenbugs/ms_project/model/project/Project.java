@@ -1,4 +1,4 @@
-package com.codenbugs.ms_project.model;
+package com.codenbugs.ms_project.model.project;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +22,7 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(unique = true)
     private String name;
 
     private Integer FK_User;
