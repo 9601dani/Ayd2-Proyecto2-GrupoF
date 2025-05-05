@@ -1,0 +1,103 @@
+<app-template>
+    <div body class="body">
+      <section class="section">
+        <div class="container">
+            <h1 class="title is-2 has-text-weight-bold">Listado de Usuarios</h1>
+            <div class="mb-4">
+              <button class="button is-primary" (click)="openModal('register')">
+                Registrar nuevo usuario
+              </button>
+            </div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="table-container">
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Salario por hora</th>
+                  <th>Estado</th>
+                  <th>Nombre</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of users">
+                  <td>{{ user.username }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.salaryPerHour | currency: 'Q' }}</td>
+                  <td>
+                    <span
+                      class="tag"
+                      [ngClass]="{ 'is-success': user.isEnabled, 'is-danger': !user.isEnabled }"
+                    >
+                      {{ user.isEnabled ? 'Activo' : 'Inactivo' }}
+                    </span>
+                  </td>
+                  <td>{{ user.firstName }}</td>
+                  <td>
+                    <div class="buttons are-small">
+                      <button class="button is-info" (click)="openModal('edit', user)">Editar</button>
+                      <button
+                      class="button"
+                      [ngClass]="user.isEnabled ? 'is-danger' : 'is-success'"
+                      (click)="openModal(user.isEnabled ? 'delete' : 'enable', user)"
+                    >
+                      {{ user.isEnabled ? 'Desactivar' : 'Activar' }}
+                    </button>
+                    
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+      </section>
+    </div>
+  </app-template>
+
+  <app-modal>
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'register'"> Registro De Usuario</div>
+    <div modalContent *ngIf="actualAction === 'register'">
+        <app-user-form
+        [mode]="'register'"
+        [roles]="roles"
+        (submitForm)="onRegister($event)"
+        (cancel)="closeModal()"
+      ></app-user-form>      
+    </div>
+
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">Editar Usuario    </div>
+    <div modalContent *ngIf="actualAction === 'edit'">
+        <app-user-form
+        [mode]="'edit'"
+        [user]="userSelected"
+        [roles]="roles"
+        (submitForm)="onEdit($event)"
+        (cancel)="closeModal()"
+        ></app-user-form>
+    </div>
+  
+  
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'delete'">Confirmar eliminación</div>
+    <div modalContent *ngIf="actualAction === 'delete'">
+      <p>¿Deseas eliminar a <strong>{{ userSelected?.firstName }}</strong>?</p>
+    </div>
+    <div modalButtons *ngIf="actualAction === 'delete'">
+      <button class="button is-danger" (click)="deleteUser()">Sí, desactivar</button>
+      <button class="button" (click)="closeModal()">Cancelar</button>
+    </div>
+
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'enable'">Confirmar activación</div>
+    <div modalContent *ngIf="actualAction === 'enable'">
+      <p>¿Deseas activar a <strong>{{ userSelected?.firstName }}</strong>?</p>
+    </div>
+    <div modalButtons *ngIf="actualAction === 'enable'">
+      <button class="button is-success" (click)="enableUser()">Sí, activar</button>
+      <button class="button" (click)="closeModal()">Cancelar</button>
+    </div>   
+  </app-modal>
+  

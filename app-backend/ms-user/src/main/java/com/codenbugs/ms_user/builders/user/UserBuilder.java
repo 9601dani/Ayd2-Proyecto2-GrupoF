@@ -1,5 +1,7 @@
 package com.codenbugs.ms_user.builders.user;
 
+import com.codenbugs.ms_user.models.user.User;
+
 import java.math.BigDecimal;
 
 public interface UserBuilder<T> {
