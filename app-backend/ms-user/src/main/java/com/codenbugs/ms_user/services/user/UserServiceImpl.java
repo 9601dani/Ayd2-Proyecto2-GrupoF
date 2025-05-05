@@ -3,6 +3,7 @@ package com.codenbugs.ms_user.services.user;
 import com.codenbugs.ms_user.dto.user.TokenResponse;
 import com.codenbugs.ms_user.dto.user.UserAuthRequest;
 import com.codenbugs.ms_user.dto.user.UserAuthenticatedResponse;
+import com.codenbugs.ms_user.dto.user.UserResponse;
 import com.codenbugs.ms_user.exceptions.user.UserException;
 import com.codenbugs.ms_user.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_user.models.user.User;
@@ -12,6 +13,8 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -23,8 +26,15 @@ public class UserServiceImpl implements UserService {
     private final TokenService tokenService;
 
     @Override
-    public User findById(Integer id) {
-        return null;
+    public UserResponse findById(Integer id) throws UserNotFoundException {
+
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException("No se encontró el usuario");
+        }
+
+        return new UserResponse(optionalUser.get());
+
     }
 
     @Override
