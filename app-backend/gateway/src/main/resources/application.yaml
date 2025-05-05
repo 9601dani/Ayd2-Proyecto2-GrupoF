@@ -1,3 +1,11 @@
+jwt:
+  secret: ${JWT_SECRET}
+  zone: America/Guatemala
+  access-token:
+    expiration: 5
+  refresh-token:
+    expiration: 10_080
+
 server:
   port: 8000
 spring:
@@ -21,4 +29,10 @@ spring:
         - id: user-public-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
-            - Path=/v1/users/authenticate
+            - Path=/v1/users/authenticate,/v1/tokens/**
+        - id: user_private_routes
+          uri: ${USER_ROUTE_URI:http://localhost:8001}
+          predicates:
+            - Path=/v1/users/**
+          filters:
+            - JWTVerifyFilterFactory

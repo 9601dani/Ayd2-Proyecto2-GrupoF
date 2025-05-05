@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Getter
-public class ConcreteUserBuilder implements UserBuilder {
+public class ConcreteUserBuilder implements UserBuilder<ConcreteUserBuilder> {
 
     private Integer id;
     private String username;
@@ -24,73 +24,73 @@ public class ConcreteUserBuilder implements UserBuilder {
     private String token;
 
     @Override
-    public UserBuilder withUsername(String username) {
+    public ConcreteUserBuilder withUsername(String username) {
         this.username = username;
         return this;
     }
 
     @Override
-    public UserBuilder withPassword(String password) {
+    public ConcreteUserBuilder withPassword(String password) {
         this.password = password;
         return this;
     }
 
     @Override
-    public UserBuilder withEmail(String email) {
+    public ConcreteUserBuilder withEmail(String email) {
         this.email = email;
         return this;
     }
 
     @Override
-    public UserBuilder withSalary(BigDecimal salary) {
+    public ConcreteUserBuilder withSalary(BigDecimal salary) {
         this.salaryPerHour = salary;
         return this;
     }
 
     @Override
-    public UserBuilder withRole(Integer role) {
+    public ConcreteUserBuilder withRole(Integer role) {
         this.role = role;
         return this;
     }
 
     @Override
-    public UserBuilder withFirstName(String firstName) {
+    public ConcreteUserBuilder withFirstName(String firstName) {
         this.firstName = firstName;
         return this;
     }
 
     @Override
-    public UserBuilder withLastName(String lastName) {
+    public ConcreteUserBuilder withLastName(String lastName) {
         this.lastName = lastName;
         return this;
     }
 
-    public UserBuilder withIsEnabled(Boolean isEnabled) {
+    public ConcreteUserBuilder withIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;
     }
 
-    public UserBuilder withToken(String token) {
+    public ConcreteUserBuilder withToken(String token) {
         this.token = token;
         return this;
     }
 
-    public UserBuilder withPhoto(String photo) {
+    public ConcreteUserBuilder withPhoto(String photo) {
         this.photo = photo;
         return this;
     }
 
-    public UserBuilder withCreatedAt(LocalDateTime createdAt) {
+    public ConcreteUserBuilder withCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }
 
-    public UserBuilder withUpdatedAt(LocalDateTime updatedAt) {
+    public ConcreteUserBuilder withUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
         return this;
     }
 
-    public UserBuilder withId(Integer id) {
+    public ConcreteUserBuilder withId(Integer id) {
         this.id = id;
         return this;
     }
