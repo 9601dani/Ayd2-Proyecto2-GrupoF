@@ -10,20 +10,43 @@
   </mat-sidenav>
   <mat-sidenav-content>
     <app-toolbar>
-        <div userButton>
-          @if (isHandset$ | async) {
-            <a class="button is-light" (click)="drawer.toggle()">
-              ☰
+      <div burguer>
+          <div class="navbar-brand">
+            <a class="navbar-item" (click)="drawer.toggle()">
+              <strong>app-frontend</strong>
             </a>
 
-            <a class="button is-light">
-              Salir
-            </a>
+          </div>
+      </div>
+        <div endItems class="navbar-end">
+
+          @if(!this.isLogged) {
+            <div class="navbar-item">
+              <div class="buttons">
+                <a class="button is-link" (click)="openModal()">
+                  Iniciar Sesión
+                </a>
+              </div>
+            </div>
+          } @else {
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link pt-2">
+                <figure class="image is-32x32 mr-2">
+                  <img class="is-rounded" [src]="photo | image" />
+                </figure>
+                <span>{{ this.username }}</span>
+              </a>
+
+              <div class="navbar-dropdown is-right">
+                <a class="navbar-item">
+                  Mi Perfil
+                </a>
+                <a class="navbar-item" (click)="logout()">
+                  Cerrar Sesión
+                </a>
+              </div>
+            </div>
           }
-
-          <a class="button is-link" (click)="openModal()">
-            Iniciar Sesión
-          </a>
         </div>
     </app-toolbar>
     <ng-content select="[body]"></ng-content>
