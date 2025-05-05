@@ -1,6 +1,7 @@
 package com.codenbugs.ms_company.service.module;
 
 
+import com.codenbugs.ms_company.client.UserRestClient;
 import com.codenbugs.ms_company.dtos.module.ModuleResponseDto;
 import com.codenbugs.ms_company.model.module.Module;
 import com.codenbugs.ms_company.model.module.Page;
@@ -25,6 +26,9 @@ public class PageServiceTest {
     @Mock
     private PageRepository pageRepository;
 
+    @Mock
+    private UserRestClient userRestClient;
+
     private final Integer ROLE_ID = 1;
     private final Integer MODULE_ID = 1;
     private final String MODULE_NAME = "Module Name";
@@ -41,7 +45,7 @@ public class PageServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.initMocks(this);
-        pageService = new PageServiceImpl(pageRepository);
+        pageService = new PageServiceImpl(pageRepository, userRestClient);
 
         module = new Module();
         module.setId(MODULE_ID);

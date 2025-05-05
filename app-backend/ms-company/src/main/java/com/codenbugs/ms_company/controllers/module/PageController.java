@@ -1,7 +1,7 @@
 package com.codenbugs.ms_company.controllers.module;
 
 import com.codenbugs.ms_company.dtos.module.ModuleResponseDto;
-import com.codenbugs.ms_company.repositories.module.PageRepository;
+import com.codenbugs.ms_company.exceptions.UserNotFoundException;
 import com.codenbugs.ms_company.services.module.PageService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +19,8 @@ public class PageController {
 
     private final PageService pageService;
 
-    @GetMapping("/{roleId}")
-    public ResponseEntity<List<ModuleResponseDto>> getPagesByRole(@PathVariable Integer roleId) {
-        return ResponseEntity.ok(pageService.getPagesByRole(roleId));
+    @GetMapping("/{userId}")
+    public ResponseEntity<List<ModuleResponseDto>> getPagesByRole(@PathVariable Integer userId) throws UserNotFoundException {
+        return ResponseEntity.ok(pageService.getPagesByRole(userId));
     }
 }
