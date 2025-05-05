@@ -1,6 +1,0 @@
-
-CREATE TABLE roles_has_pages (
-    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    FK_Role INT NOT NULL,
-    FK_Page INT NOT NULL
-);
