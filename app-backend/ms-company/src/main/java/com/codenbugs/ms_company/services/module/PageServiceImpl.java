@@ -28,11 +28,6 @@ public class PageServiceImpl implements PageService {
     public List<ModuleResponseDto> getPagesByRole(Integer id) throws UserNotFoundException {
 
         UserResponse user = userRestClient.findById(id);
-
-        if(user.role() == null){
-            throw new UserNotFoundException("No se encontró al usuario");
-        }
-
         return pageRepository.findPagesByRoleId(user.role());
     }
 }
