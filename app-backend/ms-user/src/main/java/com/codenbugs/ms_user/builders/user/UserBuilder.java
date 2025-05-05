@@ -2,13 +2,13 @@ package com.codenbugs.ms_user.builders.user;
 
 import java.math.BigDecimal;
 
-public interface UserBuilder {
+public interface UserBuilder<T> {
 
-    UserBuilder withUsername(String username);
-    UserBuilder withPassword(String password);
-    UserBuilder withEmail(String email);
-    UserBuilder withSalary(BigDecimal salary);
-    UserBuilder withRole(Integer role);
-    UserBuilder withFirstName(String firstName);
-    UserBuilder withLastName(String lastName);
+    T withUsername(String username);
+    T withPassword(String password);
+    T withEmail(String email);
+    T withSalary(BigDecimal salary);
+    T withRole(Integer role);
+    T withFirstName(String firstName);
+    T withLastName(String lastName);
 }

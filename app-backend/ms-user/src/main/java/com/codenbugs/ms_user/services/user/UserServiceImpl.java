@@ -1,6 +1,6 @@
 package com.codenbugs.ms_user.services.user;
 
-import com.codenbugs.ms_user.dto.user.TokenResponse;
+import com.codenbugs.ms_user.dto.token.TokenResponse;
 import com.codenbugs.ms_user.dto.user.UserAuthRequest;
 import com.codenbugs.ms_user.dto.user.UserAuthenticatedResponse;
 import com.codenbugs.ms_user.dto.user.UserResponse;
@@ -66,10 +66,21 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException("Invalid password");
         }
 
+        if(!user.getIsEnabled()) {
+            throw new UserNotFoundException("User not enabled");
+        }
+
         TokenResponse tokenResponse = this.tokenService.getTokens(user);
         user.setToken(tokenResponse.refreshToken());
         user = this.userRepository.save(user);
 
-        return new UserAuthenticatedResponse(user.getUsername(), tokenResponse);
+        return new UserAuthenticatedResponse(user, tokenResponse);
+    }
+
+    @Override
+    public void logout(Integer id) throws UserNotFoundException {
+        User user = this.userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User not found"));
+        user.setToken(null);
+        this.userRepository.save(user);
     }
 }

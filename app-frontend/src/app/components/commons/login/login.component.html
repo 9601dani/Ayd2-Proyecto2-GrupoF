@@ -1,6 +1,11 @@
 <app-modal>
   <p modalTitle class="modal-card-title">Inicio de Sesión</p>
   <div modalContent>
+    @if(isLoading) {
+      <div class="custom-spinner">
+        <mat-spinner></mat-spinner>
+      </div>
+    }
     <form [formGroup]="loginForm">
       <div class="field">
         <label class="label">Nombre de usuario o Correo</label>
@@ -14,7 +19,7 @@
           <input formControlName="password" [type]="visibility ? 'text' : 'password'" class="input" placeholder="Ingrese su contraseña">
         </div>
         <div class="control">
-          <button class="button is-primary" (click)="visibility = !visibility">
+          <button type="button" class="button is-primary" (click)="visibility = !visibility">
             <mat-icon [fontIcon]="visibility ? 'visibility' : 'visibility_off'"></mat-icon>
           </button>
         </div>
@@ -22,9 +27,7 @@
     </form>
   </div>
   <div modalButtons>
-    <div class="is-align-self-center">
-      <button class="button is-success" [disabled]="this.loginForm.invalid" (click)="authenticate()">Iniciar Sesión</button>
-      <button class="button ml-2">Cancelar</button>
-    </div>
+    <button type="submit" class="button is-success" [disabled]="this.loginForm.invalid" (click)="authenticate()">Iniciar Sesión</button>
+    <button type="button" class="button ml-2">Cancelar</button>
   </div>
 </app-modal>

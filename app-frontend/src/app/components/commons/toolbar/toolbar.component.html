@@ -1,15 +1,7 @@
 <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
-    <div class="navbar-brand">
-      <a class="navbar-item">
-        <strong>Mi Proyecto</strong>
-      </a>
-    </div>
+  <ng-content select="[burguer]"></ng-content>
 
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="buttons">
-          <ng-content select="[userButton]"></ng-content>
-        </div>
-      </div>
+  <div class="navbar-menu is-active">
+        <ng-content select="[endItems]"></ng-content>
     </div>
-  </nav>
+</nav>

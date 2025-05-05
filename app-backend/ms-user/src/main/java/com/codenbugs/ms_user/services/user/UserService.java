@@ -15,5 +15,6 @@ public interface UserService {
     User update(Integer id, User user);
     void delete(Integer id);
     UserAuthenticatedResponse authenticate(UserAuthRequest userAuthRequest) throws UserNotFoundException;
+    void logout(Integer id) throws UserNotFoundException;
 
 }

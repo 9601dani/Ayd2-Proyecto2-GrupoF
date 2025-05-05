@@ -10,6 +10,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/v1/users")
 @AllArgsConstructor
@@ -27,5 +30,18 @@ public class UserController {
     public ResponseEntity<UserResponse> findById(@PathVariable Integer id) throws UserNotFoundException {
         UserResponse response = this.userService.findById(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping()
+    public ResponseEntity<Map<String, String>> helloWorld() {
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Hello World!");
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/logout/{id}")
+    public ResponseEntity<Void> logout(@PathVariable Integer id) throws UserNotFoundException {
+        this.userService.logout(id);
+        return ResponseEntity.ok().build();
     }
 }
