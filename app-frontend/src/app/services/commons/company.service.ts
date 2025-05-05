@@ -1,4 +1,5 @@
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -7,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class CompanyService {
   
-  readonly apiPages = `http://localhost:8003/v1/pages`;
+  readonly apiPages = `${environment.API_URL}/v1/pages`;
 
   constructor(private http: HttpClient) {}
 

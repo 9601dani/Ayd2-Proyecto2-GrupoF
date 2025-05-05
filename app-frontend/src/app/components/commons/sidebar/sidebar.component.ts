@@ -4,6 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonService } from '../../../services/commons/common.service';
 import { CompanyService } from '../../../services/commons/company.service';
+import { LocalStorageService } from '../../../services/commons/local-storage.service';
 
 export interface Page {
   id: number;
@@ -42,7 +43,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     private _commonService: CommonService,
     private _companyService: CompanyService,
-    private _router: Router
+    private _router: Router,
+    private _localStorageService: LocalStorageService
   ) {}
 
   ngOnInit() {
@@ -63,14 +65,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   getModules() {
-    this._companyService.getPages(2).subscribe({
-      next: (value: any) => {
-        this.modules = this.transformToModules(value);
-      },
-      error: (err) => {
-        console.log(err);
-      },
-    });
+    const userId = this._localStorageService.getItem(
+      this._localStorageService.USER_ID
+    );
+
+    if (userId) {
+      this._companyService.getPages(userId).subscribe({
+        next: (value: any) => {
+          this.modules = this.transformToModules(value);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+    }
   }
 
   redirectTo(page: any) {
