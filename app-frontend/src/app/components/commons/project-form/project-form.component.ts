@@ -35,21 +35,16 @@ export class ProjectFormComponent implements OnInit {
 
     this._userService.getUsersByRole(1).subscribe({
       next: (value) => {
-        this.users = value
-        
-      }, 
+        this.users = value;
+      },
       error: (err) => {
         console.log(err);
-        
       },
-    })
+    });
   }
 
   ngOnInit() {
     if (this.mode === 'edit' && this.project) {
-
-      console.log(this.project);
-      
       this.form.patchValue({
         name: this.project.name,
         description: this.project.description,

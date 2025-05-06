@@ -13,26 +13,42 @@
     <section class="section">
       <div class="columns is-multiline">
         <div class="column is-one-quarter" *ngFor="let project of projects">
-          <div class="card">
+          <div class="card has-text-centered" style="height: 100%">
             <header class="card-header">
-              <p class="card-header-title">{{ project.name }}</p>
+              <p class="card-header-title is-size-5 has-text-weight-bold">
+                {{ project.name }}
+              </p>
             </header>
+
             <div class="card-content">
-              <div class="content">
-                {{ project.description }}
+              <div
+                class="content is-size-6 has-text-grey-dark"
+                style="min-height: 60px"
+              >
+                {{
+                  project.description.length > 100
+                    ? (project.description | slice : 0 : 100) + "..."
+                    : project.description
+                }}
               </div>
             </div>
-            <footer class="card-footer">
-              <a
-                class="card-footer-item button is-link m-1"
+
+            <footer
+              class="card-footer is-justify-content-center is-align-items-center"
+              style="height: 80px"
+            >
+              <button
+                class="button is-link m-1"
                 (click)="openModal('edit', project)"
-                >Ver Proyecto</a
               >
-              <a
-                class="card-footer-item button is-warning m-1"
+                Ver Proyecto
+              </button>
+              <button
+                class="button is-warning m-1"
                 (click)="openModal('disable', project)"
-                >Congelar</a
               >
+                Congelar
+              </button>
             </footer>
           </div>
         </div>

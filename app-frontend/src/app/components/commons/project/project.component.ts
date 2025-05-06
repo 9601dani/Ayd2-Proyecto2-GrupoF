@@ -30,42 +30,29 @@ export interface Project {
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
 
-  actualAction: 'edit' | 'disable' | 'create'  | null = null;
+  actualAction: 'edit' | 'disable' | 'create' | null = null;
   projectSelected: any = null;
 
-  constructor(private _commonService: CommonService, private _projectService: ProjectService, private _alertService: AlertService) {}
+  constructor(
+    private _commonService: CommonService,
+    private _projectService: ProjectService,
+    private _alertService: AlertService
+  ) {}
 
   ngOnInit(): void {
-    this.projects = [
-      {
-        id: 1,
-        name: 'Sistema de Inventario',
-        description: 'Aplicación web para gestionar productos y existencias.',
-        isEnabled: true,
-        fkUser: 1,
+    this._projectService.getAllProjects().subscribe({
+      next: (value: any) => {
+        this.projects = value.filter(
+          (project: { isEnabled: any }) => project.isEnabled
+        );
       },
-      {
-        id: 2,
-        name: 'Plataforma de Cursos',
-        description:
-          'Sistema educativo para ofrecer y administrar cursos en línea.',
-        isEnabled:false,
-        fkUser: 2,
+      error: (err) => {
+        console.log(err);
       },
-      {
-        id: 3,
-        name: 'Dashboard de Ventas',
-        description: 'Visualización de datos de ventas en tiempo real.',
-        isEnabled: true,
-        fkUser: 3,
-      },
-    ];
+    });
   }
 
-  openModal(
-    action: 'edit' | 'disable' | 'create',
-    project: any = null
-  ) {
+  openModal(action: 'edit' | 'disable' | 'create', project: any = null) {
     this.actualAction = action;
     this.projectSelected = project;
     this._commonService.emitActiveModal(true);
@@ -82,32 +69,82 @@ export class ProjectComponent implements OnInit {
       next: (project) => {
         this.projects.push(project);
         this._alertService.success(
-          "Registro exitoso",
-          "Se registró el proyecto " + project.name + " exitosamente"
+          'Registro exitoso',
+          'Se registró el proyecto ' + project.name + ' exitosamente'
         );
       },
       error: (err) => {
         this._alertService.error(
-          "Error al registrar",
-          err?.error?.message || "Ocurrió un error inesperado"
+          'Error al registrar',
+          err?.error?.message || 'Ocurrió un error inesperado'
         );
       },
       complete: () => {
         this.closeModal();
-      }
+      },
     });
   }
 
-  onEdit(userData: any) {
-    console.log(userData);
-    
+  onEdit(data: any) {
+    const projectId = this.projectSelected.id;
+    data.id = projectId;
+
+    this._projectService.updateProject(data).subscribe({
+      next: (project) => {
+        const index = this.projects.findIndex((u) => u.id === project.id);
+        if (index !== -1) {
+          this.projects[index] = project;
+        }
+        this._alertService.success(
+          'Actualización exitosa',
+          'Se actualizó el proyecto ' + project.name + ' exitosamente'
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          'Error al actualizar',
+          err?.error?.message || 'Ocurrió un error inesperado'
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      },
+    });
   }
 
   deleteProject() {
     if (this.projectSelected) {
-      
-      console.log('eliminar...');
-      
+      const body = {
+        id: this.projectSelected.id,
+        enable: false,
+      };
+
+      this._projectService.updateIsEnable(body).subscribe({
+        next: (value) => {
+          const index = this.projects.findIndex(
+            (u) => u.id === this.projectSelected.id
+          );
+          
+          if (index !== -1) {
+            this.projects.splice(index, 1); 
+          }
+          this._alertService.success(
+            'Proyecto Deshabilitado',
+            'Se deshabilitó el proyecto ' +
+              this.projectSelected.name +
+              ' exitosamente'
+          );
+        },
+        error: (err) => {
+          this._alertService.error(
+            'Error al deshabilitar',
+            err?.error?.message || 'Ocurrió un error inesperado'
+          );
+        },
+        complete: () => {
+          this.closeModal();
+        },
+      });
     }
   }
 }

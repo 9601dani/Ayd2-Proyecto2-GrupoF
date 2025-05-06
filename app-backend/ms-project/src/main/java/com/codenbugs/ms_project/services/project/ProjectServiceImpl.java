@@ -101,7 +101,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = optionalProject.get();
-        project.setIsEnabled(request.enabled());
+        project.setIsEnabled(request.enable());
 
         Project updated = this.projectRepository.save(project);
         return new ProjectResponseWithoutUser(updated);
