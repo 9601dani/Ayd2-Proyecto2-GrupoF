@@ -1,5 +1,6 @@
 package com.codenbugs.ms_project.services.project;
 
+import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
@@ -19,4 +20,7 @@ public interface ProjectService {
     ProjectResponse getById(Integer id) throws ProjectNotFound, UserNotFoundException;
 
     List<ProjectResponseWithoutUser> getAllProjects();
+
+    ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound;
+
 }

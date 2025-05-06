@@ -76,4 +76,10 @@ public class UserController {
         return ResponseEntity.ok(deletedUser);
     }
 
+    @GetMapping("/role/{role}")
+    public ResponseEntity<List<UserResponseWithName>> findUsersByRole(@PathVariable Integer role) {
+        List<UserResponseWithName> response = this.userService.getUsersByRole(role);
+        return ResponseEntity.ok(response);
+    }
+
 }

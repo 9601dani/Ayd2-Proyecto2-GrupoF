@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -175,6 +176,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-
+    @Override
+    public List<UserResponseWithName> getUsersByRole(Integer role) {
+        return this.userRepository.findByRole(role).stream().map(UserResponseWithName::new).collect(Collectors.toList());
+    }
 }

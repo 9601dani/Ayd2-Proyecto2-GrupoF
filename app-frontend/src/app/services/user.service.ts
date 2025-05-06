@@ -36,4 +36,6 @@ export class UserService {
   getAllRoles(): Observable<any>{
     return this.http.get(`${this.apiRole}/all`)
   }
+
+  
 }

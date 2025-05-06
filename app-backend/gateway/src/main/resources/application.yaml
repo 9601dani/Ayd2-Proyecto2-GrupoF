@@ -34,6 +34,10 @@ spring:
           uri: ${USER_ROUTE_URI:http://localhost:8003}
           predicates:
             - Path=/v1/pages/**
+        - id: project-public-routes
+          uri: ${USER_ROUTE_URI:http://localhost:8002}
+          predicates:
+            - Path=/v1/projects/**
         - id: user-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:

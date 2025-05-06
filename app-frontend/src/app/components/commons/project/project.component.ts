@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { CommonService } from '../../../services/commons/common.service';
 import { ModalComponent } from '../modal/modal.component';
 import { ProjectFormComponent } from '../project-form/project-form.component';
+import { ProjectService } from '../../../services/project/project.service';
+import { AlertService } from '../../../services/commons/alert.service';
 
 export interface Project {
   id: number;
@@ -31,7 +33,7 @@ export class ProjectComponent implements OnInit {
   actualAction: 'edit' | 'disable' | 'create'  | null = null;
   projectSelected: any = null;
 
-  constructor(private _commonService: CommonService) {}
+  constructor(private _commonService: CommonService, private _projectService: ProjectService, private _alertService: AlertService) {}
 
   ngOnInit(): void {
     this.projects = [
@@ -76,7 +78,24 @@ export class ProjectComponent implements OnInit {
   }
 
   onRegister(data: any) {
-    console.log(data);
+    this._projectService.createProject(data).subscribe({
+      next: (project) => {
+        this.projects.push(project);
+        this._alertService.success(
+          "Registro exitoso",
+          "Se registró el proyecto " + project.name + " exitosamente"
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          "Error al registrar",
+          err?.error?.message || "Ocurrió un error inesperado"
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      }
+    });
   }
 
   onEdit(userData: any) {

@@ -1,5 +1,6 @@
 package com.codenbugs.ms_project.controllers.project;
 
+import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
@@ -43,6 +44,12 @@ public class ProjectController {
     @GetMapping("/all")
     public ResponseEntity<List<ProjectResponseWithoutUser>> getAllProjects() {
         List<ProjectResponseWithoutUser> response = this.projectService.getAllProjects();
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/update/enable")
+    public ResponseEntity<ProjectResponseWithoutUser> updateEnableProject(@RequestBody ProjectEnabledRequest projectRequest) throws ProjectNotFound {
+        ProjectResponseWithoutUser response = this.projectService.updateEnabled(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

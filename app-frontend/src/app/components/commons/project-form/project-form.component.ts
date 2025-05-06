@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { Project } from '../project/project.component';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../../services/user/user.service';
 
 @Component({
   selector: 'app-project-form',
@@ -18,28 +19,30 @@ import { CommonModule } from '@angular/common';
 export class ProjectFormComponent implements OnInit {
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() project: Project | null = null;
-  users: any[] = [
-    {
-      id: 2,
-      name: 'user 1',
-    },
-    {
-      id: 3,
-      name: 'user 2',
-    },
-  ];
+  users: any[] = [];
 
   @Output() submitForm = new EventEmitter<Project>();
   @Output() cancel = new EventEmitter<void>();
 
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private _userService: UserService) {
     this.form = this.fb.group({
       name: ['', Validators.required],
       description: ['', Validators.required],
       fkUser: [null, Validators.required],
     });
+
+    this._userService.getUsersByRole(1).subscribe({
+      next: (value) => {
+        this.users = value
+        
+      }, 
+      error: (err) => {
+        console.log(err);
+        
+      },
+    })
   }
 
   ngOnInit() {

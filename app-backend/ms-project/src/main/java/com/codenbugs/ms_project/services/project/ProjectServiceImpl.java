@@ -1,6 +1,7 @@
 package com.codenbugs.ms_project.services.project;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
+import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
@@ -43,6 +44,7 @@ public class ProjectServiceImpl implements ProjectService {
         project.setName(request.name());
         project.setDescription(request.description());
         project.setFK_User(request.fkUser());
+        project.setIsEnabled(true);
 
         Project saved = this.projectRepository.save(project);
 
@@ -88,5 +90,20 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectResponseWithoutUser> getAllProjects() {
         return this.projectRepository.findAll().stream().map(ProjectResponseWithoutUser::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound {
+
+        Optional<Project> optionalProject = this.projectRepository.findById(request.id());
+        if (optionalProject.isEmpty()) {
+            throw new ProjectNotFound("El proyecto no existe");
+        }
+
+        Project project = optionalProject.get();
+        project.setIsEnabled(request.enabled());
+
+        Project updated = this.projectRepository.save(project);
+        return new ProjectResponseWithoutUser(updated);
     }
 }

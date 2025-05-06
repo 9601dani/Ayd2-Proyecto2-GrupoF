@@ -18,4 +18,5 @@ public interface UserService {
     List<ListUserResponse> findAll();
     UserAuthenticatedResponse authenticate(UserAuthRequest userAuthRequest) throws UserNotFoundException;
     void logout(Integer id) throws UserNotFoundException;
+    List<UserResponseWithName> getUsersByRole(Integer role);
 }

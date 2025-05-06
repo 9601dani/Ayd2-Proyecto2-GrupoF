@@ -35,7 +35,7 @@
         <div class="select is-fullwidth">
           <select formControlName="fkUser">
             <option [ngValue]="null" disabled>Seleccione un usuario</option>
-            <option *ngFor="let user of users" [ngValue]="user.id">{{ user.name }}</option>
+            <option *ngFor="let user of users" [ngValue]="user.id">{{ user.firstName + " " + user.lastName }}</option>
           </select>
         </div>
       </div>

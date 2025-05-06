@@ -28,4 +28,8 @@ export class UserService {
   logout(id: number): Observable<any> {
     return this.http.put(`${this.USER_API}/logout/${id}`, {})
   }
+
+  getUsersByRole(role: number): Observable<any>{
+    return this.http.get(`${this.USER_API}/role/${role}`)
+  }
 }
