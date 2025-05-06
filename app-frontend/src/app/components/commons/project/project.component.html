@@ -1,0 +1,83 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-2 has-text-weight-bold">Proyectos Activos</h1>
+        <div class="mb-4">
+          <button class="button is-primary" (click)="openModal('create')">
+            Crear nuevo proyecto
+          </button>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="columns is-multiline">
+        <div class="column is-one-quarter" *ngFor="let project of projects">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">{{ project.name }}</p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{ project.description }}
+              </div>
+            </div>
+            <footer class="card-footer">
+              <a
+                class="card-footer-item button is-link m-1"
+                (click)="openModal('edit', project)"
+                >Ver Proyecto</a
+              >
+              <a
+                class="card-footer-item button is-warning m-1"
+                (click)="openModal('disable', project)"
+                >Congelar</a
+              >
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>
+
+<app-modal>
+  <div modalTitle class="modal-card-title" *ngIf="actualAction === 'create'">
+    Crear Proyecto
+  </div>
+  <div modalContent *ngIf="actualAction === 'create'">
+    <app-project-form
+      [mode]="'create'"
+      (submitForm)="onRegister($event)"
+      (cancel)="closeModal()"
+    ></app-project-form>
+  </div>
+
+  <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">
+    Editar Proyecto
+  </div>
+  <div modalContent *ngIf="actualAction === 'edit'">
+    <app-project-form
+      [mode]="'edit'"
+      [project]="projectSelected"
+      (submitForm)="onEdit($event)"
+      (cancel)="closeModal()"
+    ></app-project-form>
+  </div>
+
+  <div modalTitle class="modal-card-title" *ngIf="actualAction === 'disable'">
+    Confirmar acción
+  </div>
+  <div modalContent *ngIf="actualAction === 'disable'">
+    <p>
+      ¿Deseas congelar el proyecto <strong>{{ projectSelected?.name }}</strong
+      >?
+    </p>
+  </div>
+  <div modalButtons *ngIf="actualAction === 'disable'">
+    <button class="button is-danger" (click)="deleteProject()">
+      Sí, congelar
+    </button>
+    <button class="button" (click)="closeModal()">Cancelar</button>
+  </div>
+</app-modal>
