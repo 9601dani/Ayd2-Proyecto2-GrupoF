@@ -82,5 +82,4 @@ export class TemplateComponent implements OnInit {
   openModal() {
     this._commonService.emitActiveModal(true);
   }
-
 }
