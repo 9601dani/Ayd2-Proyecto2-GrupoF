@@ -1,6 +1,7 @@
 package com.codenbugs.ms_project.services;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
+import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
@@ -43,6 +44,7 @@ public class ProjectServiceTest {
     private final Integer PROJECT_ID = 1;
     private final String PROJECT_NAME = "Project Name";
     private final String PROJECT_DESCRIPTION = "Project Description";
+    private final Boolean PROJECT_ENABLED = true;
     private final Integer USER_ID = 1;
     private final String USER_NAME = "User Name";
     private final Integer ROLE = 1;
@@ -66,6 +68,7 @@ public class ProjectServiceTest {
         project.setName(PROJECT_NAME);
         project.setDescription(PROJECT_DESCRIPTION);
         project.setFK_User(USER_ID);
+        project.setIsEnabled(PROJECT_ENABLED);
 
         userResponse = new UserResponse(USER_ID, USER_NAME, ROLE, PHOTO, SALARY_PER_HOUR);
 
@@ -164,6 +167,32 @@ public class ProjectServiceTest {
         List<ProjectResponseWithoutUser> expect = List.of(projectResponseWithoutUser);
         List<ProjectResponseWithoutUser> actual = this.projectService.getAllProjects();
         assertEquals(expect.get(0), actual.get(0));
+    }
+
+    @Test
+    public void updateEnabledSuccesfully() throws ProjectNotFound {
+
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
+
+        when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
+
+        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
+
+        ProjectResponseWithoutUser expect = new ProjectResponseWithoutUser(project);
+
+        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
+
+        assertEquals(expect, actual);
+
+    }
+
+    @Test
+    public void updateEnabledNotFound() throws ProjectNotFound {
+        
+        when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
+
+        assertThrows(ProjectNotFound.class, () -> projectService.getById(PROJECT_ID));
+
     }
 
 

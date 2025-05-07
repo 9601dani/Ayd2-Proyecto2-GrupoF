@@ -22,12 +22,12 @@
 
             <div class="card-content">
               <div
-                class="content is-size-6 has-text-grey-dark"
-                style="min-height: 60px"
+                class="content is-size-8 has-text-grey-dark"
+                style="min-height: 80px"
               >
                 {{
-                  project.description.length > 100
-                    ? (project.description | slice : 0 : 100) + "..."
+                  project.description.length > 125
+                    ? (project.description | slice : 0 : 125) + "..."
                     : project.description
                 }}
               </div>
@@ -35,7 +35,7 @@
 
             <footer
               class="card-footer is-justify-content-center is-align-items-center"
-              style="height: 80px"
+              style="height: 50px"
             >
               <button
                 class="button is-link m-1"
