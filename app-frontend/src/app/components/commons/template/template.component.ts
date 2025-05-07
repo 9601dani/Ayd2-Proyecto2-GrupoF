@@ -49,9 +49,6 @@ export class TemplateComponent implements OnInit {
     private _menuService: MenuService,
     private _commonService: CommonService,
     private _localStorageService: LocalStorageService,
-    private _userService: UserService,
-    private _alertService: AlertService,
-    private _router: Router
   ) {}
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -84,24 +81,5 @@ export class TemplateComponent implements OnInit {
 
   openModal() {
     this._commonService.emitActiveModal(true);
-  }
-
-  logout() {
-    const id = this._localStorageService.getItem(this._localStorageService.USER_ID) || 0;
-    this._userService.logout(id).subscribe({
-      next: (response: any) => {
-        this._localStorageService.logout();
-        this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this._router.navigateByUrl('/home');
-        });
-      },
-      error: err => {
-        console.log(err);
-      }
-    })
-  }
-
-  viewMyProfile(username:string){
-    this._router.navigateByUrl('/profile');
   }
 }
