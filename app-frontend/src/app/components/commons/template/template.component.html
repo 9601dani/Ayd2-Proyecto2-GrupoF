@@ -32,13 +32,13 @@
             <div class="navbar-item has-dropdown is-hoverable">
               <a class="navbar-link pt-2">
                 <figure class="image is-32x32 mr-2">
-                  <img class="is-rounded" [src]="photo | image" />
+                  <img class="is-rounded" [src]="photo | image" appNotProfile />
                 </figure>
                 <span>{{ this.username }}</span>
               </a>
 
               <div class="navbar-dropdown is-right">
-                <a class="navbar-item">
+                <a class="navbar-item" (click)="viewMyProfile(this.username)">
                   Mi Perfil
                 </a>
                 <a class="navbar-item" (click)="logout()">

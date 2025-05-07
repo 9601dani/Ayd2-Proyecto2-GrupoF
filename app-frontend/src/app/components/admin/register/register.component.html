@@ -70,8 +70,8 @@
       ></app-user-form>      
     </div>
 
-    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">Editar Usuario    </div>
-    <div modalContent *ngIf="actualAction === 'edit'">
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">Editar Usuario </div>
+    <div modalContent *ngIf="actualAction === 'edit' && userSelected">
         <app-user-form
         [mode]="'edit'"
         [user]="userSelected"
