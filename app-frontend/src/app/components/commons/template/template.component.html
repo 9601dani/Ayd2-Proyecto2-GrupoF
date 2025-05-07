@@ -3,7 +3,35 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>Menu</mat-toolbar>
+    <div class="navbar is-fullwidth is-light">
+      @if(!this.isLogged) {
+        <div class="navbar-item">
+          <div class="buttons">
+            <a class="button is-link" (click)="openModal()">
+              Iniciar Sesión
+            </a>
+          </div>
+        </div>
+      } @else {
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link pt-2">
+            <figure class="image is-32x32 mr-2">
+              <img class="is-rounded" [src]="photo | image" />
+            </figure>
+            <span>{{ this.username }}</span>
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item">
+              Mi Perfil
+            </a>
+            <a class="navbar-item" (click)="logout()">
+              Cerrar Sesión
+            </a>
+          </div>
+        </div>
+      }
+    </div>
     <mat-nav-list>
         <app-sidebar></app-sidebar>
     </mat-nav-list>
@@ -20,33 +48,7 @@
       </div>
         <div endItems class="navbar-end">
 
-          @if(!this.isLogged) {
-            <div class="navbar-item">
-              <div class="buttons">
-                <a class="button is-link" (click)="openModal()">
-                  Iniciar Sesión
-                </a>
-              </div>
-            </div>
-          } @else {
-            <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link pt-2">
-                <figure class="image is-32x32 mr-2">
-                  <img class="is-rounded" [src]="photo | image" />
-                </figure>
-                <span>{{ this.username }}</span>
-              </a>
 
-              <div class="navbar-dropdown is-right">
-                <a class="navbar-item">
-                  Mi Perfil
-                </a>
-                <a class="navbar-item" (click)="logout()">
-                  Cerrar Sesión
-                </a>
-              </div>
-            </div>
-          }
         </div>
     </app-toolbar>
     <ng-content select="[body]"></ng-content>
