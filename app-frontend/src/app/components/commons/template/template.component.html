@@ -13,22 +13,13 @@
           </div>
         </div>
       } @else {
-        <div class="navbar-item has-dropdown is-hoverable">
-          <a class="navbar-link pt-2">
+        <div class="navbar-item">
+          <a class="pt-2">
             <figure class="image is-32x32 mr-2">
               <img class="is-rounded" [src]="photo | image" />
             </figure>
-            <span>{{ this.username }}</span>
+            <span class="pr-4">{{ this.username }}</span>
           </a>
-
-          <div class="navbar-dropdown">
-            <a class="navbar-item">
-              Mi Perfil
-            </a>
-            <a class="navbar-item" (click)="logout()">
-              Cerrar Sesión
-            </a>
-          </div>
         </div>
       }
     </div>

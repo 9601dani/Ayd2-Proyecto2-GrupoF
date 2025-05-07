@@ -84,18 +84,5 @@ export class TemplateComponent implements OnInit {
     this._commonService.emitActiveModal(true);
   }
 
-  logout() {
-    const id = this._localStorageService.getItem(this._localStorageService.USER_ID) || 0;
-    this._userService.logout(id).subscribe({
-      next: (response: any) => {
-        this._localStorageService.logout();
-        this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-          this._router.navigateByUrl('/home');
-        });
-      },
-      error: err => {
-        console.log(err);
-      }
-    })
-  }
+
 }

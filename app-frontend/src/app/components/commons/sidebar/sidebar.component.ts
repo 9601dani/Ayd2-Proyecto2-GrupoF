@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CommonService } from '../../../services/commons/common.service';
 import { CompanyService } from '../../../services/commons/company.service';
 import { LocalStorageService } from '../../../services/commons/local-storage.service';
+import {UserService} from '../../../services/user/user.service';
 
 export interface Page {
   id: number;
@@ -38,16 +39,19 @@ interface ApiItem {
 export class SidebarComponent implements OnInit, OnDestroy {
   modules: Module[] = [];
   activePage: string = '';
+  isLogged: boolean = false;
   private subscription!: Subscription;
 
   constructor(
     private _commonService: CommonService,
     private _companyService: CompanyService,
     private _router: Router,
-    private _localStorageService: LocalStorageService
+    private _localStorageService: LocalStorageService,
+    private _userService: UserService
   ) {}
 
   ngOnInit() {
+    this.isLogged = (this._localStorageService.getItem(this._localStorageService.USER_ID) || 0) !== 0;
     this.getModules();
     this.subscribeToBehavior();
   }
@@ -110,5 +114,20 @@ export class SidebarComponent implements OnInit, OnDestroy {
     });
 
     return Array.from(moduleMap.values());
+  }
+
+  logout() {
+    const id = this._localStorageService.getItem(this._localStorageService.USER_ID) || 0;
+    this._userService.logout(id).subscribe({
+      next: (response: any) => {
+        this._localStorageService.logout();
+        this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+          this._router.navigateByUrl('/home');
+        });
+      },
+      error: err => {
+        console.log(err);
+      }
+    })
   }
 }
