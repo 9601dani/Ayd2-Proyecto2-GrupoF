@@ -3,6 +3,7 @@ package com.codenbugs.ms_user.controllers.user;
 import com.codenbugs.ms_user.dto.user.*;
 import com.codenbugs.ms_user.exceptions.user.UserException;
 import com.codenbugs.ms_user.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_user.exceptions.user.upload.NotCreatedException;
 import com.codenbugs.ms_user.services.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -81,5 +83,25 @@ public class UserController {
         List<UserResponseWithName> response = this.userService.getUsersByRole(role);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/byUsername/{username}")
+    public ResponseEntity<UserMyProfileResponse> findByUsername(@PathVariable String username) throws UserException {
+        UserMyProfileResponse user = this.userService.getUserByUsername(username);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/myProfile")
+    public ResponseEntity<UserMyProfileResponse> updateProfile(@RequestBody UserMyProfile user) throws UserException {
+        UserMyProfileResponse newUser = this.userService.updateMyProfile(user);
+        return ResponseEntity.ok(newUser);
+    }
+
+    @PutMapping("/update/photo_path/{id}")
+    public ResponseEntity<UserResponse> updatePhotoPath(@PathVariable Integer id, @RequestPart("file") MultipartFile file) throws UserNotFoundException, NotCreatedException {
+        UserResponse response = this.userService.updatePhotoPathUser(id, file);
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }

@@ -3,6 +3,7 @@ import { HomeComponent } from './components/commons/home/home.component';
 import { RegisterComponent } from './components/admin/register/register.component';
 import { ProjectComponent } from './components/commons/project/project.component';
 import { DisabledProjectComponent } from './components/commons/disabled-project/disabled-project.component';
+import { MyProfileComponent } from './components/commons/my-profile/my-profile.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,4 +12,5 @@ export const routes: Routes = [
     { path: 'users', component: RegisterComponent},
     { path: 'projects', component: ProjectComponent},
     { path: 'disabled-projects', component: DisabledProjectComponent},
+    { path: 'profile', component: MyProfileComponent}
 ];

@@ -9,6 +9,7 @@ import {MatProgressSpinner} from '@angular/material/progress-spinner';
 import {CommonService} from '../../../services/commons/common.service';
 import {LocalStorageService} from '../../../services/commons/local-storage.service';
 import {Router} from '@angular/router';
+import {NgClass} from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -17,7 +18,8 @@ import {Router} from '@angular/router';
     ModalComponent,
     ReactiveFormsModule,
     MatIcon,
-    MatProgressSpinner
+    MatProgressSpinner,
+    NgClass
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
@@ -87,6 +89,11 @@ export class LoginComponent implements OnInit {
     this._router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
       this._router.navigateByUrl(currentUrl);
     });
+  }
+
+  closeModal() {
+    this.loginForm.reset();
+    this._commonService.emitActiveModal(false);
   }
 
 }

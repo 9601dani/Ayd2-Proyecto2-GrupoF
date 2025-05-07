@@ -1,8 +1,10 @@
 package com.codenbugs.ms_user.services.user;
 
 import com.codenbugs.ms_user.builders.user.ConcreteUserBuilder;
+import com.codenbugs.ms_user.client.UploadRestClient;
 import com.codenbugs.ms_user.dto.user.*;
 import com.codenbugs.ms_user.exceptions.user.*;
+import com.codenbugs.ms_user.exceptions.user.upload.NotCreatedException;
 import com.codenbugs.ms_user.models.user.Role;
 import com.codenbugs.ms_user.dto.token.TokenResponse;
 import com.codenbugs.ms_user.dto.user.UserAuthRequest;
@@ -16,15 +18,22 @@ import com.codenbugs.ms_user.services.role.RoleService;
 import com.codenbugs.ms_user.services.token.TokenService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
+@Getter
+@Setter
 @Transactional(rollbackOn = UserException.class)
 public class UserServiceImpl implements UserService {
 
@@ -32,6 +41,8 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenService tokenService;
     private final RoleService roleService;
+
+    private final UploadRestClient uploadRestClient;
 
     @Override
     public UserResponse findById(Integer id) throws UserNotFoundException {
@@ -155,6 +166,75 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserMyProfileResponse getUserByUsername(String username) throws UserNotFoundException {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
+
+        if (optionalUser.isEmpty()) {
+            throw new UserNotFoundException("No se encontró el usuario");
+        }
+
+        User user = optionalUser.get();
+        User userToResponse = new ConcreteUserBuilder()
+                .withId(user.getId())
+                .withUsername(user.getUsername())
+                .withEmail(user.getEmail())
+                .withFirstName(user.getFirstName())
+                .withLastName(user.getLastName())
+                .withSalary(user.getSalaryPerHour())
+                .withRole(user.getRole())
+                .withPassword(user.getPassword())
+                .withCreatedAt(user.getCreatedAt())
+                .withPhoto(user.getPhoto())
+                .withIsEnabled(user.getIsEnabled())
+                .build();
+
+        Role role = findRoleOrThrow(user.getRole(), "El usuario no cuenta con un rol");
+        return new UserMyProfileResponse(userToResponse);
+    }
+
+    @Override
+    public UserMyProfileResponse updateMyProfile(UserMyProfile userMyProfile) throws UserNotFoundException {
+        User userToUpdate = userRepository.findByUsernameOrEmail(userMyProfile.username(), userMyProfile.username()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        updatePasswordIfNeeded(userToUpdate, userMyProfile.password());
+
+        User newUser = new ConcreteUserBuilder()
+                .withId(userToUpdate.getId())
+                .withUsername(userToUpdate.getUsername())
+                .withEmail(userMyProfile.email())
+                .withFirstName(userMyProfile.firstName())
+                .withLastName(userMyProfile.lastName())
+                .withSalary(userToUpdate.getSalaryPerHour())
+                .withRole(userToUpdate.getRole())
+                .withPassword(userToUpdate.getPassword())
+                .withCreatedAt(userToUpdate.getCreatedAt())
+                .withPhoto(userToUpdate.getPhoto())
+                .withIsEnabled(userToUpdate.getIsEnabled())
+                .build();
+
+        userRepository.save(newUser);
+
+        return new UserMyProfileResponse(newUser);
+    }
+
+    @Override
+    public UserResponse updatePhotoPathUser(Integer fkUser, MultipartFile file) throws UserNotFoundException, NotCreatedException {
+        User user = this.userRepository.findById(fkUser).orElseThrow(() -> new UserNotFoundException("User not found"));
+
+        if(user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+
+        Map<String,String> result = this.uploadRestClient.uploadImage(file);
+        String fileName = result.get("objectName");
+
+        HashMap<String, String> response = new HashMap<>();
+        user.setPhoto(fileName);
+        User userSaved = this.userRepository.save(user);
+
+        return new UserResponse(userSaved);
+    }
+
+    @Override
     public List<ListUserResponse> findAll() {
         return this.userRepository.findAll().stream()
                 .map(user -> {
@@ -180,4 +260,28 @@ public class UserServiceImpl implements UserService {
     public List<UserResponseWithName> getUsersByRole(Integer role) {
         return this.userRepository.findByRole(role).stream().map(UserResponseWithName::new).collect(Collectors.toList());
     }
+
+    private void updatePasswordIfNeeded(User userToUpdate, String incomingPassword) {
+        String currentPasswordHash = userToUpdate.getPassword();
+        if (isValidPassword(incomingPassword)) {
+            if (isPasswordChanged(incomingPassword, currentPasswordHash)) {
+                userToUpdate.setPassword(encodePassword(incomingPassword));
+            }
+        } else {
+            userToUpdate.setPassword(currentPasswordHash);
+        }
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && !password.isBlank();
+    }
+
+    private boolean isPasswordChanged(String rawPassword, String encodedPassword) {
+        return !passwordEncoder.matches(rawPassword, encodedPassword);
+    }
+
+    private String encodePassword(String rawPassword) {
+        return passwordEncoder.encode(rawPassword);
+    }
+
 }

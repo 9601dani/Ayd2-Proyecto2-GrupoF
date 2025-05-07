@@ -1,0 +1,139 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container is-fluid py-6">
+        <div class="columns is-multiline is-centered">
+          <div class="column is-12-touch is-4-desktop">
+            <div class="box has-text-centered">
+              <figure class="image is-128x128 is-inline-block">
+                <img
+                class="is-rounded"
+                [src]="previewImage || (user.photo | image)"
+                alt="Foto de perfil"
+                appNotProfile
+                />              
+              </figure>              
+              <div class="file is-small is-centered mt-4">
+                <label class="file-label">
+                  <input class="file-input" type="file" (change)="onImageSelected($event)" accept="image/*" />
+                  <span class="file-cta">
+                    <span class="file-label">Seleccionar foto</span>
+                  </span>
+                </label>
+              </div>
+              <button
+                class="button is-link is-small mt-3"
+                [disabled]="!selectedImage"
+                (click)="updatePhoto()"
+              >
+                Actualizar foto
+              </button>
+            </div>
+          </div>
+
+
+          <div class="column is-12-touch is-7-desktop">
+            <form #myForm="ngForm" (ngSubmit)="onUpdateUser(myForm)" #userForm="ngForm" class="box">
+              <div class="field">
+                <label class="label">Username</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    [(ngModel)]="user.username"
+                    name="username"
+                    required
+                    readonly
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Email</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="email"
+                    [(ngModel)]="user.email"
+                    name="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Nombre</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    [(ngModel)]="user.firstName"
+                    name="firstName"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Apellido</label>
+                <div class="control">
+                  <input
+                    class="input"
+                    type="text"
+                    [(ngModel)]="user.lastName"
+                    name="lastName"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="field">
+                <label class="label">Contraseña</label>
+                <div class="control is-expanded has-icons-right" style="position: relative;">
+                  <input
+                    class="input"
+                    [type]="showPassword ? 'text' : 'password'"
+                    [(ngModel)]="password"
+                    name="password"
+                  />
+                  <button
+                    mat-icon-button
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                    style="
+                      position: absolute;
+                      top: 50%;
+                      right: 0.75rem;
+                      transform: translateY(-50%);
+                      background: transparent;
+                      border: none;
+                      padding: 0;
+                      margin: 0;
+                    "
+                    aria-label="Mostrar u ocultar contraseña"
+                  >
+                    <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                  </button>
+                </div>
+              </div>
+                         
+              
+
+              <div class="field mt-5">
+                <div class="control">
+                  <button
+                    class="button is-success"
+                    type="submit"
+                    [disabled]="userForm.invalid"
+                  >
+                    Actualizar información
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

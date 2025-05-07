@@ -1,33 +1,59 @@
 <app-modal>
   <p modalTitle class="modal-card-title">Inicio de Sesión</p>
+  <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
   <div modalContent>
     @if(isLoading) {
       <div class="custom-spinner">
         <mat-spinner></mat-spinner>
       </div>
-    }
-    <form [formGroup]="loginForm">
-      <div class="field">
-        <label class="label">Nombre de usuario o Correo</label>
-        <div class="control">
-          <input formControlName="usernameOrEmail" type="text" class="input" placeholder="Ingrese su nombre de usuario o correo">
+    } @else {
+      <form [formGroup]="loginForm">
+        <div class="field">
+          <label class="label">Nombre de usuario o Correo</label>
+          <div class="control">
+            <input
+              formControlName="usernameOrEmail"
+              type="text"
+              class="input"
+              [ngClass]="{ 'is-danger': this.loginForm.get('usernameOrEmail')?.hasError('required') && this.loginForm.get('usernameOrEmail')?.touched }"
+              placeholder="Ingrese su nombre de usuario o correo"
+            />
+          </div>
+          @if(this.loginForm.get('usernameOrEmail')?.hasError('required') && this.loginForm.get('usernameOrEmail')?.touched) {
+            <p class="help is-danger">Este campo es obligatorio.</p>
+          }
         </div>
-      </div>
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control">
+            <div class="field has-addons">
+              <p class="control is-expanded">
+                <input
+                  formControlName="password"
+                  [type]="visibility ? 'text' : 'password'"
+                  class="input"
+                  [ngClass]="{ 'is-danger': loginForm.get('password')?.hasError('required') && loginForm.get('password')?.touched }"
+                  placeholder="Ingrese su contraseña"
+                />
+              </p>
+              <p class="control">
+                <button type="button" class="button is-primary" (click)="visibility = !visibility">
+                  <mat-icon [fontIcon]="visibility ? 'visibility' : 'visibility_off'"></mat-icon>
+                </button>
+              </p>
+            </div>
+          </div>
+          @if(this.loginForm.get('password')?.hasError('required') && this.loginForm.get('password')?.touched) {
+            <p class="help is-danger">Este campo es obligatorio.</p>
+          }
+        </div>
 
-      <div class="field has-addons">
-        <div class="control is-expanded">
-          <input formControlName="password" [type]="visibility ? 'text' : 'password'" class="input" placeholder="Ingrese su contraseña">
-        </div>
-        <div class="control">
-          <button type="button" class="button is-primary" (click)="visibility = !visibility">
-            <mat-icon [fontIcon]="visibility ? 'visibility' : 'visibility_off'"></mat-icon>
-          </button>
-        </div>
-      </div>
-    </form>
+      </form>
+
+    }
   </div>
   <div modalButtons>
     <button type="submit" class="button is-success" [disabled]="this.loginForm.invalid" (click)="authenticate()">Iniciar Sesión</button>
-    <button type="button" class="button ml-2">Cancelar</button>
+    <button type="button" class="button ml-2" (click)="closeModal()">Cancelar</button>
   </div>
 </app-modal>
