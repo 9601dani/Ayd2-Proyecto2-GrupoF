@@ -3,7 +3,7 @@
   <div class="modal-card">
     <header class="modal-card-head is-family-primary">
       <ng-content select="[modalTitle]"></ng-content>
-      <button class="delete" aria-label="close" (click)="closeModal()"></button>
+      <ng-content select="[modalCloseButton]"></ng-content>
     </header>
     <section class="modal-card-body">
       <ng-content select="[modalContent]"></ng-content>
