@@ -10,6 +10,7 @@ export class UserService {
 
   readonly USER_API = `${environment.API_URL}/v1/users`;
   readonly TOKEN_API = `${environment.API_URL}/v1/tokens`;
+  readonly ROLE_API = `${environment.API_URL}/v1/roles`;
 
   constructor(private http: HttpClient) { }
 
@@ -27,5 +28,42 @@ export class UserService {
 
   logout(id: number): Observable<any> {
     return this.http.put(`${this.USER_API}/logout/${id}`, {})
+  }
+
+  registerUser(user:any): Observable<any>{
+    return this.http.post(`${this.USER_API}/register`, user)
+  }
+
+  updateUser(user:any): Observable<any>{
+    return this.http.put(`${this.USER_API}/update`, user)
+  }
+
+  disabledUser(username: string): Observable<any> {
+    return this.http.delete(`${this.USER_API}/delete/${username}`);
+  }
+
+  enableUser(user: any): Observable<any> {
+    return this.http.put(`${this.USER_API}/enable`,user);
+  }
+  
+
+  getAllUsers(): Observable<any>{
+    return this.http.get(`${this.USER_API}/all`)
+  }
+
+  getAllRoles(): Observable<any>{
+    return this.http.get(`${this.ROLE_API}/all`)
+  }
+
+  getByUsername(username: string): Observable<any> {
+    return this.http.get(`${this.USER_API}/byUsername/${username}`)
+  }
+
+  updatePhotoPath(formData: FormData, id: number): Observable<any> {
+    return this.http.put<any>(`${this.USER_API}/update/photo_path/${id}`, formData);
+  }
+
+  updateUserMyProfile(userData: any): Observable<any> {
+    return this.http.put(`${this.USER_API}/myProfile`, userData);
   }
 }

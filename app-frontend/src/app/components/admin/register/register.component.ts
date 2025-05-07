@@ -4,9 +4,9 @@ import { TemplateComponent } from '../../commons/template/template.component';
 import { ModalComponent } from '../../commons/modal/modal.component';
 import { CommonService } from '../../../services/commons/common.service';
 import { UserFormComponent } from '../user-form/user-form.component';
-import { UserService } from '../../../services/user.service';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../services/commons/alert.service';
+import { UserService } from '../../../services/user/user.service';
 
 interface User {
   id: number;
