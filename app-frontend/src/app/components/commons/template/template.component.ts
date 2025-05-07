@@ -94,7 +94,7 @@ export class TemplateComponent implements OnInit {
         });
       },
       error: err => {
-        this._alertService.error("Error!", "Error al cerrar la sesión");
+        console.log(err);
       }
     })
   }

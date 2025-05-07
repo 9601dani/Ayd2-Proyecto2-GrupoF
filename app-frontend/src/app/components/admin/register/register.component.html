@@ -47,27 +47,28 @@
                     >
                       {{ user.isEnabled ? 'Desactivar' : 'Activar' }}
                     </button>
-                    
+
                     </div>
                   </td>
                 </tr>
               </tbody>
             </table>
           </div>
-          
+
       </section>
     </div>
   </app-template>
 
   <app-modal>
     <div modalTitle class="modal-card-title" *ngIf="actualAction === 'register'"> Registro De Usuario</div>
+    <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
     <div modalContent *ngIf="actualAction === 'register'">
         <app-user-form
         [mode]="'register'"
         [roles]="roles"
         (submitForm)="onRegister($event)"
         (cancel)="closeModal()"
-      ></app-user-form>      
+      ></app-user-form>
     </div>
 
     <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">Editar Usuario    </div>
@@ -80,8 +81,8 @@
         (cancel)="closeModal()"
         ></app-user-form>
     </div>
-  
-  
+
+
     <div modalTitle class="modal-card-title" *ngIf="actualAction === 'delete'">Confirmar eliminación</div>
     <div modalContent *ngIf="actualAction === 'delete'">
       <p>¿Deseas eliminar a <strong>{{ userSelected?.firstName }}</strong>?</p>
@@ -98,6 +99,5 @@
     <div modalButtons *ngIf="actualAction === 'enable'">
       <button class="button is-success" (click)="enableUser()">Sí, activar</button>
       <button class="button" (click)="closeModal()">Cancelar</button>
-    </div>   
+    </div>
   </app-modal>
-  
