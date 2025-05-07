@@ -17,6 +17,7 @@ import {ImagePipe} from '../../../pipes/image.pipe';
 import {UserService} from '../../../services/user/user.service';
 import {AlertService} from '../../../services/commons/alert.service';
 import {Router} from '@angular/router';
+import { NotProfileDirective } from '../../../directives/not-profile.directive';
 
 @Component({
   selector: 'app-template',
@@ -33,6 +34,7 @@ import {Router} from '@angular/router';
     ToolbarComponent,
     SidebarComponent,
     ImagePipe,
+    NotProfileDirective
   ]
 })
 export class TemplateComponent implements OnInit {
@@ -47,9 +49,6 @@ export class TemplateComponent implements OnInit {
     private _menuService: MenuService,
     private _commonService: CommonService,
     private _localStorageService: LocalStorageService,
-    private _userService: UserService,
-    private _alertService: AlertService,
-    private _router: Router
   ) {}
 
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
@@ -83,6 +82,5 @@ export class TemplateComponent implements OnInit {
   openModal() {
     this._commonService.emitActiveModal(true);
   }
-
 
 }

@@ -16,7 +16,7 @@
         <div class="navbar-item">
           <a class="pt-2">
             <figure class="image is-32x32 mr-2">
-              <img class="is-rounded" [src]="photo | image" />
+              <img class="is-rounded" [src]="photo | image" appNotProfile />
             </figure>
             <span class="pr-4">{{ this.username }}</span>
           </a>
@@ -38,7 +38,6 @@
           </div>
       </div>
         <div endItems class="navbar-end">
-
 
         </div>
     </app-toolbar>

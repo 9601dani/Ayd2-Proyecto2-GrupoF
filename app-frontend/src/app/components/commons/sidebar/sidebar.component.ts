@@ -65,9 +65,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
+    this.subscription?.unsubscribe();
   }
 
   getModules() {
@@ -129,5 +127,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
         console.log(err);
       }
     })
+  }
+
+  viewMyProfile(){
+    this._router.navigateByUrl('/profile');
   }
 }
