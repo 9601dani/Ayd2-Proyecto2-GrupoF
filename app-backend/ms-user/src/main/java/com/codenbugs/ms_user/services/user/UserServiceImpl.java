@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -254,9 +255,14 @@ public class UserServiceImpl implements UserService {
             throw new UserNotFoundException(errorMessage);
         }
     }
+
+    @Override
+    public List<UserResponseWithName> getUsersByRole(Integer role) {
+        return this.userRepository.findByRole(role).stream().map(UserResponseWithName::new).collect(Collectors.toList());
+    }
+
     private void updatePasswordIfNeeded(User userToUpdate, String incomingPassword) {
         String currentPasswordHash = userToUpdate.getPassword();
-
         if (isValidPassword(incomingPassword)) {
             if (isPasswordChanged(incomingPassword, currentPasswordHash)) {
                 userToUpdate.setPassword(encodePassword(incomingPassword));

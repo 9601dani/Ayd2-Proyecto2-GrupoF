@@ -1,0 +1,59 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="field">
+      <label class="label">Nombre del Proyecto</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          formControlName="name"
+          placeholder="Nombre del proyecto"
+        />
+      </div>
+      <p class="help is-danger" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        El nombre es obligatorio.
+      </p>
+    </div>
+  
+    <div class="field">
+      <label class="label">Descripción</label>
+      <div class="control">
+        <textarea
+          class="textarea"
+          formControlName="description"
+          placeholder="Describe el proyecto..."
+        ></textarea>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">
+        La descripción es obligatoria.
+      </p>
+    </div>
+  
+    <div class="field">
+      <label class="label">Administrador a Cargo</label>
+      <div class="control">
+        <div class="select is-fullwidth">
+          <select formControlName="fkUser">
+            <option [ngValue]="null" disabled>Seleccione un usuario</option>
+            <option *ngFor="let user of users" [ngValue]="user.id">{{ user.firstName + " " + user.lastName }}</option>
+          </select>
+        </div>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('fkUser')?.touched && form.get('fkUser')?.invalid">
+        Seleccione un usuario válido.
+      </p>
+    </div>
+  
+    <div class="field is-grouped is-justify-content-end mt-4">
+      <div class="control">
+        <button class="button is-success" type="submit" [disabled]="form.invalid">
+          {{ mode === 'create' ? 'Crear Proyecto' : 'Actualizar Proyecto' }}
+        </button>
+      </div>
+      <div class="control">
+        <button class="button is-light" type="button" (click)="cancel.emit()">Cancelar</button>
+      </div>
+    </div>
+  
+  </form>
+  

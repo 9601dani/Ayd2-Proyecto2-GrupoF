@@ -7,6 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
+    "e2e": "npx cypress open",
     "serve:ssr:app-frontend": "node dist/app-frontend/server/server.mjs"
   },
   "private": true,
@@ -24,6 +25,7 @@
     "@angular/router": "^18.2.0",
     "@angular/ssr": "^18.2.19",
     "bulma": "^0.9.4",
+    "cypress": "^14.3.3",
     "express": "^4.18.2",
     "ngx-cookie-service": "^18.0.0",
     "rxjs": "~7.8.0",
