@@ -26,4 +26,8 @@ export class ProjectService {
   updateIsEnable(body: any): Observable<any> {
     return this.http.put(`${this.PROJECT_API}/update/enable`, body);
   }
+
+  getProjectById(id: number): Observable<any> {
+    return this.http.get(`${this.PROJECT_API}/${id}`);
+  }
 }

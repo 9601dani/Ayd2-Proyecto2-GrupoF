@@ -26,8 +26,8 @@
                 style="min-height: 80px"
               >
                 {{
-                  project.description.length > 125
-                    ? (project.description | slice : 0 : 125) + "..."
+                  project.description.length > 100
+                    ? (project.description | slice : 0 : 100) + "..."
                     : project.description
                 }}
               </div>
@@ -48,6 +48,50 @@
                 (click)="openModal('disable', project)"
               >
                 Congelar
+              </button>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-2 has-text-weight-bold">Mis proyectos</h1>
+      </div>
+    </section>
+    <section class="section">
+      <div class="columns is-multiline">
+        <div class="column is-one-quarter" *ngFor="let project of myProjects">
+          <div class="card has-text-centered" style="height: 100%">
+            <header class="card-header">
+              <p class="card-header-title is-size-5 has-text-weight-bold">
+                {{ project.name }}
+              </p>
+            </header>
+
+            <div class="card-content">
+              <div
+                class="content is-size-8 has-text-grey-dark"
+                style="min-height: 80px"
+              >
+                {{
+                  project.description.length > 100
+                    ? (project.description | slice : 0 : 100) + "..."
+                    : project.description
+                }}
+              </div>
+            </div>
+
+            <footer
+              class="card-footer is-justify-content-center is-align-items-center"
+              style="height: 50px"
+            >
+              <button
+                class="button is-success m-1"
+                (click)="showProject(project)"
+              >
+                Administrar Proyecto
               </button>
             </footer>
           </div>
