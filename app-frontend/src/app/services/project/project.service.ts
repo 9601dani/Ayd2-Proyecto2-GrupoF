@@ -26,4 +26,26 @@ export class ProjectService {
   updateIsEnable(body: any): Observable<any> {
     return this.http.put(`${this.PROJECT_API}/update/enable`, body);
   }
+
+  /* ------------------------ TYPE CASES ----------------------- */
+
+  getAllPhases() : Observable<any> {
+    return this.http.get<any[]>('/api/case-phases');
+  }
+  
+  getAllCaseTypes() : Observable<any> {
+    return this.http.get<any[]>('/api/case-types');
+  }
+  
+  registerPhase(data: any) : Observable<any> {
+    return this.http.post('/api/case-phases', data);
+  }
+  
+  updatePhase(data: any) : Observable<any> {
+    return this.http.put(`/api/case-phases/${data.id}`, data);
+  }
+  
+  deletePhase(id: number): Observable<any> {
+    return this.http.delete(`/api/case-phases/${id}`);
+  }
 }

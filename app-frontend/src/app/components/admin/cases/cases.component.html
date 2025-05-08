@@ -1,0 +1,88 @@
+<app-template>
+    <div body class="body">
+      <section class="section">
+        <div class="container">
+          <h1 class="title is-2 has-text-weight-bold">Tipos de Caso</h1>
+        </div>        
+      </section>
+  
+      <section class="section">
+        <div class="table-container">
+          <table class="table is-striped is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let type of caseTypes">
+                    <td>{{ type.id }}</td>
+                    <td>{{ type.name }}</td>
+                    <td>{{ type.description }}</td>
+                    <td class="buttons are-small">
+                      <button class="button is-info" (click)="openModal('view', type)">Ver fases</button>
+                      <button class="button is-primary" (click)="openModal('register', type)">Registrar fases</button>
+                      <button class="button is-warning" (click)="openModal('edit', type)">Editar fases</button>
+                    </td>
+                  </tr>                  
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </app-template>
+  
+  <!-- MODAL -->
+  <app-modal>
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'view'">Fases de: {{ selectedType?.name }}</div>
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'register'">Registrar fases para: {{ selectedType?.name }}</div>
+    <div modalTitle class="modal-card-title" *ngIf="actualAction === 'edit'">Editar fases de: {{ selectedType?.name }}</div>
+  
+    <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
+  
+    <!-- Ver -->
+    <div modalContent *ngIf="actualAction === 'view'">
+        <table class="table is-striped is-fullwidth is-hoverable">
+          <thead>
+            <tr>
+              <th>Orden</th>
+              <th>Nombre</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let phase of filteredPhases; let i = index">
+              <td>{{ i + 1 }}</td>
+              <td>{{ phase.name }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>      
+  
+    <!-- Registrar -->
+    <div modalContent *ngIf="actualAction === 'register'">
+      <app-case-phase-form
+        [caseTypes]="caseTypes"
+        [preSelectedType]="selectedType?.id ?? null"
+        (submitForm)="onRegisterPhases($event)"
+        (cancel)="closeModal()"
+      ></app-case-phase-form>
+    </div>
+  
+    <!-- Editar -->
+    <div modalContent *ngIf="actualAction === 'edit'">
+      <app-case-phase-form
+        [caseTypes]="caseTypes"
+        [phases]="filteredPhases"
+        [preSelectedType]="selectedType?.id ?? null"
+        [mode]="'edit'"
+        (submitForm)="onEditPhases($event)"
+        (cancel)="closeModal()"
+      ></app-case-phase-form>
+    </div>
+  </app-modal>
+  
+  
+  
