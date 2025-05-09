@@ -1,0 +1,97 @@
+<app-template>
+    <div body class="body">
+      <section class="section">
+        <div class="container">
+          <h1 class="title is-2 has-text-weight-bold">Listado de Tipos de Casos</h1>
+  
+          <div class="mb-4">
+            <button class="button is-primary" (click)="openModal('create')">
+              Registrar nuevo tipo de caso
+            </button>
+          </div>
+  
+          <div class="table-container">
+            <table class="table is-striped is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Nombre</th>
+                  <th>Descripción</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let caseType of caseTypes">
+                  <td>{{ caseType.name }}</td>
+                  <td>{{ caseType.description }}</td>
+                  <td>
+                    <div class="buttons are-small">
+                      <button class="button is-info" (click)="openModal('edit', caseType)">Editar</button>
+                      <button class="button is-warning" (click)="openModal('phases', caseType)">
+                        Ver Fases
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </app-template>
+  
+  <app-modal *ngIf="action === 'create' || action === 'edit'">
+    <div modalTitle class="modal-card-title">
+      {{ action === 'create' ? 'Registrar Tipo de Caso' : 'Editar Tipo de Caso' }}
+    </div>
+  
+    <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
+  
+    <div modalContent>
+      <app-case-type-form
+        [mode]="action"
+        [caseType]="selectedCaseType || undefined"
+        (submitForm)="onFormSubmit($event)"
+        (cancel)="closeModal()"
+      ></app-case-type-form>
+    </div>
+  </app-modal>
+  
+<app-modal *ngIf="action === 'phases' && selectedCaseType">
+    <div modalTitle class="modal-card-title">
+      Fases del tipo de caso: <strong>{{ selectedCaseType.name }}</strong>
+    </div>
+  
+    <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
+  
+    <div modalContent>
+        <div *ngIf="selectedCaseType?.phases?.length; else noFases">
+          <div class="table-container">
+            <table class="table is-fullwidth is-bordered is-striped">
+              <thead>
+                <tr>
+                  <th>Orden</th>
+                  <th>Nombre de la Fase</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let phase of selectedCaseType.phases; let i = index">
+                  <td>{{ i + 1 }}</td>
+                  <td>{{ phase.name }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      
+        <ng-template #noFases>
+          <p class="has-text-grey">Este tipo de caso no tiene fases registradas.</p>
+        </ng-template>
+      </div>      
+  
+    <div modalButtons>
+      <button class="button is-link" (click)="closeModal()">Cerrar</button>
+    </div>
+  </app-modal>
+  
+  

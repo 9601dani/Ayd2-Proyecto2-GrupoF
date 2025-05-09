@@ -4,7 +4,7 @@ import { RegisterComponent } from './components/admin/register/register.componen
 import { ProjectComponent } from './components/commons/project/project.component';
 import { DisabledProjectComponent } from './components/commons/disabled-project/disabled-project.component';
 import { MyProfileComponent } from './components/commons/my-profile/my-profile.component';
-import { CasesComponent } from './components/admin/cases/cases.component';
+import { CaseTypeComponent } from './components/admin/case-type/case-type.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -14,5 +14,5 @@ export const routes: Routes = [
     { path: 'projects', component: ProjectComponent},
     { path: 'disabled-projects', component: DisabledProjectComponent},
     { path: 'profile', component: MyProfileComponent},
-    { path: 'cases-creation', component: CasesComponent}
+    { path: 'cases-creation', component: CaseTypeComponent}
 ];
