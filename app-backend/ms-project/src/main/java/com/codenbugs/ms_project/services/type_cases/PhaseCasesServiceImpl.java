@@ -36,5 +36,10 @@ public class PhaseCasesServiceImpl implements PhaseCasesService {
         return phaseCasesRepository.save(newCase);
     }
 
+    @Override
+    public void deleteAllByFKCaseType(Integer caseId) {
+        this.phaseCasesRepository.deleteByFkCaseType(caseId);
+    }
+
 
 }

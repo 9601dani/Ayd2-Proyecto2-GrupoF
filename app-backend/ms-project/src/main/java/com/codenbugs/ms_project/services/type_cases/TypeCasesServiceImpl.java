@@ -4,6 +4,7 @@ import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
 import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
+import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCasesException;
 import com.codenbugs.ms_project.model.cases.PhasesCase;
 import com.codenbugs.ms_project.model.cases.TypesCase;
@@ -94,5 +95,39 @@ public class TypeCasesServiceImpl implements TypeCasesService {
         Collections.reverse(savedPhases);
 
         return new TypeCasesResponse(newTypeCase, savedPhases);
+    }
+
+    @Override
+    public TypeCasesResponse update(Integer id, TypeCasesRequest typeCasesRequest) throws TypeCasesException {
+        TypesCase existingTypeCase = this.typeCasesRepository.findById(id).
+                orElseThrow(()-> new TypeCaseNotFoundException("El Tipo de Caso con id : "+id+ " No existe "));
+
+        TypesCase byName = this.typeCasesRepository.findByName(typeCasesRequest.name());
+        if (byName != null && !byName.getId().equals(id)) {
+            throw new NameTypeCaseAlreadyExist("Ya existe un Tipo de Caso con el nombre '" + typeCasesRequest.name() + "'");
+        }
+
+        existingTypeCase.setName(typeCasesRequest.name());
+        existingTypeCase.setDescription(typeCasesRequest.description());
+
+        this.typeCasesRepository.save(existingTypeCase);
+
+        this.phaseCasesService.deleteAllByFKCaseType(existingTypeCase.getId());
+
+        List<PhasesCase> savedPhases = new ArrayList<>();
+        Integer nextPhaseId = null;
+
+        List<PhasesCaseRequest> reversedPhases = new ArrayList<>(typeCasesRequest.phases());
+        Collections.reverse(reversedPhases);
+
+        for (PhasesCaseRequest phaseReq : reversedPhases) {
+            PhasesCase saved = this.phaseCasesService.save(phaseReq, id, nextPhaseId);
+            savedPhases.add(saved);
+            nextPhaseId = saved.getId();
+        }
+        Collections.reverse(savedPhases);
+
+        return new TypeCasesResponse(existingTypeCase, savedPhases);
+
     }
 }
