@@ -76,7 +76,7 @@ export class RegisterComponent {
           );
         },
         error: (err) => {
-          this._alertService.error("Error al actualizar", err.message || "Ocurrió un error");
+          this._alertService.error("Error al actualizar", err.error.message || "Ocurrió un error");
         },
         complete: () => {
           this.closeModal();
@@ -120,7 +120,7 @@ export class RegisterComponent {
         );
       },
       error: (err) => {
-        this._alertService.error("Error al actualizar", err.message || "Ocurrió un error");
+        this._alertService.error("Error al actualizar", err.error.message || "Ocurrió un error");
       },
       complete: () => {
         this.closeModal();
@@ -143,7 +143,7 @@ export class RegisterComponent {
           this.closeModal();
         },
         error: (err) => {
-          this._alertService.error("Error al activar", err.message || "Ocurrió un error");
+          this._alertService.error("Error al activar", err.error.message || "Ocurrió un error");
         }
       });
     }

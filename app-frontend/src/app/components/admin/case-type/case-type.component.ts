@@ -32,35 +32,14 @@ export class CaseTypeComponent {
   }
 
   loadCaseTypes() {
-/*     this._caseTypeService.getAllCaseTypesWithPhases().subscribe({
+    this._caseTypeService.getAllCaseTypesWithPhases().subscribe({
       next: (data) => {
         this.caseTypes = data;
       },
       error: (err) => {
-        this._alertService.error('Error al cargar tipos de caso', err.message || 'Error inesperado');
+        this._alertService.error('Error al cargar tipos de caso', err.error.message || 'Error inesperado');
       }
-    }); */
-    this.caseTypes = [
-      {
-        id: 1,
-        name: 'Investigación',
-        description: 'Casos relacionados con investigaciones internas',
-        phases: [
-          { id: 1, name: 'Inicio', FK_Case_Type: 1 },
-          { id: 2, name: 'Análisis', FK_Case_Type: 1, next_phase: 3 },
-          { id: 3, name: 'Informe', FK_Case_Type: 1 }
-        ]
-      },
-      {
-        id: 2,
-        name: 'Auditoría',
-        description: 'Casos de auditoría financiera',
-        phases: [
-          { id: 4, name: 'Planificación', FK_Case_Type: 2 },
-          { id: 5, name: 'Ejecución', FK_Case_Type: 2 }
-        ]
-      }
-    ];
+    });
   }
 
   openModal(action: 'create' | 'edit' | 'phases', caseType?: CaseType) {
@@ -90,7 +69,7 @@ export class CaseTypeComponent {
         this.closeModal();
       },
       error: (err) => {
-        this._alertService.error('Error', err.message || 'Ocurrió un error inesperado');
+        this._alertService.error('Error', err.error.message || 'Ocurrió un error inesperado');
       }
     });
   }

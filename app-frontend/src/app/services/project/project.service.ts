@@ -9,6 +9,7 @@ import { CaseType } from '../../models/CasePhase.model';
 })
 export class ProjectService {
   readonly PROJECT_API = `${environment.API_URL}/v1/projects`;
+  readonly TYPE_CASE_API = `${environment.API_URL}/v1/type_cases`;
 
   constructor(private http: HttpClient) {}
 
@@ -30,15 +31,15 @@ export class ProjectService {
 
   /* ------------------------ TYPE CASES ----------------------- */
   getAllCaseTypesWithPhases(): Observable<CaseType[]> {
-    return this.http.get<CaseType[]>(`${this.PROJECT_API}/case-types?include=phases`);
+    return this.http.get<CaseType[]>(`${this.TYPE_CASE_API}`);
   }
   
   createCaseType(data: CaseType): Observable<CaseType> {
-    return this.http.post<CaseType>(`${this.PROJECT_API}/case-types`, data);
+    return this.http.post<CaseType>(`${this.TYPE_CASE_API}`, data);
   }
   
   updateCaseType(data: CaseType): Observable<CaseType> {
-    return this.http.put<CaseType>(`${this.PROJECT_API}/case-types/${data.id}`, data);
+    return this.http.put<CaseType>(`${this.TYPE_CASE_API}${data.id}`, data);
   }
   
 }
