@@ -24,15 +24,15 @@
 
       <section class="section">
         <div class="columns is-multiline">
-          <div class="column is-one-quarter" *ngFor="let case of cases">
-            <div class="card has-text-centered" style="height: 100%">
+          <div class="column is-full-mobile is-half-tablet is-one-third-desktop" *ngFor="let case of cases">
+            <div class="card has-text-centered is-flex is-flex-direction-column" style="height: 100%;">
               <header class="card-header">
                 <p class="card-header-title is-size-5 has-text-weight-bold">
                   {{ case.name }}
                 </p>
               </header>
 
-              <div class="card-content">
+              <div class="card-content is-flex-grow-1">
                 <div
                   class="content is-size-8 has-text-grey-dark"
                   style="min-height: 80px"

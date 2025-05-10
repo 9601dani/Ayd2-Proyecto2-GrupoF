@@ -12,15 +12,18 @@
     </section>
     <section class="section">
       <div class="columns is-multiline">
-        <div class="column is-one-quarter" *ngFor="let project of projects">
-          <div class="card has-text-centered" style="height: 100%">
+        <div
+          class="column is-full-mobile is-half-tablet is-one-third-desktop"
+          *ngFor="let project of projects"
+        >
+          <div class="card has-text-centered is-flex is-flex-direction-column" style="height: 100%;">
             <header class="card-header">
               <p class="card-header-title is-size-5 has-text-weight-bold">
                 {{ project.name }}
               </p>
             </header>
 
-            <div class="card-content">
+            <div class="card-content is-flex-grow-1">
               <div
                 class="content is-size-8 has-text-grey-dark"
                 style="min-height: 80px"
@@ -34,21 +37,20 @@
             </div>
 
             <footer
-              class="card-footer is-justify-content-center is-align-items-center"
-              style="height: 50px"
+              class="card-footer is-flex is-flex-direction-column-mobile is-align-items-stretch"
             >
-              <button
-                class="button is-link m-1"
+              <a
+                class="card-footer-item has-background-link has-text-white"
                 (click)="openModal('edit', project)"
               >
                 Ver Proyecto
-              </button>
-              <button
-                class="button is-warning m-1"
+              </a>
+              <a
+                class="card-footer-item has-background-warning has-text-black"
                 (click)="openModal('disable', project)"
               >
                 Congelar
-              </button>
+              </a>
             </footer>
           </div>
         </div>
@@ -62,15 +64,18 @@
     </section>
     <section class="section">
       <div class="columns is-multiline">
-        <div class="column is-one-quarter" *ngFor="let project of myProjects">
-          <div class="card has-text-centered" style="height: 100%">
+        <div
+          class="column is-full-mobile is-half-tablet is-one-third-desktop"
+          *ngFor="let project of myProjects"
+        >
+          <div class="card has-text-centered is-flex is-flex-direction-column" style="height: 100%;">
             <header class="card-header">
               <p class="card-header-title is-size-5 has-text-weight-bold">
                 {{ project.name }}
               </p>
             </header>
 
-            <div class="card-content">
+            <div class="card-content is-flex-grow-1">
               <div
                 class="content is-size-8 has-text-grey-dark"
                 style="min-height: 80px"
@@ -87,12 +92,9 @@
               class="card-footer is-justify-content-center is-align-items-center"
               style="height: 50px"
             >
-              <button
-                class="button is-success m-1"
-                (click)="showProject(project)"
-              >
+              <a class="card-footer-item has-background-success has-text-white" (click)="showProject(project)">
                 Administrar Proyecto
-              </button>
+              </a>
             </footer>
           </div>
         </div>
