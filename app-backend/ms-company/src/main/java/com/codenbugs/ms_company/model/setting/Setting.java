@@ -28,6 +28,9 @@ public class Setting {
     @Column(name = "is_enabled")
     private Boolean isEnabled = true;
 
+    @Column(name = "label_value")
+    private String labelValue;
+
     @Column(name = "FK_Setting_Type")
     private Integer fkSettingType;
 
