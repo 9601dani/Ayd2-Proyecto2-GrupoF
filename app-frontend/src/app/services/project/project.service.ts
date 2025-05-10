@@ -33,23 +33,23 @@ export class ProjectService {
   }
 
   createCase(body: any): Observable<any> {
-    return this.http.post(`${this.PROJECT_API}/save`, body);
+    return this.http.post(`${this.CASE_API}/save`, body);
   }
 
   getCaseById(id: number): Observable<any> {
-    return this.http.get(`${this.PROJECT_API}/${id}`);
+    return this.http.get(`${this.CASE_API}/${id}`);
   }
   
   updateCase(body: any): Observable<any> {
-    return this.http.put(`${this.PROJECT_API}/update`, body);
+    return this.http.put(`${this.CASE_API}/update`, body);
   }
   
   updateCancelCase(body: any): Observable<any> {
-    return this.http.put(`${this.PROJECT_API}/update/cancel`, body);
+    return this.http.put(`${this.CASE_API}/update/cancel`, body);
   }
   
   getCasesByFkProject(id: number): Observable<any> {
-    return this.http.get(`${this.PROJECT_API}/${id}`);
+    return this.http.get(`${this.CASE_API}/all/${id}`);
   }
 
   

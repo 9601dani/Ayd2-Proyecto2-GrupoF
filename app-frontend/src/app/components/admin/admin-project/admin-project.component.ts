@@ -25,7 +25,7 @@ export interface Case {
   fkCaseType: number;
   limitDate: Date;
   isEnabled: boolean;
-  isCanceled: boolean;
+  isCancelled: boolean;
   reasonCancellation: string;
 }
 
@@ -45,60 +45,7 @@ export interface Case {
 export class AdminProjectComponent implements OnInit {
   project: Project | undefined;
   projectId: number | undefined;
-  cases: Case[] = [
-    {
-      id: 1,
-      name: 'Diseño de interfaz de usuario',
-      description:
-        'Crear los wireframes y mockups para la vista principal de la aplicación.',
-      fkProject: 2,
-      progressPercentage: 80,
-      fkCaseType: 1,
-      limitDate: new Date('2025-04-01'),
-      isEnabled: true,
-      isCanceled: false,
-      reasonCancellation: '',
-    },
-    {
-      id: 2,
-      name: 'Integración con base de datos',
-      description:
-        'Conectar la aplicación con la base de datos PostgreSQL para gestionar usuarios.',
-      fkProject: 2,
-      progressPercentage: 50,
-      fkCaseType: 2,
-      limitDate: new Date('2025-06-15'),
-      isEnabled: true,
-      isCanceled: false,
-      reasonCancellation: '',
-    },
-    {
-      id: 3,
-      name: 'Pruebas funcionales',
-      description:
-        'Realizar pruebas de los módulos de login y registro para asegurar funcionamiento.',
-      fkProject: 3,
-      progressPercentage: 30,
-      fkCaseType: 1,
-      limitDate: new Date('2025-06-20'),
-      isEnabled: true,
-      isCanceled: false,
-      reasonCancellation: '',
-    },
-    {
-      id: 4,
-      name: 'Documentación técnica',
-      description:
-        'Escribir documentación sobre la arquitectura del sistema y su instalación.',
-      fkProject: 3,
-      progressPercentage: 100,
-      fkCaseType: 1,
-      limitDate: new Date('2025-06-30'),
-      isEnabled: false,
-      isCanceled: false,
-      reasonCancellation: '',
-    },
-  ];
+  cases: Case[] = [];
 
   userId: number | undefined;
 
@@ -132,6 +79,17 @@ export class AdminProjectComponent implements OnInit {
           this.project = value;
         },
       });
+
+      this._projectService.getCasesByFkProject(this.projectId).subscribe({
+        next: (value: any) => {
+          
+          
+          this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 
@@ -154,15 +112,87 @@ export class AdminProjectComponent implements OnInit {
   }
 
   onRegister(data: any) {
-    console.log(data);
+    data.fkProject = this.projectId;
+    data.limitDate = new Date(data.limitDate);
+
+    this._projectService.createCase(data).subscribe({
+      next: (retCase) => {
+        this.cases.push(retCase);
+
+        this._alertService.success(
+          'Registro exitoso',
+          'Se registró el caso ' + retCase.name + ' exitosamente'
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          'Error al registrar',
+          err?.error?.message || 'Ocurrió un error inesperado'
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      },
+    });
   }
 
   onEdit(data: any) {
-    console.log(data);
+    data.fkProject = this.projectId;
+    data.id = this.caseSelected.id;
+    data.limitDate = new Date(data.limitDate);
+
+    this._projectService.updateCase(data).subscribe({
+      next: (retCase) => {
+        const index = this.cases.findIndex((u) => u.id === retCase.id);
+        if (index !== -1) {
+          this.cases[index] = retCase;
+        }
+
+        this._alertService.success(
+          'Actualización exitosa',
+          'Se actualizo el caso ' + retCase.name + ' exitosamente'
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          'Error al actualizar',
+          err?.error?.message || 'Ocurrió un error inesperado'
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      },
+    });
   }
 
-  cancelCase(){
-    console.log(this.form.value);
-    
+  cancelCase() {
+    const reasonCancellation = this.form.value.reason;
+    const body = {
+      id: this.caseSelected.id,
+      reasonCancellation,
+    };
+
+    this._projectService.updateCancelCase(body).subscribe({
+      next: (retCase) => {
+        const index = this.cases.findIndex((u) => u.id === retCase.id);
+        if (index !== -1) {
+          this.cases.splice(index, 1);
+        }
+
+        this._alertService.success(
+          'Actualización exitosa',
+          'Se ha cancelado el caso ' + retCase.name + ' exitosamente'
+        );
+      },
+      error: (err) => {
+        this._alertService.error(
+          'Error al cancelar',
+          err?.error?.message || 'Ocurrió un error inesperado'
+        );
+      },
+      complete: () => {
+        this.closeModal();
+      },
+    });
   }
 }
