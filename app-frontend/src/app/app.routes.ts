@@ -5,15 +5,17 @@ import { ProjectComponent } from './components/commons/project/project.component
 import { DisabledProjectComponent } from './components/commons/disabled-project/disabled-project.component';
 import { MyProfileComponent } from './components/commons/my-profile/my-profile.component';
 import {CompanySettingsComponent} from './components/company/company-settings/company-settings.component';
+import { AdminProjectComponent } from './components/admin/admin-project/admin-project.component';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'reports', component: HomeComponent },
-  { path: 'users', component: RegisterComponent},
-  { path: 'projects', component: ProjectComponent},
-  { path: 'disabled-projects', component: DisabledProjectComponent},
-  { path: 'profile', component: MyProfileComponent},
-  { path: 'company-settings', component: CompanySettingsComponent }
-
-];
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    { path: 'home', component: HomeComponent },
+    { path: 'reports', component: HomeComponent },
+    { path: 'users', component: RegisterComponent},
+    { path: 'projects', component: ProjectComponent},
+    { path: 'disabled-projects', component: DisabledProjectComponent},
+    { path: 'project/:id', component: AdminProjectComponent},
+    { path: 'profile', component: MyProfileComponent},
+    { path: 'company-settings', component: CompanySettingsComponent }
+  
+ ];

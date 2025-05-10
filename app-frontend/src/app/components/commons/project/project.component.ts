@@ -6,6 +6,9 @@ import { ModalComponent } from '../modal/modal.component';
 import { ProjectFormComponent } from '../project-form/project-form.component';
 import { ProjectService } from '../../../services/project/project.service';
 import { AlertService } from '../../../services/commons/alert.service';
+import { LocalStorageService } from '../../../services/commons/local-storage.service';
+import { SourceTextModule } from 'vm';
+import { Router } from '@angular/router';
 
 export interface Project {
   id: number;
@@ -29,6 +32,8 @@ export interface Project {
 })
 export class ProjectComponent implements OnInit {
   projects: Project[] = [];
+  myProjects: Project[] = [];
+  userId: number | undefined;
 
   actualAction: 'edit' | 'disable' | 'create' | null = null;
   projectSelected: any = null;
@@ -36,14 +41,25 @@ export class ProjectComponent implements OnInit {
   constructor(
     private _commonService: CommonService,
     private _projectService: ProjectService,
-    private _alertService: AlertService
+    private _alertService: AlertService,
+    private _localStorageService: LocalStorageService,
+    private _router: Router
   ) {}
 
   ngOnInit(): void {
+    this.userId = this._localStorageService.getItem(
+      this._localStorageService.USER_ID
+    );
+
     this._projectService.getAllProjects().subscribe({
       next: (value: any) => {
         this.projects = value.filter(
           (project: { isEnabled: any }) => project.isEnabled
+        );
+
+        this.myProjects = value.filter(
+          (project: Project) =>
+            project.isEnabled && project.fkUser === this.userId
         );
       },
       error: (err) => {
@@ -68,6 +84,8 @@ export class ProjectComponent implements OnInit {
     this._projectService.createProject(data).subscribe({
       next: (project) => {
         this.projects.push(project);
+        this.updateMyProjects();
+
         this._alertService.success(
           'Registro exitoso',
           'Se registró el proyecto ' + project.name + ' exitosamente'
@@ -94,6 +112,7 @@ export class ProjectComponent implements OnInit {
         const index = this.projects.findIndex((u) => u.id === project.id);
         if (index !== -1) {
           this.projects[index] = project;
+          this.updateMyProjects();
         }
         this._alertService.success(
           'Actualización exitosa',
@@ -124,9 +143,10 @@ export class ProjectComponent implements OnInit {
           const index = this.projects.findIndex(
             (u) => u.id === this.projectSelected.id
           );
-          
+
           if (index !== -1) {
-            this.projects.splice(index, 1); 
+            this.projects.splice(index, 1);
+            this.updateMyProjects();
           }
           this._alertService.success(
             'Proyecto Deshabilitado',
@@ -146,5 +166,19 @@ export class ProjectComponent implements OnInit {
         },
       });
     }
+  }
+
+  updateMyProjects() {
+    if (this.userId) {
+      this.myProjects = this.projects.filter(
+        (project: Project) =>
+          project.isEnabled && project.fkUser === this.userId
+      );
+    }
+  }
+
+  showProject(project: Project){
+    this._router.navigate(['/project', project.id])
+    
   }
 }
