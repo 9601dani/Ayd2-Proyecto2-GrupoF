@@ -8,7 +8,6 @@ import { ModalComponent } from '../../commons/modal/modal.component';
 import { CaseFormComponent } from '../case-form/case-form.component';
 import { AlertService } from '../../../services/commons/alert.service';
 import { CommonService } from '../../../services/commons/common.service';
-import { CancelCaseFormComponent } from '../cancel-case-form/cancel-case-form.component';
 import { SourceTextModule } from 'vm';
 import {
   FormBuilder,
