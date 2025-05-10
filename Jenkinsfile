@@ -38,7 +38,7 @@ pipeline {
                 jacoco (
                     execPattern: '**/target/*.exec',
                     classPattern: '**/target/*.classes',
-                    sourcePttern: '**/src/main/java',
+                    sourcePattern: '**/src/main/java',
                     changeBuildStatus: true,
                     minimumLineCoverage: '85'
                 )            
