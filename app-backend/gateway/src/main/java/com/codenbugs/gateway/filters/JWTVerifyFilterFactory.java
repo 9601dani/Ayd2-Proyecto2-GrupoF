@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class JWTVerifyFilterFactory extends AbstractGatewayFilterFactory<JWTVerifyFilterFactory.Config> {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     public final TokenService tokenService;
 
     public JWTVerifyFilterFactory(

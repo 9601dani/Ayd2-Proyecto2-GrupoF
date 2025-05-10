@@ -171,23 +171,22 @@ public class ProjectServiceTest {
         assertEquals(expect.get(0), actual.get(0));
     }
 
-/*    @Test
-    public void updateEnabledSuccesfully() throws ProjectNotFound {
+    @Test
+    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
 
-        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
+//        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
+//
+//        when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
+//
+//        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
+//
+//        ProjectResponseWithoutUser expect = new ProjectResponseWithoutUser(project);
+//
+//        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
+//
+//        assertEquals(expect, actual);
 
-        when(this.projectRepository.far
-        indById(projectRequest.id())).thenReturn(Optional.of(project));
-
-        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
-
-        ProjectResponseWithoutUser expect = new ProjectResponseWithoutUser(project);
-
-        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
-
-        assertEquals(expect, actual);
-
-    }*/
+    }
 
     @Test
     public void updateEnabledNotFound() throws ProjectNotFound {

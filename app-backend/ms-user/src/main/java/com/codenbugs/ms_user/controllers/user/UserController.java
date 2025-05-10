@@ -10,11 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -32,13 +28,6 @@ public class UserController {
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable Integer id) throws UserNotFoundException {
         UserResponse response = this.userService.findById(id);
-        return ResponseEntity.ok(response);
-    }
-
-    @GetMapping()
-    public ResponseEntity<Map<String, String>> helloWorld() {
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Hello World!");
         return ResponseEntity.ok(response);
     }
 
@@ -101,7 +90,4 @@ public class UserController {
         UserResponse response = this.userService.updatePhotoPathUser(id, file);
         return ResponseEntity.ok(response);
     }
-
-
-
 }

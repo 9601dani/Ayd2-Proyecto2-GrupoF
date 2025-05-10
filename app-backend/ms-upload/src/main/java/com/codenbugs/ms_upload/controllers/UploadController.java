@@ -36,16 +36,6 @@ public class UploadController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/mult-images")
-    public ResponseEntity<List<String>> uploadImages(@RequestPart("files") MultipartFile[] files) throws NotCreatedException {
-        List<String> response = new ArrayList<>();
-        for (MultipartFile file : files) {
-            String objectName = this.uploadFile(file, "images");
-            response.add(objectName);
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     public String uploadFile(MultipartFile file, String path) throws NotCreatedException {
         return this.uploadService.uploadFile(file, path);
     }
