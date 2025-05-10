@@ -28,11 +28,11 @@ class TokenServiceTest {
         tokenService = new TokenService(tokenSettings, userRepository);
         Algorithm algorithm = Algorithm.HMAC256(tokenSettings.getJwtSecret());
         token = JWT.create()
-                .withExpiresAt(Date.from(Instant.now().plusSeconds(1200)))
+                .withExpiresAt(Date.from(Instant.now().plusSeconds(120_000_000)))
                 .sign(algorithm);
 
         expiredToken = JWT.create()
-                .withExpiresAt(Date.from(Instant.now().minusSeconds(1200)))
+                .withExpiresAt(Date.from(Instant.now().minusSeconds(120_000_000)))
                 .sign(algorithm);
     }
 
