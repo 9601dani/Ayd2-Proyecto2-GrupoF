@@ -18,7 +18,7 @@ pipeline {
         stage('Build Backend'){
             steps {
                 dir('app-backend') {
-                    sh 'mvn clean install'
+                    sh 'mvn clean package verify'
                 }
             }
         }
@@ -39,6 +39,7 @@ pipeline {
                     execPattern: '**/target/*.exec',
                     classPattern: '**/target/*.classes',
                     sourcePattern: '**/src/main/java',
+                    exclusionPattern: '**/target/test-classes',
                     changeBuildStatus: true,
                     minimumLineCoverage: '85'
                 )            
