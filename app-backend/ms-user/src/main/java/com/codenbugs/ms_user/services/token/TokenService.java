@@ -74,7 +74,6 @@ public class TokenService {
         Integer id = refreshTokenRequest.id();
         String token = refreshTokenRequest.token();
 
-        System.out.println(id + " " + token);
         User user = this.userRepository.findByIdAndToken(id, token).orElseThrow(() -> new UserNotFoundException("User not found"));
         String refreshToken = user.getToken();
 

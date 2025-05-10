@@ -10,4 +10,9 @@ class GatewayApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void main() {
+		GatewayApplication.main(new String[]{});
+	}
+
 }
