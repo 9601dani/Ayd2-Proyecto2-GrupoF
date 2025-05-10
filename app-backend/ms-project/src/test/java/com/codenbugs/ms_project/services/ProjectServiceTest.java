@@ -6,23 +6,22 @@ import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.ProjectAlreadyExists;
-import com.codenbugs.ms_project.exceptions.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.ProjectNotFound;
-import com.codenbugs.ms_project.exceptions.UserNotFoundException;
+import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
+import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.project.Project;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import com.codenbugs.ms_project.services.project.ProjectService;
 import com.codenbugs.ms_project.services.project.ProjectServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -40,6 +39,9 @@ public class ProjectServiceTest {
 
     @Mock
     private UserRestClient userRestClient;
+
+    @Mock
+    private CaseRepository caseRepository;
 
     private final Integer PROJECT_ID = 1;
     private final String PROJECT_NAME = "Project Name";
@@ -61,7 +63,7 @@ public class ProjectServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        projectService = new ProjectServiceImpl(projectRepository, userRestClient);
+        projectService = new ProjectServiceImpl(projectRepository, userRestClient, caseRepository);
 
         project = new Project();
         project.setId(PROJECT_ID);
@@ -170,7 +172,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateEnabledSuccesfully() throws ProjectNotFound {
+    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
 
         ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
 

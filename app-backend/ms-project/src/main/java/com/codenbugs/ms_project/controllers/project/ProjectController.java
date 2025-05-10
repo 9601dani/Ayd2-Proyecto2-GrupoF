@@ -4,10 +4,10 @@ import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
-import com.codenbugs.ms_project.exceptions.ProjectAlreadyExists;
-import com.codenbugs.ms_project.exceptions.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.ProjectNotFound;
-import com.codenbugs.ms_project.exceptions.UserNotFoundException;
+import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
+import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.project.ProjectService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,7 +48,7 @@ public class ProjectController {
     }
 
     @PutMapping("/update/enable")
-    public ResponseEntity<ProjectResponseWithoutUser> updateEnableProject(@RequestBody ProjectEnabledRequest projectRequest) throws ProjectNotFound {
+    public ResponseEntity<ProjectResponseWithoutUser> updateEnableProject(@RequestBody ProjectEnabledRequest projectRequest) throws ProjectNotFound, ProjectIsDisabled {
         ProjectResponseWithoutUser response = this.projectService.updateEnabled(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

@@ -4,10 +4,10 @@ import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
-import com.codenbugs.ms_project.exceptions.ProjectAlreadyExists;
-import com.codenbugs.ms_project.exceptions.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.ProjectNotFound;
-import com.codenbugs.ms_project.exceptions.UserNotFoundException;
+import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
+import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 
 import java.util.List;
 
@@ -21,6 +21,6 @@ public interface ProjectService {
 
     List<ProjectResponseWithoutUser> getAllProjects();
 
-    ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound;
+    ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound, ProjectIsDisabled;
 
 }
