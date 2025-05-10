@@ -2,7 +2,7 @@ package com.codenbugs.ms_project.clients;
 
 
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.UserNotFoundException;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

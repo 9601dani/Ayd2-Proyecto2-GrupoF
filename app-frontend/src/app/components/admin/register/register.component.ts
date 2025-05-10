@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TemplateComponent } from '../../commons/template/template.component';
 import { ModalComponent } from '../../commons/modal/modal.component';
@@ -7,6 +7,7 @@ import { UserFormComponent } from '../user-form/user-form.component';
 import Swal from 'sweetalert2';
 import { AlertService } from '../../../services/commons/alert.service';
 import { UserService } from '../../../services/user/user.service';
+import {LocalStorageService} from '../../../services/commons/local-storage.service';
 
 interface User {
   id: number;
@@ -25,19 +26,23 @@ interface User {
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
+
+  _localStorageService: LocalStorageService = inject(LocalStorageService);
   users: User[] = [];
 
   roles = [];
 
   actualAction: 'edit' | 'delete' | 'register'| 'enable' | null = null;
   userSelected: any = null;
+  currency: string = 'Q';
 
   constructor(private _commonService: CommonService, private _userService:UserService,
     private _alertService: AlertService
   ) {}
 
   ngOnInit(){
+    this.currency = this._localStorageService.getItem(this._localStorageService.COMPANY_CURRENCY) || 'Q';
     this._userService.getAllUsers().subscribe(response =>{
       next:
         this.users = response
@@ -105,7 +110,7 @@ export class RegisterComponent {
       }
     });
   }
-  
+
 
   onEdit(userData: any) {
     this._userService.updateUser(userData).subscribe({
@@ -148,6 +153,6 @@ export class RegisterComponent {
       });
     }
   }
-  
-  
+
+
 }

@@ -6,12 +6,16 @@ import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.ProjectAlreadyExists;
-import com.codenbugs.ms_project.exceptions.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.ProjectNotFound;
-import com.codenbugs.ms_project.exceptions.UserNotFoundException;
+import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
+import com.codenbugs.ms_project.exceptions.project.ProjectException;
+import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.project.Project;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -23,6 +27,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional(rollbackOn = ProjectException.class)
 @Slf4j
 @RequiredArgsConstructor
 @Getter
@@ -31,6 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final UserRestClient userRestClient;
+    private final CaseRepository caseRepository;
 
     @Override
     public ProjectResponseWithoutUser saveProject(ProjectRequest request) throws ProjectAlreadyExists {
@@ -93,7 +99,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound {
+    public ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound, ProjectIsDisabled {
 
         Optional<Project> optionalProject = this.projectRepository.findById(request.id());
         if (optionalProject.isEmpty()) {
@@ -101,9 +107,25 @@ public class ProjectServiceImpl implements ProjectService {
         }
 
         Project project = optionalProject.get();
+
+        if(request.enable()==project.getIsEnabled()){
+            if(request.enable()){
+                throw new ProjectIsDisabled("El proyecto ya está habilitado");
+            } else {
+                throw new ProjectIsDisabled("El proyecto ya está deshabilitado");
+            }
+        }
+
         project.setIsEnabled(request.enable());
 
+        List<Case> cases = this.caseRepository.findByFkProject(project.getId());
+        for (Case c : cases) {
+            c.setIsEnabled(request.enable());
+        }
+
+        this.caseRepository.saveAll(cases);
         Project updated = this.projectRepository.save(project);
+
         return new ProjectResponseWithoutUser(updated);
     }
 }

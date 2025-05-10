@@ -8,28 +8,16 @@ export class AlertService {
 
   constructor() { }
 
-  success(title: string, text: string, callback: any = null) {
-    Swal.fire({ title, icon: "success", text }).then((result) => {
-      if (callback) {
-        callback();
-      }
-    });
+  success(title: string, text: string) {
+    Swal.fire({ title, icon: "success", text })
   }
 
-  error(title:string, text: string, callback: any = null) {
-    Swal.fire({ title, icon: "error", text }).then((result) => {
-      if (callback) {
-        callback();
-      }
-    });
+  error(title:string, text: string) {
+    Swal.fire({ title, icon: "error", text })
   }
 
-  warning(title: string, text: string, callback: any = null) {
-    Swal.fire({ title, icon: "warning", text }).then((result) => {
-      if (callback) {
-        callback();
-      }
-    });
+  warning(title: string, text: string) {
+    Swal.fire({ title, icon: "warning", text })
   }
 
   yesNo(title: string, text: string, callback: any = null) {

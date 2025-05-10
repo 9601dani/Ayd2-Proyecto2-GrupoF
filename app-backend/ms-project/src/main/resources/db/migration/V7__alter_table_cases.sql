@@ -1,0 +1,5 @@
+ALTER TABLE cases
+    ADD COLUMN name VARCHAR(255) NOT NULL,
+    ADD COLUMN description VARCHAR(255) NOT NULL,
+    ADD COLUMN is_cancelled BOOLEAN NOT NULL DEFAULT TRUE,
+    ADD COLUMN reason_cancellation VARCHAR(255);

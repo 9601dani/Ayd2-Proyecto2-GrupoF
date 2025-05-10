@@ -13,7 +13,10 @@ export class LocalStorageService {
   readonly USER_PHOTO = 'user_photo';
   readonly COMPANY_LOGO = 'company_logo';
   readonly COMPANY_NAME = 'company_name';
-  readonly CURRENCY = 'currency';
+  readonly COMPANY_CURRENCY = 'company_currency';
+  readonly COMPANY_ADDRESS = 'company_address';
+  readonly COMPANY_PHONE_NUMBER = 'company_phone_number';
+  readonly COMPANY_EMAIL_ADDRESS = 'company_email_address';
 
   constructor(private _cookieService: CookieService) {}
 
@@ -41,12 +44,6 @@ export class LocalStorageService {
     }
   }
 
-  clear(): void {
-    if (this.isLocalStorageAvailable()) {
-      localStorage.clear();
-    }
-  }
-
   saveTokens(token: any): void {
     this._cookieService.set(this.TOKEN, token.accessToken);
     this._cookieService.set(this.REFRESH_TOKEN, token.refreshToken);
@@ -54,7 +51,9 @@ export class LocalStorageService {
 
 
   logout(): void {
-    this.clear();
+    this.removeItem(this.USER_ID);
+    this.removeItem(this.USER_PHOTO);
+    this.removeItem(this.USER_NAME);
     this._cookieService.delete(this.TOKEN);
     this._cookieService.delete(this.REFRESH_TOKEN);
   }

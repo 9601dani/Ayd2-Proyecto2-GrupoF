@@ -1,0 +1,72 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <div class="field">
+      <label class="label">Nombre del Caso</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          formControlName="name"
+          placeholder="Nombre del caso"
+        />
+      </div>
+      <p class="help is-danger" *ngIf="form.get('name')?.touched && form.get('name')?.invalid">
+        El nombre es obligatorio.
+      </p>
+    </div>
+    
+    <div class="field">
+      <label class="label">Descripción del caso</label>
+      <div class="control">
+        <input
+          class="input"
+          type="text"
+          formControlName="description"
+          placeholder="Descripción"
+        />
+      </div>
+      <p class="help is-danger" *ngIf="form.get('description')?.touched && form.get('description')?.invalid">
+        La description es obligatoria.
+      </p>
+    </div>
+  
+    <div class="field">
+      <label class="label">Tipo de Caso</label>
+      <div class="control">
+        <div class="select is-fullwidth">
+          <select formControlName="fkCaseType">
+            <option [ngValue]="null" disabled>Seleccione una un tipo de caso</option>
+            <option *ngFor="let type of types" [ngValue]="type.id">
+              {{ type.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('fkCaseType')?.touched && form.get('fkCaseType')?.invalid">
+        Selecciona un tipo valido
+      </p>
+    </div>
+  
+    <div class="field">
+      <label class="label">Fecha Límite</label>
+      <div class="control">
+        <input class="input" type="date" formControlName="limitDate" />
+      </div>
+      <p class="help is-danger" *ngIf="form.get('limitDate')?.touched && form.get('limitDate')?.invalid">
+        La fecha es obligatoria.
+      </p>
+    </div>
+  
+    <div class="field is-grouped is-justify-content-end mt-4">
+      <div class="control">
+        <button class="button is-success" type="submit" [disabled]="form.invalid">
+          {{ mode === 'create' ? 'Crear Caso' : 'Actualizar Caso' }}
+        </button>
+      </div>
+      <div class="control">
+        <button class="button is-light" type="button" (click)="cancel.emit()">Cancelar</button>
+      </div>
+    </div>
+  
+  </form>
+  
