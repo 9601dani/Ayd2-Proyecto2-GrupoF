@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService {
         Optional<User> oldUser = userRepository.findByUsernameOrEmail(user.username(), user.email());
 
         if (oldUser.isPresent()) {
-            throw new UserAlreadyExist(user.username()+" already exists");
+            throw new UserAlreadyExist(user.username()+" Ya existe el usuario");
         }
 
         User newUser = new ConcreteUserBuilder()
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(newUser);
 
-        Role role = findRoleOrThrow(user.role(), "Not saved user");
+        Role role = findRoleOrThrow(user.role(), "No se guardo, rol no existe");
         return new ListUserResponse(newUser, role);
 
 
@@ -103,7 +103,7 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(newUser);
 
-        Role role = findRoleOrThrow(user.role(), "Not updated user");
+        Role role = findRoleOrThrow(user.role(), "No se puedo actualizar el usuario, derivado del rol");
         return new ListUserResponse(newUser, role);
 
     }
@@ -111,12 +111,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ListUserResponse delete(String username) throws UserNotFoundException {
-        User userToDelete = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User userToDelete = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         userToDelete.setIsEnabled(false);
 
         userRepository.save(userToDelete);
-        Role role = findRoleOrThrow(userToDelete.getRole(), "Not updated user");
+        Role role = findRoleOrThrow(userToDelete.getRole(), "No existe el Rol");
         return new ListUserResponse(userToDelete, role);
 
 
@@ -124,12 +124,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ListUserResponse enable(String username) throws UserNotFoundException {
-        User userToDelete = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User userToDelete = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         userToDelete.setIsEnabled(true);
 
         userRepository.save(userToDelete);
-        Role role = findRoleOrThrow(userToDelete.getRole(), "Not updated user");
+        Role role = findRoleOrThrow(userToDelete.getRole(), "No existe el Rol");
         return new ListUserResponse(userToDelete, role);
     }
 
@@ -218,7 +218,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updatePhotoPathUser(Integer fkUser, MultipartFile file) throws UserNotFoundException, NotCreatedException {
-        User user = this.userRepository.findById(fkUser).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = this.userRepository.findById(fkUser).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
         if(user == null) {
             throw new UserNotFoundException("User not found");
@@ -242,7 +242,7 @@ public class UserServiceImpl implements UserService {
                             Role role = this.roleService.findById(user.getRole());
                             return new ListUserResponse(user, role);
                         } catch (RoleException e) {
-                            throw new RuntimeException("Role not found", e);
+                            throw new RuntimeException("Rol no encontrado", e);
                         }
                     })
                 .toList();

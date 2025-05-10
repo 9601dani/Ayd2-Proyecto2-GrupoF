@@ -19,13 +19,13 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public Role findById(Integer id) throws RoleNotFoundException {
         if(id == null){
-            throw  new RoleNotFoundException("Invalid role");
+            throw  new RoleNotFoundException("Rol no encontrado");
         }
 
         Role role = roleRepository.findById(id);
 
         if(role == null){
-            throw  new RoleNotFoundException("Role not found");
+            throw  new RoleNotFoundException("Role no encontrado");
         }
         return role;
     }
