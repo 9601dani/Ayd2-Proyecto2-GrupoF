@@ -2,6 +2,10 @@
 server:
   port: 8003
 spring:
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 10MB
   application:
     name: ms_company
   datasource:

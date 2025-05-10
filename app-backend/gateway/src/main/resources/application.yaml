@@ -30,10 +30,12 @@ spring:
           uri: ${USER_ROUTE_URI:http://localhost:8001}
           predicates:
             - Path=/v1/users/authenticate,/v1/tokens/**
-        - id: company-public-routes
+        - id: company-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8003}
           predicates:
-            - Path=/v1/pages/**
+            - Path=/v1/pages/**,/v1/settings/**
+          filters:
+            - JWTVerifyFilterFactory
         - id: project-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8002}
           predicates:
