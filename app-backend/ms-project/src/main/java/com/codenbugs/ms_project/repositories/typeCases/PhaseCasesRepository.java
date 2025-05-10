@@ -10,4 +10,5 @@ import java.util.List;
 public interface PhaseCasesRepository  extends JpaRepository<PhasesCase, Integer> {
 
     List<PhasesCase> findByFkCaseType(Integer fkCaseType);
+    void deleteByFkCaseType(Integer fkCaseType);
 }

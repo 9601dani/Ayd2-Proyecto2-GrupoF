@@ -40,7 +40,7 @@ export class ProjectService {
   }
   
   updateCaseType(data: CaseType): Observable<CaseType> {
-    return this.http.put<CaseType>(`${this.TYPE_CASE_API}${data.id}`, data);
+    return this.http.put<CaseType>(`${this.TYPE_CASE_API}/${data.id}`, data);
   }
     /* ------------------------ END TYPE CASES ----------------------- */
   

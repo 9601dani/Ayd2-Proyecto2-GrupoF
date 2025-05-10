@@ -9,5 +9,6 @@ public interface PhaseCasesService {
 
     List<PhasesCase> findByCaseType(Integer caseId);
     PhasesCase save(PhasesCaseRequest phasesCase, Integer caseId, Integer nextPhaseId);
+    void deleteAllByFKCaseType(Integer caseId);
 
 }
