@@ -3,10 +3,10 @@
     <p class="menu-label ml-2">Usuario</p>
     <ul class="menu-list">
       <li>
-        <a (click)="viewMyProfile()">Mi Perfil</a>
+        <a (click)="viewMyProfile()" [ngClass]="{ 'is-active': this.activePage === 'profile' }">Mi Perfil</a>
       </li>
       <li>
-        <a (click)="logout()">Cerrar Sesión</a>
+        <a (click)="logout()" [ngClass]="{ 'is-active': this.activePage === 'logout' }">Cerrar Sesión</a>
       </li>
     </ul>
   }

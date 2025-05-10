@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonService } from '../../../services/commons/common.service';
-import { CompanyService } from '../../../services/commons/company.service';
 import { LocalStorageService } from '../../../services/commons/local-storage.service';
 import {UserService} from '../../../services/user/user.service';
+import {CompanyService} from '../../../services/company/company.service';
 
 export interface Page {
   id: number;
@@ -115,6 +115,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    this._commonService.emitActivePage('logout');
     const id = this._localStorageService.getItem(this._localStorageService.USER_ID) || 0;
     this._userService.logout(id).subscribe({
       next: (response: any) => {
@@ -130,6 +131,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   viewMyProfile(){
+    this._commonService.emitActivePage("profile");
     this._router.navigateByUrl('/profile');
   }
 }

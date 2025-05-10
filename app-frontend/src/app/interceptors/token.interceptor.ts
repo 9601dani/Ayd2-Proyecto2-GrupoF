@@ -63,7 +63,9 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next): Observable<HttpE
 };
 
 const clearAll = (_localStorageService: any, _cookieService: any) => {
-  _localStorageService.clear();
+  _localStorageService.removeItem(_localStorageService.USER_ID);
+  _localStorageService.removeItem(_localStorageService.USER_NAME);
+  _localStorageService.removeItem(_localStorageService.USER_PHOTO);
   _cookieService.deleteAll();
 }
 

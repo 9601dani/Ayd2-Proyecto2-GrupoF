@@ -18,6 +18,7 @@ import {UserService} from '../../../services/user/user.service';
 import {AlertService} from '../../../services/commons/alert.service';
 import {Router} from '@angular/router';
 import { NotProfileDirective } from '../../../directives/not-profile.directive';
+import {NotLogoDirective} from '../../../directives/not-logo.directive';
 
 @Component({
   selector: 'app-template',
@@ -34,7 +35,8 @@ import { NotProfileDirective } from '../../../directives/not-profile.directive';
     ToolbarComponent,
     SidebarComponent,
     ImagePipe,
-    NotProfileDirective
+    NotProfileDirective,
+    NotLogoDirective
   ]
 })
 export class TemplateComponent implements OnInit {
@@ -43,6 +45,8 @@ export class TemplateComponent implements OnInit {
   isLogged: boolean = false;
   photo: string = '';
   username: string = '';
+  companyLogo: string = '';
+  companyName: string = 'AppFrontend';
 
   private breakpointObserver = inject(BreakpointObserver);
   constructor(
@@ -58,12 +62,19 @@ export class TemplateComponent implements OnInit {
     );
 
   ngOnInit(): void {
+    this.getCompanySettings();
+
     this.isLogged = (this._localStorageService.getItem(this._localStorageService.USER_ID) || 0) !== 0;
 
     if(this.isLogged) {
       this.getUserData();
       this.getUserModules();
     }
+  }
+
+  getCompanySettings() {
+    this.companyLogo = this._localStorageService.getItem(this._localStorageService.COMPANY_LOGO);
+    this.companyName = this._localStorageService.getItem(this._localStorageService.COMPANY_NAME);
 
   }
 
