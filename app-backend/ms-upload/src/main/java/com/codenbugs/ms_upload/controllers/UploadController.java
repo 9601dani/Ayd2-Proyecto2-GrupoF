@@ -8,7 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -31,6 +33,16 @@ public class UploadController {
         String objectName = this.uploadFile(file, "images");
         Map<String, String> response = new HashMap<>();
         response.put("objectName", objectName);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/mult-images")
+    public ResponseEntity<List<String>> uploadImages(@RequestPart("files") MultipartFile[] files) throws NotCreatedException {
+        List<String> response = new ArrayList<>();
+        for (MultipartFile file : files) {
+            String objectName = this.uploadFile(file, "images");
+            response.add(objectName);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

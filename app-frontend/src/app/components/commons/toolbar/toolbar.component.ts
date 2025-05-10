@@ -12,8 +12,6 @@ import {Subscription} from 'rxjs';
 })
 export class ToolbarComponent {
 
-  constructor(private _commonService: CommonService) {
-
-  }
+  constructor() { }
 
 }

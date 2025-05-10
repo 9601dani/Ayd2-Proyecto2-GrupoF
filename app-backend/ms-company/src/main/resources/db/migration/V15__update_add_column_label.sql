@@ -1,0 +1,1 @@
+ALTER TABLE settings ADD COLUMN label_value VARCHAR(50) NULL;

@@ -27,7 +27,7 @@
                 <tr *ngFor="let user of users">
                   <td>{{ user.username }}</td>
                   <td>{{ user.email }}</td>
-                  <td>{{ user.salaryPerHour | currency: 'Q' }}</td>
+                  <td>{{ user.salaryPerHour | currency: this.currency }}</td>
                   <td>
                     <span
                       class="tag"
