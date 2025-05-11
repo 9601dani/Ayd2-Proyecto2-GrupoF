@@ -6,6 +6,9 @@
         <a (click)="viewMyProfile()" [ngClass]="{ 'is-active': this.activePage === 'profile' }">Mi Perfil</a>
       </li>
       <li>
+        <a (click)="goToHome()" [ngClass]="{ 'is-active': this.activePage === 'home' }">Inicio</a>
+      </li>
+      <li>
         <a (click)="logout()" [ngClass]="{ 'is-active': this.activePage === 'logout' }">Cerrar Sesión</a>
       </li>
     </ul>

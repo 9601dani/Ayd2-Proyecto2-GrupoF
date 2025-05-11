@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { AlertService } from '../../../services/commons/alert.service';
 import { UserService } from '../../../services/user/user.service';
 import {LocalStorageService} from '../../../services/commons/local-storage.service';
+import { CompanyService } from '../../../services/company/company.service';
 
 interface User {
   id: number;
@@ -38,7 +39,7 @@ export class RegisterComponent implements OnInit {
   currency: string = 'Q';
 
   constructor(private _commonService: CommonService, private _userService:UserService,
-    private _alertService: AlertService
+    private _alertService: AlertService, private _companyService:CompanyService
   ) {}
 
   ngOnInit(){
