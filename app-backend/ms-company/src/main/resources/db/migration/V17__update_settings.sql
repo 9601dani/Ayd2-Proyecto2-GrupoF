@@ -1,0 +1,3 @@
+INSERT INTO settings (key_name, key_value, value_type, FK_Setting_Type, label_value) VALUES
+    ('company_description', 'SoftTrack Solutions es una empresa especializada en la gestión y seguimiento de casos durante el ciclo de vida de desarrollo de proyectos de software. Nuestro enfoque está centrado en ofrecer herramientas y servicios que permiten a equipos de desarrollo, QA y gestión de proyectos llevar un control detallado, colaborativo y en tiempo real de cada requerimiento, incidencia o tarea técnica dentro del proyecto.',
+     'text',1, 'Descripción de la empresa');

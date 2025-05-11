@@ -134,4 +134,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this._commonService.emitActivePage("profile");
     this._router.navigateByUrl('/profile');
   }
+
+  goToHome(){
+    this._commonService.emitActivePage("home");
+    this._router.navigateByUrl('/home');
+  }
+ 
+
 }
