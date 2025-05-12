@@ -3,6 +3,7 @@ package com.codenbugs.ms_project.services.cases;
 import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
+import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
@@ -26,4 +27,5 @@ public interface CaseService {
 
     List<CaseResponseDto> getCasesByProjectId(Integer projectId);
 
+    List<CaseWithUserDto> getActiveCasesByProject(Integer fkProject);
 }

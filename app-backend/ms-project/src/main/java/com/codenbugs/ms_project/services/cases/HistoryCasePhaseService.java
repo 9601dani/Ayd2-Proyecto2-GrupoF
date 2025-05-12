@@ -9,6 +9,5 @@ import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 
 public interface HistoryCasePhaseService {
 
-    public HistoryCaseResponseDto save(HistoryCaseRequest dto) throws UserNotFoundException, UserIsDisabled, CaseNotFound, CaseIsDisabled;
 
 }

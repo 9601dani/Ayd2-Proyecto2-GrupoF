@@ -27,11 +27,4 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 public class HistoryCasePhaseController {
 
-    private final HistoryCasePhaseService historyCasePhaseService;
-
-    @PostMapping("/save")
-    public ResponseEntity<HistoryCaseResponseDto> createHistory(@RequestBody HistoryCaseRequest request) throws UserNotFoundException, UserIsDisabled, CaseNotFound, CaseIsDisabled {
-        HistoryCaseResponseDto responseDto = this.historyCasePhaseService.save(request);
-        return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
-    }
 }

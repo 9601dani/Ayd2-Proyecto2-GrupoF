@@ -78,9 +78,13 @@ export class ProjectService {
 
   getCommentsByCaseAndParentId(id: number, idParent: number | null = null): Observable<any> {
     let params = new HttpParams();
-    if(idParent !== null) {
+    if (idParent !== null) {
       params = params.set("idParent", idParent);
     }
-    return this.http.get(`${this.COMMENT_API}/find-by-case-id/${id}`, { params });
+    return this.http.get(`${this.COMMENT_API}/find-by-case-id/${id}`, {params});
+  }
+
+  getCasesWithUserByFkProject(id: number): Observable<any> {
+    return this.http.get(`${this.CASE_API}/active/${id}`);
   }
 }

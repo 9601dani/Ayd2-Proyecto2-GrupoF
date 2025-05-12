@@ -3,6 +3,7 @@ package com.codenbugs.ms_project.controllers.cases;
 import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
+import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -52,5 +53,10 @@ public class CaseController {
     public ResponseEntity<List<CaseResponseDto>> getAllCasesByFkProject(@PathVariable Integer fkProject)  {
         List<CaseResponseDto> responseDtos = this.caseService.getCasesByProjectId(fkProject);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/active/{projectId}")
+    public List<CaseWithUserDto> getActiveCasesByProject(@PathVariable Integer projectId) {
+        return caseService.getActiveCasesByProject(projectId);
     }
 }
