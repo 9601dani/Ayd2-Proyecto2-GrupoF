@@ -1,5 +1,6 @@
 @import "../bulma.scss";
+@import 'quill/dist/quill.snow.css';
 
 .body {
-  height: calc(95vh - 20px) !important;
+  height: calc(95vh - 5px) !important;
 }

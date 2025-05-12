@@ -1,0 +1,75 @@
+<section class="section">
+  <mat-divider></mat-divider>
+  <div class="container mt-3">
+    <h4 class="subtitle is-4 has-text-weight-bold">Comentarios:</h4>
+    <div class="block">
+      <div class="columns is-gapless">
+        <div class="column is-flex is-justify-content-center">
+          <figure class="image is-32x32 mb-3">
+            <img class="is-rounded" [src]="photo | image" appNotProfile />
+          </figure>
+        </div>
+        <div class="column is-11">
+          <quill-editor class="editor" [formControl]="editorContent"></quill-editor>
+          <button class="button is-primary mt-3" (click)="saveComment()" [disabled]="editorContent.invalid">Comentar</button>
+        </div>
+      </div>
+    </div>
+    <div class="block">
+      @for(comment of comments; track $index) {
+        <div class="columns is-gapless">
+          <div class="column is-flex is-justify-content-center">
+            <figure class="image is-32x32 mb-3">
+              <img class="is-rounded" [src]="comment.photo | image" appNotProfile />
+            </figure>
+          </div>
+          <div class="column is-11">
+            <div class="card">
+              <header class="card-header">
+                <p class="card-header-title">{{ comment.username }} - {{ comment.createdAt | date: 'dd-MM-YYYY' }}</p>
+              </header>
+              <div class="card-content">
+                <div class="content quill-content" [innerHTML]="comment.content | htmlSanitizer"></div>
+              </div>
+            </div>
+            <div class="mt-2">
+              <button class="button is-primary" (click)="toggleReplyEditor(comment.id)">Responder</button>
+              <button class="button is-info ml-2" (click)="getCommentsByCaseId(this.caseId, comment.id)">Ver respuestas</button>
+            </div>
+            @if(this.activeReplyId === comment.id) {
+              <div class="mt-2">
+                <quill-editor class="editor" [formControl]="replyEditors[comment.id]"></quill-editor>
+                <div class="buttons mt-2">
+                  <button class="button is-primary" (click)="saveComment(comment.id)" [disabled]="replyEditors[comment.id]?.invalid">Comentar</button>
+                  <button class="button is-light" (click)="toggleReplyEditor(comment.id)">Cancelar</button>
+                </div>
+              </div>
+            }
+
+            @if(comment.replies) {
+              @for(reply of comment.replies; track $index) {
+                <div class="columns is-gapless mt-2">
+                  <div class="column is-flex is-justify-content-center">
+                    <figure class="image is-32x32 mb-3">
+                      <img class="is-rounded" [src]="reply.photo | image" appNotProfile />
+                    </figure>
+                  </div>
+                  <div class="column is-11">
+                    <div class="card">
+                      <header class="card-header">
+                        <p class="card-header-title">{{ reply.username }} - {{ reply.createdAt | date: 'dd-MM-YYYY' }}</p>
+                      </header>
+                      <div class="card-content">
+                        <div class="content quill-content" [innerHTML]="reply.content | htmlSanitizer"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              }
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>

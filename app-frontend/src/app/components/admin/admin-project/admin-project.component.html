@@ -63,13 +63,13 @@
 
               <footer
                 class="card-footer is-justify-content-center is-align-items-center"
-                style="height: 50 px"
+                style="height: 50px"
               >
+                <a class="card-footer-item" (click)="openCase(case.id)">Ver</a>
                 <a
                   class="card-footer-item"
                   (click)="openModal('edit', case)"
-                  >Editar</a
-                >
+                >Editar</a>
                 <a class="card-footer-item" (click)="openModal('cancel', case)">Cancelar</a>
               </footer>
             </div>
@@ -103,7 +103,7 @@
       (cancel)="closeModal()"
     ></app-case-form>
   </div>
-  
+
   <div modalTitle class="modal-card-title" *ngIf="actualAction === 'cancel'">
     Cancelar  Proyecto
   </div>
