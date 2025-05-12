@@ -7,6 +7,7 @@ public record CaseRequestDto(
         Integer id,
         Integer fkProject,
         Integer fkCaseType,
+        Integer fkUser,
         LocalDateTime limitDate,
         String name,
         String description

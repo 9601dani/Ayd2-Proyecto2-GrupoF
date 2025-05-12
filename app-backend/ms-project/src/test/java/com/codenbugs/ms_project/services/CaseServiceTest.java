@@ -9,10 +9,14 @@ import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
+import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
+import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
 import com.codenbugs.ms_project.services.cases.CaseService;
 import com.codenbugs.ms_project.services.cases.CaseServiceImpl;
 import com.codenbugs.ms_project.services.project.ProjectService;
@@ -44,6 +48,15 @@ public class CaseServiceTest {
     @Mock
     private CaseRepository caseRepository;
 
+    @Mock
+    private UserRestClient userRestClient;
+
+    @Mock
+    private HistoryCasePhaseRepository historyCasePhaseRepository;
+
+    @Mock
+    private PhaseCasesRepository phaseCasesRepository;
+
     private final Integer ID = 1;
     private final Integer PROJECT_ID = 1;
     private final BigDecimal PROGRESS_PERCENTAGE = BigDecimal.valueOf(50.67);
@@ -54,6 +67,7 @@ public class CaseServiceTest {
     private final String DESCRIPTION = "Description Case";
     private final Boolean IS_CANCELED = false;
     private final String REASON_CANCELLATION = "Reason...";
+    private final Integer USER_ID = 1;
 
     private Case testCase;
     private CaseRequestDto request;
@@ -65,7 +79,7 @@ public class CaseServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        caseService = new CaseServiceImpl(caseRepository, projectRepository);
+        caseService = new CaseServiceImpl(caseRepository, historyCasePhaseRepository, phaseCasesRepository, projectRepository, userRestClient);
 
         testCase = new Case();
         testCase.setId(ID);
@@ -79,7 +93,7 @@ public class CaseServiceTest {
         testCase.setIsCancelled(IS_CANCELED);
         testCase.setReasonCancellation(REASON_CANCELLATION);
 
-        request = new CaseRequestDto(ID, PROJECT_ID, CASE_TYPE, LIMIT_DATE, NAME, DESCRIPTION);
+        request = new CaseRequestDto(ID, PROJECT_ID, CASE_TYPE, USER_ID, LIMIT_DATE, NAME, DESCRIPTION);
 
         requestCancelled = new CaseCancelledRequestDto(ID, REASON_CANCELLATION);
 
@@ -91,7 +105,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    public void saveCaseSuccessfully() throws ProjectIsDisabled, ProjectNotFound {
+    public void saveCaseSuccessfully() throws ProjectIsDisabled, ProjectNotFound, UserNotFoundException, UserIsDisabled {
 
         when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
 
@@ -170,7 +184,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    public void updateCaseIsCancelled(){
+    public void updateCaseIsCancelled() {
 
         testCase.setIsCancelled(true);
 
