@@ -172,7 +172,7 @@ public class ProjectServiceTest {
         assertEquals(expect.get(0), actual.get(0));
     }
 
-//    @Test
+//   @Test
 //    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
 //
 //        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
