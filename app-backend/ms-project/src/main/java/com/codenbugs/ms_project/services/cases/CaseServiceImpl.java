@@ -5,6 +5,7 @@ import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
+import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
@@ -80,6 +81,7 @@ public class CaseServiceImpl implements CaseService{
         newCase.setLimitDate(request.limitDate());
         newCase.setIsCancelled(false);
         newCase.setIsEnabled(true);
+        newCase.setCreatedAt(request.createdAt());
 
         Case savedCase = this.caseRepository.save(newCase);
 
@@ -133,7 +135,6 @@ public class CaseServiceImpl implements CaseService{
 
         caseToUpdate.setName(request.name());
         caseToUpdate.setDescription(request.description());
-        caseToUpdate.setFK_Case_Type(request.fkCaseType());
         caseToUpdate.setLimitDate(request.limitDate());
 
         Case updatedCase = this.caseRepository.save(caseToUpdate);
@@ -167,5 +168,10 @@ public class CaseServiceImpl implements CaseService{
     @Override
     public List<CaseResponseDto> getCasesByProjectId(Integer projectId) {
         return this.caseRepository.findByFkProject(projectId).stream().map(CaseResponseDto::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CaseWithUserDto> getActiveCasesByProject(Integer fkProject) {
+        return caseRepository.findAllEnabledNotCancelledCasesByProject(fkProject);
     }
 }

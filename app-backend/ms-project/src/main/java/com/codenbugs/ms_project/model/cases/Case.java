@@ -45,4 +45,7 @@ public class Case {
 
     @Column(name = "reason_cancellation")
     private String reasonCancellation;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }

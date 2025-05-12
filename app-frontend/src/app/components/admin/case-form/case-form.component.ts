@@ -22,7 +22,6 @@ import { UserService } from '../../../services/user/user.service';
 export class CaseFormComponent implements OnInit {
   @Input() mode: 'create' | 'edit' = 'create';
   @Input() caseData: Case | null = null;
-  @Input() historyCase: HistoryCase | null = null;
   @Output() submitForm = new EventEmitter<Case>();
   @Output() cancel = new EventEmitter<void>();
 
@@ -65,15 +64,18 @@ export class CaseFormComponent implements OnInit {
       },
     });
 
-    if (this.mode === 'edit' && this.caseData && this.historyCase) {
+    if (this.mode === 'edit' && this.caseData) {
       const formatDate = this.formatDate(this.caseData.limitDate);
       this.form.patchValue({
         name: this.caseData.name,
         description: this.caseData.description,
         fkCaseType: this.caseData.fkCaseType,
-        fkUser: this.historyCase.fkUser,
+        fkUser: this.caseData.fkUser,
         limitDate: formatDate,
       });
+
+       this.form.get('fkCaseType')?.disable();
+       this.form.get('fkUser')?.disable();
     }
   }
 

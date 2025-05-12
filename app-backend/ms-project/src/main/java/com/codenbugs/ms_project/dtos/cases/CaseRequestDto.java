@@ -10,6 +10,7 @@ public record CaseRequestDto(
         Integer fkUser,
         LocalDateTime limitDate,
         String name,
-        String description
+        String description,
+        LocalDateTime createdAt
 ) {
 }

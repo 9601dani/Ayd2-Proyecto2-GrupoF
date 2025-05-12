@@ -23,6 +23,7 @@ export interface Case {
   fkProject: number;
   progressPercentage: number;
   fkCaseType: number;
+  fkUser: number;
   limitDate: Date;
   isEnabled: boolean;
   isCancelled: boolean;
@@ -89,7 +90,7 @@ export class AdminProjectComponent implements OnInit {
         },
       });
 
-      this._projectService.getCasesByFkProject(this.projectId).subscribe({
+      this._projectService.getCasesWithUserByFkProject(this.projectId).subscribe({
         next: (value: any) => {
           this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
         },
@@ -121,6 +122,7 @@ export class AdminProjectComponent implements OnInit {
   onRegister(data: any) {
     data.fkProject = this.projectId;
     data.limitDate = new Date(data.limitDate);
+    data.createdAt = new Date()
 
     this._projectService.createCase(data).subscribe({
       next: (retCase) => {

@@ -32,44 +32,4 @@ import java.util.Optional;
 @Setter
 public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
 
-    private final HistoryCasePhaseRepository historyCasePhaseRepository;
-    private final UserRestClient userRestClient;
-    private final CaseRepository caseRepository;
-
-    @Override
-    public HistoryCaseResponseDto save(HistoryCaseRequest request) throws UserNotFoundException, UserIsDisabled, CaseNotFound, CaseIsDisabled {
-
-        UserResponse user = this.userRestClient.findById(request.fkUser());
-
-        if(!user.isEnabled()){
-            throw new UserIsDisabled("El usuario esta deshabilitado");
-        }
-
-        Optional<Case> optionalCase = this.caseRepository.findById(request.fkCase());
-
-        if(optionalCase.isEmpty()){
-            throw new CaseNotFound("El caso no existe");
-        }
-
-        Case caseModel = optionalCase.get();
-
-        if(!caseModel.getIsEnabled()){
-            throw new CaseIsDisabled("El case está deshabilitado");
-        }
-
-        if(caseModel.getIsCancelled()){
-            throw new CaseIsDisabled("El caso está cancelado");
-        }
-
-        HistoryCasePhase historyCasePhase = new HistoryCasePhase();
-        historyCasePhase.setFkCase(caseModel.getId());
-        historyCasePhase.setFkUser(user.id());
-        historyCasePhase.setFkCasePhase(request.fkCasePhase());
-        historyCasePhase.setIsCompleted(false);
-        historyCasePhase.setTimeSpent(BigDecimal.ZERO);
-
-        HistoryCasePhase historySaved = historyCasePhaseRepository.save(historyCasePhase);
-
-        return new HistoryCaseResponseDto(historySaved);
-    }
 }
