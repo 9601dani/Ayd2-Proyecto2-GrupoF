@@ -46,6 +46,23 @@
         Selecciona un tipo valido
       </p>
     </div>
+    
+    <div class="field">
+      <label class="label">Usuario a Cargo</label>
+      <div class="control">
+        <div class="select is-fullwidth">
+          <select formControlName="fkUser">
+            <option [ngValue]="null" disabled>Seleccione un usuario a cargo</option>
+            <option *ngFor="let user of users" [ngValue]="user.id">
+              {{ user.firstName }} {{user.lastName}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <p class="help is-danger" *ngIf="form.get('fkUser')?.touched && form.get('fkUser')?.invalid">
+        Selecciona un usuario valido
+      </p>
+    </div>
   
     <div class="field">
       <label class="label">Fecha Límite</label>

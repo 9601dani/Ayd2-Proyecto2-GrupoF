@@ -43,7 +43,7 @@ spring:
         - id: project-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8002}
           predicates:
-            - Path=/v1/projects/**,/v1/cases/**,/v1/type_cases/**,/v1/comments/**
+            - Path=/v1/projects/**,/v1/cases/**,/v1/type_cases/**,/v1/comments/**,/v1/history/**
           filters:
             - JWTVerifyFilterFactory
         - id: user-private-routes

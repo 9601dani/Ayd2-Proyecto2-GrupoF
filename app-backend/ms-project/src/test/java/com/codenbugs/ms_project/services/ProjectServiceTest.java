@@ -52,6 +52,7 @@ public class ProjectServiceTest {
     private final Integer ROLE = 1;
     private final String PHOTO = "Photo";
     private final BigDecimal SALARY_PER_HOUR = BigDecimal.valueOf(1.0);
+    private final Boolean IS_ENABLED = true;
 
     private Project project;
     private ProjectResponse projectResponse;
@@ -72,7 +73,7 @@ public class ProjectServiceTest {
         project.setFK_User(USER_ID);
         project.setIsEnabled(PROJECT_ENABLED);
 
-        userResponse = new UserResponse(USER_ID, USER_NAME, ROLE, PHOTO, SALARY_PER_HOUR);
+        userResponse = new UserResponse(USER_ID, USER_NAME, ROLE, PHOTO, SALARY_PER_HOUR, IS_ENABLED);
 
         projectResponse = new ProjectResponse(project, userResponse);
 
@@ -171,9 +172,9 @@ public class ProjectServiceTest {
         assertEquals(expect.get(0), actual.get(0));
     }
 
-    @Test
-    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
-
+//    @Test
+//    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
+//
 //        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
 //
 //        when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
@@ -185,8 +186,8 @@ public class ProjectServiceTest {
 //        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
 //
 //        assertEquals(expect, actual);
-
-    }
+//
+//    }
 
     @Test
     public void updateEnabledNotFound() throws ProjectNotFound {

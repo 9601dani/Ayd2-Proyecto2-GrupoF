@@ -7,6 +7,8 @@ import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.cases.CaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +25,7 @@ public class CaseController {
     private final CaseService caseService;
 
     @PostMapping("/save")
-    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFound {
+    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFound, UserNotFoundException, UserIsDisabled {
         CaseResponseDto responseDto = this.caseService.saveCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }

@@ -8,13 +8,15 @@ import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 
 import java.util.List;
 
 
 public interface CaseService {
 
-    CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFound, ProjectIsDisabled;
+    CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFound, ProjectIsDisabled, UserNotFoundException, UserIsDisabled;
 
     CaseResponseDto getCaseById(Integer id) throws CaseNotFound;
 
