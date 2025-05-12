@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplateComponent } from '../../commons/template/template.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NumberSymbol } from '@angular/common';
 import { Project } from '../../commons/project/project.component';
 import { ActivatedRoute } from '@angular/router';
 import { ProjectService } from '../../../services/project/project.service';
@@ -23,10 +23,20 @@ export interface Case {
   fkProject: number;
   progressPercentage: number;
   fkCaseType: number;
+  fkUser: number;
   limitDate: Date;
   isEnabled: boolean;
   isCancelled: boolean;
   reasonCancellation: string;
+}
+
+export interface HistoryCase{
+  id: number,
+  fkCase: number,
+  fkUser: number,
+  fkCasePhase: number,
+  isCompleted: boolean,
+  timeSpent: number
 }
 
 @Component({
@@ -80,10 +90,8 @@ export class AdminProjectComponent implements OnInit {
         },
       });
 
-      this._projectService.getCasesByFkProject(this.projectId).subscribe({
+      this._projectService.getCasesWithUserByFkProject(this.projectId).subscribe({
         next: (value: any) => {
-          
-          
           this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
         },
         error: (err) => {
@@ -114,6 +122,7 @@ export class AdminProjectComponent implements OnInit {
   onRegister(data: any) {
     data.fkProject = this.projectId;
     data.limitDate = new Date(data.limitDate);
+    data.createdAt = new Date()
 
     this._projectService.createCase(data).subscribe({
       next: (retCase) => {
