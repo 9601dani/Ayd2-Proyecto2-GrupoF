@@ -29,12 +29,7 @@ public class TokenService {
         return this.verifier.verify(token);
     }
 
-    public String getClaim(String token, String claimName) throws JWTVerificationException {
-        DecodedJWT decodedJWT = this.decodedJWT(token);
-        return decodedJWT.getClaim(claimName).asString();
-    }
-
-    private LocalDateTime getExpiredAtFromToken(String token) throws JWTVerificationException {
+    public LocalDateTime getExpiredAtFromToken(String token) throws JWTVerificationException {
         DecodedJWT decodedJWT = this.decodedJWT(token);
         return decodedJWT.getExpiresAt().toInstant().atZone(ZoneId.of(this.tokenSettings.getZone())).toLocalDateTime();
     }

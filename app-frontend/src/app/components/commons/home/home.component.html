@@ -1,10 +1,68 @@
 <app-template>
   <div body class="body">
     <section class="section">
-      <div class="container">
+      <div class="container is-fluid">
         <h1 class="title">Bienvenido</h1>
-        <p class="subtitle">Selecciona algo del menú lateral.</p>
-        <button (click)="test()">TEST</button>
+        <p class="subtitle mb-5">Área de contacto de la empresa:</p>
+
+        <div class="card" *ngIf="settingsForm">
+          <!-- LOGO DE LA EMPRESA -->
+          <div class="has-text-centered mt-4" *ngIf="settingsForm.get('company_logo')?.value">
+            <figure class="image is-128x128 is-inline-block">
+              <img [src]="settingsForm.get('company_logo')?.value | image" alt="Logo"
+                alt="Logo de la empresa"
+                class="is-rounded"
+                style="object-fit: cover; border: 2px solid #ccc;"
+              />
+            </figure>
+          </div>
+
+          <!-- CABECERA -->
+          <header class="card-header has-background-primary mt-4">
+            <p class="card-header-title has-text-white">
+              <mat-icon class="mr-2">business</mat-icon> Información de la Empresa
+            </p>
+          </header>
+
+          <!-- CONTENIDO -->
+          <div class="card-content">
+            <div class="columns is-multiline is-variable is-6">
+              <div class="column is-half">
+                <p class="is-size-6">
+                  <mat-icon class="mr-2">badge</mat-icon> 
+                  <strong>Nombre:</strong> {{ settingsForm.get('company_name')?.value }}
+                </p>
+              </div>
+              <div class="column is-half">
+                <p class="is-size-6">
+                  <mat-icon class="mr-2">location_on</mat-icon>
+                  <strong>Dirección:</strong> {{ settingsForm.get('company_address')?.value }}
+                </p>
+              </div>
+              <div class="column is-half">
+                <p class="is-size-6">
+                  <mat-icon class="mr-2">phone</mat-icon>
+                  <strong>Teléfono:  +</strong>{{settingsForm.get('company_ext')?.value}} {{settingsForm.get('company_phone_number')?.value }}
+                </p>
+              </div>
+              <div class="column is-half">
+                <p class="is-size-6">
+                  <mat-icon class="mr-2">email</mat-icon>
+                  <strong>Correo:</strong> {{ settingsForm.get('company_email_address')?.value }}
+                </p>
+              </div>
+              <div class="column is-full">
+                <p class="is-size-6 mb-1">
+                  <mat-icon class="mr-2">description</mat-icon>
+                  <strong>Descripción:</strong>
+                </p>
+                <p class="mt-1">
+                  {{ settingsForm.get('company_description')?.value }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>
