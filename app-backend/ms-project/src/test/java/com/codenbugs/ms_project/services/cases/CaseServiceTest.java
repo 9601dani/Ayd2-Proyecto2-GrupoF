@@ -1,4 +1,4 @@
-package com.codenbugs.ms_project.services;
+package com.codenbugs.ms_project.services.cases;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
@@ -19,9 +19,6 @@ import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
-import com.codenbugs.ms_project.services.cases.CaseService;
-import com.codenbugs.ms_project.services.cases.CaseServiceImpl;
-import com.codenbugs.ms_project.services.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -313,6 +310,16 @@ public class CaseServiceTest {
 
         assertEquals(expected, actual);
     }
+
+    @Test
+    public void saveCaseWithNoPhasesFails() throws UserNotFoundException {
+        when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(userRestClient.findById(USER_ID)).thenReturn(user);
+        when(phaseCasesRepository.findByFkCaseType(CASE_TYPE)).thenReturn(new ArrayList<>());
+
+        assertThrows(IndexOutOfBoundsException.class, () -> caseService.saveCase(request));
+    }
+
 
 
 }

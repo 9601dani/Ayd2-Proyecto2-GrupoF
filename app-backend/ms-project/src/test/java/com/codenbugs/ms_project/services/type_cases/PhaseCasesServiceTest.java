@@ -1,10 +1,9 @@
-package com.codenbugs.ms_project.services;
+package com.codenbugs.ms_project.services.type_cases;
 
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
+import com.codenbugs.ms_project.exceptions.typeCases.PhaseCasesException;
 import com.codenbugs.ms_project.model.cases.PhasesCase;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
-import com.codenbugs.ms_project.services.type_cases.PhaseCasesService;
-import com.codenbugs.ms_project.services.type_cases.PhaseCasesServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -77,6 +76,19 @@ public class PhaseCasesServiceTest {
         verify(phaseCasesRepository, times(1)).deleteByFkCaseType(CASE_TYPE_ID);
     }
 
+    @Test
+    void shouldThrowPhaseCasesExceptionWithMessage() {
+        // Arrange
+        String message = "Fase no válida";
+
+        // Act
+        PhaseCasesException exception = assertThrows(PhaseCasesException.class, () -> {
+            throw new PhaseCasesException(message);
+        });
+
+        // Assert
+        assertEquals(message, exception.getMessage());
+    }
 
 
 
