@@ -70,6 +70,9 @@ export class ProjectService {
     return this.http.get(`${this.CASE_API}/all/${id}`);
   }
 
+  getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
+    return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
+  }
 
   getCasesWithUserByFkProject(id: number): Observable<any> {
     return this.http.get(`${this.CASE_API}/active/${id}`);
@@ -87,11 +90,6 @@ export class ProjectService {
       params = params.set("idParent", idParent);
     }
     return this.http.get(`${this.COMMENT_API}/find-by-case-id/${id}`, {params});
-  }
-
-
-  getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
-    return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
 
 }
