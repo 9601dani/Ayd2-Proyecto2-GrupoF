@@ -28,4 +28,6 @@ public interface CaseRepository extends JpaRepository<Case, Integer> {
 """)
     List<CaseWithUserDto> findAllEnabledNotCancelledCasesByProject(@Param("fkProject") Integer fkProject);
 
+    boolean existsByIsEnabled(Boolean isEnabled);
+
 }

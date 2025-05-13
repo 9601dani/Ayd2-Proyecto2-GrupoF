@@ -6,29 +6,44 @@ import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
+import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.comment.Comment;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.comment.CommentRepository;
+import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(rollbackOn = Exception.class)
 @AllArgsConstructor
+@Transactional(rollbackOn = Exception.class)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final CaseRepository caseRepository;
+    private final ProjectRepository projectRepository;
     private final UserRestClient userRestClient;
 
     @Override
-    public CommentCreated saveComment(NewCommentRequest request) {
+    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException {
+
+        boolean isCaseEnabled = this.caseRepository.existsByIsEnabled(true);
+        boolean isProjectEnabled = this.projectRepository.existsByIsEnabled(true);
+
+        if(!isCaseEnabled){
+            throw new CommentNotCreatedException("El caso no se encuentra habilitado.");
+        }
+
+        if(!isProjectEnabled){
+            throw new CommentNotCreatedException("El projecto no se encuentra habilitado.");
+        }
+
         Comment comment = new Comment();
-        System.out.println("Comment created " + request.createdAt());
         comment.setCreatedDate(request.createdAt());
         comment.setContent(request.content());
         comment.setFkCase(request.idCase());
