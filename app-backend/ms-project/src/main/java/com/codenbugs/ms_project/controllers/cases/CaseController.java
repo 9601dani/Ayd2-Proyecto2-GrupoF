@@ -65,4 +65,5 @@ public class CaseController {
     public List<CaseWithUserDto> getActiveCasesByProject(@PathVariable Integer projectId) {
         return caseService.getActiveCasesByProject(projectId);
     }
+
 }

@@ -215,12 +215,12 @@ public class UserServiceImpl implements UserService {
     public UserResponse updatePhotoPathUser(Integer fkUser, MultipartFile file) throws UserNotFoundException, NotCreatedException {
         User user = this.userRepository.findById(fkUser).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
 
-        if(user == null) {
-            throw new UserNotFoundException("User not found");
-        }
-
         Map<String,String> result = this.uploadRestClient.uploadImage(file);
         String fileName = result.get("objectName");
+
+        if (fileName == null) {
+            throw new NotCreatedException("No se recibió objectName desde el upload");
+        }
 
         HashMap<String, String> response = new HashMap<>();
         user.setPhoto(fileName);

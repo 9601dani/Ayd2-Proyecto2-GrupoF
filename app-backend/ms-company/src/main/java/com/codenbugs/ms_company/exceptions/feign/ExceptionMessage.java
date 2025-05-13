@@ -1,6 +1,7 @@
 package com.codenbugs.ms_company.exceptions.feign;
 
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
