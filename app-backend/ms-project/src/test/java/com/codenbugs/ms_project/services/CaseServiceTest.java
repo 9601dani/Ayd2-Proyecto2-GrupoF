@@ -107,7 +107,7 @@ public class CaseServiceTest {
 
         requestCancelled = new CaseCancelledRequestDto(ID, REASON_CANCELLATION);
 
-        response = new CaseResponseDto(ID, PROJECT_ID, PROGRESS_PERCENTAGE, CASE_TYPE, LIMIT_DATE, IS_ENABLED, NAME, DESCRIPTION, IS_CANCELED, REASON_CANCELLATION);
+        response = new CaseResponseDto(ID, PROJECT_ID, PROGRESS_PERCENTAGE, CASE_TYPE, LIMIT_DATE, IS_ENABLED, NAME, DESCRIPTION, IS_CANCELED, REASON_CANCELLATION, CREATED_AT);
 
         project = new Project();
         project.setId(PROJECT_ID);
@@ -245,7 +245,7 @@ public class CaseServiceTest {
     public void cancelCaseSuccessfully() throws CaseNotFound, CaseIsDisabled {
         CaseResponseDto expected = new CaseResponseDto(
                 ID, PROJECT_ID, PROGRESS_PERCENTAGE, CASE_TYPE, LIMIT_DATE, IS_ENABLED,
-                NAME, DESCRIPTION, true, REASON_CANCELLATION
+                NAME, DESCRIPTION, true, REASON_CANCELLATION, CREATED_AT
         );
 
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));

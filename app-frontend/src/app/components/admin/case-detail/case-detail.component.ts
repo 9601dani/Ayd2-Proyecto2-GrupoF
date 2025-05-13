@@ -5,6 +5,7 @@ import {CommentsComponent} from './comments/comments.component';
 import {AlertService} from '../../../services/commons/alert.service';
 import {MatDivider} from '@angular/material/divider';
 import {ProjectService} from '../../../services/project/project.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-case-detail',
@@ -12,7 +13,8 @@ import {ProjectService} from '../../../services/project/project.service';
   imports: [
     TemplateComponent,
     CommentsComponent,
-    MatDivider
+    MatDivider,
+    DatePipe
   ],
   templateUrl: './case-detail.component.html',
   styleUrl: './case-detail.component.scss'
@@ -49,4 +51,16 @@ export class CaseDetailComponent implements OnInit {
       }
     })
   }
+
+  markAsCompleted() {
+  this._alertService.yesNo(
+    "Confirmación",
+    "¿Deseas marcar este caso como completado?",
+    () => {
+      console.log("Caso marcado como completado:", this.case.id);
+      this._alertService.success("Completado", "El caso ha sido marcado como completado.");
+    }
+  );
+}
+
 }

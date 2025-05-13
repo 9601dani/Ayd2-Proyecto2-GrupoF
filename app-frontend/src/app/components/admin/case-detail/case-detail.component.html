@@ -2,10 +2,20 @@
   <div body class="body">
     <section class="section">
       <div class="container">
-        <h1 class="title is-2 has-text-weight-bold">{{ case?.id }}. {{ case?.name }}</h1>
+        <h1 class="title is-2 has-text-weight-bold">
+          {{ case?.id }}. {{ case?.name }}
+        </h1>
         <h3 class="subtitle is-3">{{ case?.description }}</h3>
+
+        <div class="mb-4">
+          <p><strong>Fecha de creación:</strong> {{ case?.createdAt | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Fecha límite:</strong> {{ case?.limitDate | date: 'dd/MM/yyyy' }}</p>
+        </div>
+
+        <button class="button is-success" (click)="markAsCompleted()">Marcar como completado</button>
       </div>
     </section>
-    <app-comments [caseId]="this.id"></app-comments>
+
+    <app-comments [caseId]="id"></app-comments>
   </div>
 </app-template>
