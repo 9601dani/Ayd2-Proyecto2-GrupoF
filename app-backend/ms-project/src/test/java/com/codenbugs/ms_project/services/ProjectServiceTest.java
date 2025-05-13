@@ -218,7 +218,6 @@ public class ProjectServiceTest {
         assertThrows(ProjectIsDisabled.class, () -> this.projectService.updateEnabled(request));
     }
 
-
     @Test
     public void updateEnabledNotFound() throws ProjectNotFound {
         

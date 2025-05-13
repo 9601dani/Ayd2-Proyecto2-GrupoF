@@ -1,8 +1,8 @@
-package com.codenbugs.ms_company.utils;
+package com.codenbugs.ms_project.utils;
 
-import com.codenbugs.ms_company.exceptions.feign.ExceptionMessage;
-import com.codenbugs.ms_company.exceptions.feign.NotCreatedException;
-import com.codenbugs.ms_company.exceptions.feign.ResourceNotFoundException;
+import com.codenbugs.ms_project.exceptions.feign.ExceptionMessage;
+import com.codenbugs.ms_project.exceptions.feign.NotCreatedException;
+import com.codenbugs.ms_project.exceptions.feign.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -12,7 +12,7 @@ import java.io.InputStream;
 
 public class CustomErrorDecoder implements ErrorDecoder {
 
-    private final ErrorDecoder errorDecoder = new ErrorDecoder.Default();
+    private final ErrorDecoder errorDecoder = new Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {

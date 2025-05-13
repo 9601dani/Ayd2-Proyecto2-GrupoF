@@ -1,11 +1,11 @@
-package com.codenbugs.ms_project.exceptions.user;
+package com.codenbugs.ms_project.exceptions.feign;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class UserNotFoundException extends Exception {
-    public UserNotFoundException(String message) {
+public class ResourceNotFoundException extends Exception {
+    public ResourceNotFoundException(String message) {
         super(message);
     }
 }

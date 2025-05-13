@@ -69,8 +69,9 @@
 
               <footer
                 class="card-footer is-justify-content-center is-align-items-center"
-                style="height: 50 px"
+                style="height: 50px"
               >
+                <a class="card-footer-item" (click)="openCase(case.id)">Ver</a>
                 <a class="card-footer-item" (click)="openModal('edit', case)"
                   >Editar</a
                 >
@@ -111,9 +112,7 @@
                   class="content is-size-8 has-text-grey-dark"
                   style="min-height: 80px"
                 >
-                  {{
-                    case.reasonCancellation
-                  }}
+                  {{ case.reasonCancellation }}
                 </div>
               </div>
             </div>

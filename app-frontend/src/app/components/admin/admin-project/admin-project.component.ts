@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { TemplateComponent } from '../../commons/template/template.component';
 import { CommonModule, NumberSymbol } from '@angular/common';
 import { Project } from '../../commons/project/project.component';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ProjectService } from '../../../services/project/project.service';
 import { ModalComponent } from '../../commons/modal/modal.component';
 import { CaseFormComponent } from '../case-form/case-form.component';
@@ -70,7 +70,8 @@ export class AdminProjectComponent implements OnInit {
     private _projectService: ProjectService,
     private _alertService: AlertService,
     private _commonService: CommonService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _router: Router
   ) {
     this.form = this.fb.group({
       reason: ['', Validators.required],
@@ -215,5 +216,10 @@ export class AdminProjectComponent implements OnInit {
         this.closeModal();
       },
     });
+  }
+
+  openCase(id: number) {
+    console.log(id);
+    this._router.navigate([`/case/${id}`]);
   }
 }
