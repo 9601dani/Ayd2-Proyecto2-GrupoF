@@ -55,6 +55,12 @@ public class CaseController {
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/cancel/{isCancelled}")
+    public ResponseEntity<List<CaseResponseDto>> getCasesByIsCancelled(@PathVariable Boolean isCancelled)  {
+        List<CaseResponseDto> responseDtos = this.caseService.getCasesByIsCancelled(isCancelled);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
+
     @GetMapping("/active/{projectId}")
     public List<CaseWithUserDto> getActiveCasesByProject(@PathVariable Integer projectId) {
         return caseService.getActiveCasesByProject(projectId);

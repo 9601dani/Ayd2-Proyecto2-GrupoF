@@ -24,8 +24,14 @@
 
       <section class="section">
         <div class="columns is-multiline">
-          <div class="column is-full-mobile is-half-tablet is-one-third-desktop" *ngFor="let case of cases">
-            <div class="card has-text-centered is-flex is-flex-direction-column" style="height: 100%;">
+          <div
+            class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            *ngFor="let case of cases"
+          >
+            <div
+              class="card has-text-centered is-flex is-flex-direction-column"
+              style="height: 100%"
+            >
               <header class="card-header">
                 <p class="card-header-title is-size-5 has-text-weight-bold">
                   {{ case.name }}
@@ -65,13 +71,51 @@
                 class="card-footer is-justify-content-center is-align-items-center"
                 style="height: 50 px"
               >
-                <a
-                  class="card-footer-item"
-                  (click)="openModal('edit', case)"
+                <a class="card-footer-item" (click)="openModal('edit', case)"
                   >Editar</a
                 >
-                <a class="card-footer-item" (click)="openModal('cancel', case)">Cancelar</a>
+                <a class="card-footer-item" (click)="openModal('cancel', case)"
+                  >Cancelar</a
+                >
               </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- cases cancelled -->
+      <section class="section">
+        <div class="container">
+          <h1 class="title is-3 has-text-weight-bold">Casos Cancelados</h1>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="columns is-multiline">
+          <div
+            class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            *ngFor="let case of casesCancelled"
+          >
+            <div
+              class="card has-text-centered is-flex is-flex-direction-column"
+              style="height: 100%"
+            >
+              <header class="card-header">
+                <p class="card-header-title is-size-5 has-text-weight-bold">
+                  {{ case.name }}
+                </p>
+              </header>
+
+              <div class="card-content is-flex-grow-1">
+                <div
+                  class="content is-size-8 has-text-grey-dark"
+                  style="min-height: 80px"
+                >
+                  {{
+                    case.reasonCancellation
+                  }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -103,9 +147,9 @@
       (cancel)="closeModal()"
     ></app-case-form>
   </div>
-  
+
   <div modalTitle class="modal-card-title" *ngIf="actualAction === 'cancel'">
-    Cancelar  Proyecto
+    Cancelar Proyecto
   </div>
   <div modalContent *ngIf="actualAction === 'cancel'">
     <form [formGroup]="form" (ngSubmit)="cancelCase()">

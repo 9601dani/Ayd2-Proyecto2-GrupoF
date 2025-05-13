@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
@@ -172,22 +170,53 @@ public class ProjectServiceTest {
         assertEquals(expect.get(0), actual.get(0));
     }
 
-//   @Test
-//    public void updateEnabledSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
-//
-//        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
-//
-//        when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
-//
-//        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
-//
-//        ProjectResponseWithoutUser expect = new ProjectResponseWithoutUser(project);
-//
-//        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
-//
-//        assertEquals(expect, actual);
-//
-//    }
+    @Test
+    public void updateEnabledProjectSuccessfully_Enable() throws ProjectNotFound, ProjectIsDisabled {
+        project.setIsEnabled(false);
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, true);
+
+        when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(this.caseRepository.findByFkProject(PROJECT_ID)).thenReturn(List.of());
+        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
+
+        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
+
+        assertTrue(actual.isEnabled());
+    }
+
+    @Test
+    public void updateEnabledProjectSuccessfully_Disable() throws ProjectNotFound, ProjectIsDisabled {
+        project.setIsEnabled(true);
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, false);
+
+        when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+        when(this.caseRepository.findByFkProject(PROJECT_ID)).thenReturn(List.of());
+        when(this.projectRepository.save(any(Project.class))).thenReturn(project);
+
+        ProjectResponseWithoutUser actual = this.projectService.updateEnabled(request);
+
+        assertFalse(actual.isEnabled());
+    }
+
+    @Test
+    public void updateEnabledProjectAlreadyEnabled() {
+        project.setIsEnabled(true);
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, true);
+
+        when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+
+        assertThrows(ProjectIsDisabled.class, () -> this.projectService.updateEnabled(request));
+    }
+
+    @Test
+    public void updateEnabledProjectAlreadyDisabled() {
+        project.setIsEnabled(false);
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, false);
+
+        when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.of(project));
+
+        assertThrows(ProjectIsDisabled.class, () -> this.projectService.updateEnabled(request));
+    }
 
 
     @Test

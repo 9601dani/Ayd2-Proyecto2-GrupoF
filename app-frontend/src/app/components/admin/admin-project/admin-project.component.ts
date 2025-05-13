@@ -56,6 +56,7 @@ export class AdminProjectComponent implements OnInit {
   project: Project | undefined;
   projectId: number | undefined;
   cases: Case[] = [];
+  casesCancelled: Case[] = [];
 
   userId: number | undefined;
 
@@ -93,6 +94,17 @@ export class AdminProjectComponent implements OnInit {
       this._projectService.getCasesWithUserByFkProject(this.projectId).subscribe({
         next: (value: any) => {
           this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+      
+      this._projectService.getCasesByIsCancelled(true).subscribe({
+        next: (value: any) => {
+          this.casesCancelled = value;
+          console.log(value);
+          
         },
         error: (err) => {
           console.log(err);
@@ -149,7 +161,7 @@ export class AdminProjectComponent implements OnInit {
     data.fkProject = this.projectId;
     data.id = this.caseSelected.id;
     data.limitDate = new Date(data.limitDate);
-
+    
     this._projectService.updateCase(data).subscribe({
       next: (retCase) => {
         const index = this.cases.findIndex((u) => u.id === retCase.id);
