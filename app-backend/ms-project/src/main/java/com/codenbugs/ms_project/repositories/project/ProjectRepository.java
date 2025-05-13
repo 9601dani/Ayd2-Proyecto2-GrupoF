@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Optional<Project> findByName(String name);
-    boolean existsByIsEnabled(Boolean isEnabled);
+
+    boolean existsByIdAndIsEnabled(Integer id, Boolean isEnabled);
 }

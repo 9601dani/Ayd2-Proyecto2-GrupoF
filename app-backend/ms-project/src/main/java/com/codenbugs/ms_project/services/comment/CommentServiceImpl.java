@@ -5,9 +5,11 @@ import com.codenbugs.ms_project.dtos.comment.CommentCreated;
 import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
 import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.comment.Comment;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.comment.CommentRepository;
@@ -30,14 +32,12 @@ public class CommentServiceImpl implements CommentService {
     private final UserRestClient userRestClient;
 
     @Override
-    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException {
+    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException, CaseNotFound {
 
-        boolean isCaseEnabled = this.caseRepository.existsByIsEnabled(true);
-        boolean isProjectEnabled = this.projectRepository.existsByIsEnabled(true);
+        Case commentCase = this.caseRepository.findByIdAndIsEnabled(request.idCase(), true)
+                .orElseThrow(() -> new CaseNotFound("No se encontró el caso."));
 
-        if(!isCaseEnabled){
-            throw new CommentNotCreatedException("El caso no se encuentra habilitado.");
-        }
+        boolean isProjectEnabled = this.projectRepository.existsByIdAndIsEnabled(commentCase.getFkProject(), true);
 
         if(!isProjectEnabled){
             throw new CommentNotCreatedException("El projecto no se encuentra habilitado.");

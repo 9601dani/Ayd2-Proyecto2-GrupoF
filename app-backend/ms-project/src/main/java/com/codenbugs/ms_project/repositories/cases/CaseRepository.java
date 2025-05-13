@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CaseRepository extends JpaRepository<Case, Integer> {
@@ -28,6 +29,6 @@ public interface CaseRepository extends JpaRepository<Case, Integer> {
 """)
     List<CaseWithUserDto> findAllEnabledNotCancelledCasesByProject(@Param("fkProject") Integer fkProject);
 
-    boolean existsByIsEnabled(Boolean isEnabled);
+    Optional<Case> findByIdAndIsEnabled(Integer id, Boolean isEnabled);
 
 }
