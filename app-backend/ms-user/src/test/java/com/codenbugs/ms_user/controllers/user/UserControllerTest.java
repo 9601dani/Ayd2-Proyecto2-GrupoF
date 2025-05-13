@@ -58,8 +58,6 @@ class UserControllerTest {
     @Autowired
     private MockMvc mockMvc;
     @Autowired
-    private ObjectMapper mapper = new ObjectMapper();
-    @Autowired
     private ObjectMapper objectMapper;
 
     @BeforeEach
@@ -284,7 +282,7 @@ class UserControllerTest {
     void updatePhotoPath() throws Exception {
         // Arrange
         MockMultipartFile file = new MockMultipartFile("file", "photo.jpg", MediaType.IMAGE_JPEG_VALUE, "fake-image".getBytes());
-        UserResponse response = new UserResponse(ID, USERNAME, ID, PHOTO,SALARY);
+        UserResponse response = new UserResponse(user);
 
         when(userService.updatePhotoPathUser(eq(ID), any(MultipartFile.class))).thenReturn(response);
 
