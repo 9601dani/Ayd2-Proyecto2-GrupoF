@@ -22,11 +22,11 @@ pipeline {
                 }
             }
         }
-
+        
         stage('Verify Jacoco Exec') {
             steps {
-                dir('app-backend') {
-                    sh 'ls -l target'
+                dir('app-backend/report/target') {
+                    sh 'ls -l'
                 }
             }
         }
@@ -36,13 +36,13 @@ pipeline {
         success {
             script {
                 jacoco (
-                    execPattern: 'app-backend/target/jacoco.exec',
-                    classPattern: 'app-backend/target/classes',
-                    sourcePattern: 'app-backend/src/main/java',
+                    execPattern: '**/target/*.exec',
+                    classPattern: '**/target/classes',
+                    sourcePattern: '**/src/main/java',
                     exclusionPattern: '**/target/test-classes',
                     changeBuildStatus: true,
                     minimumLineCoverage: '85'
-                )            
+                )    
             }
 
             echo 'Backend build completed successfully'
