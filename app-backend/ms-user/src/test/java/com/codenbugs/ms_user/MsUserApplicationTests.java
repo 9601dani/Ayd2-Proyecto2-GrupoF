@@ -10,4 +10,10 @@ class MsUserApplicationTests {
 	void contextLoads() {
 	}
 
+	@Test
+	void mainMethodRunsWithoutErrors() {
+		MsUserApplication.main(new String[] {});
+	}
+
+
 }
