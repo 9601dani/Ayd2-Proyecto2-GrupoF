@@ -20,7 +20,7 @@ import {CommonService} from '../../../services/commons/common.service';
     CommentsComponent,
     DatePipe,
     CompletePhaseModalComponent,
-    NewPhaseModalComponent
+    NewPhaseModalComponent,
   ],
   templateUrl: './case-detail.component.html',
   styleUrl: './case-detail.component.scss'
