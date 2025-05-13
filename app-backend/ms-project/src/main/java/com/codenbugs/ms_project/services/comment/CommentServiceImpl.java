@@ -6,6 +6,7 @@ import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
+import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.comment.Comment;
 import com.codenbugs.ms_project.repositories.comment.CommentRepository;
@@ -26,17 +27,21 @@ public class CommentServiceImpl implements CommentService {
     private final UserRestClient userRestClient;
 
     @Override
-    public CommentCreated saveComment(NewCommentRequest request) {
-        Comment comment = new Comment();
-        System.out.println("Comment created " + request.createdAt());
-        comment.setCreatedDate(request.createdAt());
-        comment.setContent(request.content());
-        comment.setFkCase(request.idCase());
-        comment.setFkUser(request.idUser());
-        comment.setIdParent(request.idParent());
-        comment = commentRepository.save(comment);
-        return new CommentCreated(comment);
+    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException {
+        try {
+            Comment comment = new Comment();
+            comment.setCreatedDate(request.createdAt());
+            comment.setContent(request.content());
+            comment.setFkCase(request.idCase());
+            comment.setFkUser(request.idUser());
+            comment.setIdParent(request.idParent());
+            comment = commentRepository.save(comment);
+            return new CommentCreated(comment);
+        } catch (Exception e) {
+            throw new CommentNotCreatedException("No se pudo crear el comentario");
+        }
     }
+
 
     @Override
     public List<CommentResponse> getCommentsByCaseId(Integer id, Integer idParent) throws UserNotFoundException {

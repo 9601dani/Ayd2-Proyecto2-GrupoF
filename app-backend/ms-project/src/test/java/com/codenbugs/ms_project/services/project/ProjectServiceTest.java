@@ -1,4 +1,4 @@
-package com.codenbugs.ms_project.services;
+package com.codenbugs.ms_project.services.project;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
@@ -10,11 +10,10 @@ import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
-import com.codenbugs.ms_project.services.project.ProjectService;
-import com.codenbugs.ms_project.services.project.ProjectServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -24,6 +23,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -226,7 +226,52 @@ public class ProjectServiceTest {
         assertThrows(ProjectNotFoundException.class, () -> projectService.getById(PROJECT_ID));
 
     }
+    @Test
+    void updateEnabledShouldThrowProjectNotFoundWhenProjectDoesNotExist() {
+        // Arrange
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
+        when(projectRepository.findById(request.id())).thenReturn(Optional.empty());
 
+        // Act & Assert
+        assertThrows(ProjectNotFound.class, () -> {
+            projectService.updateEnabled(request);
+        });
+    }
 
+    @Test
+    void updateEnabledshouldThrowProjectIsDisabledWhenAlreadyEnabled() {
+        // Arrange
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, PROJECT_ENABLED);
+        Project project = new Project();
+        project.setId(PROJECT_ID);
+        project.setIsEnabled(PROJECT_ENABLED);
+
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+
+        // Act & Assert
+        ProjectIsDisabled ex = assertThrows(ProjectIsDisabled.class, () -> {
+            projectService.updateEnabled(request);
+        });
+
+        assertEquals("El proyecto ya está habilitado", ex.getMessage());
+    }
+
+    @Test
+    void updateEnabled_shouldThrowProjectIsDisabled_whenAlreadyDisabled() {
+        // Arrange
+        ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, !PROJECT_ENABLED);
+        Project project = new Project();
+        project.setId(PROJECT_ID);
+        project.setIsEnabled(!PROJECT_ENABLED);
+
+        when(projectRepository.findById(1)).thenReturn(Optional.of(project));
+
+        // Act & Assert
+        ProjectIsDisabled ex = assertThrows(ProjectIsDisabled.class, () -> {
+            projectService.updateEnabled(request);
+        });
+
+        assertEquals("El proyecto ya está deshabilitado", ex.getMessage());
+    }
 
 }

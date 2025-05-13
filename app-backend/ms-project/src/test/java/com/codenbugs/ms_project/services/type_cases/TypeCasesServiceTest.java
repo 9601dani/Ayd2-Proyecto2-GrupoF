@@ -1,14 +1,13 @@
-package com.codenbugs.ms_project.services;
+package com.codenbugs.ms_project.services.type_cases;
 
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
 import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.model.cases.TypeCase;
+import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
+import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
-import com.codenbugs.ms_project.services.type_cases.PhaseCasesService;
-import com.codenbugs.ms_project.services.type_cases.TypeCasesService;
-import com.codenbugs.ms_project.services.type_cases.TypeCasesServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -16,6 +15,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static junit.framework.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -97,6 +98,80 @@ public class TypeCasesServiceTest {
         assertEquals(1, response.phases().size());
         assertEquals(PHASE_ID, response.phases().get(0).getId());
     }
+
+    @Test
+    public void createTypeCaseWithExistingNameThrowsException() {
+        // Arrange
+        when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(typeCase);
+
+        // Act & Assert
+        assertThrows(NameTypeCaseAlreadyExist.class, () -> {
+            typeCasesService.create(typeCasesRequest);
+        });
+
+        verify(typeCasesRepository, never()).save(any());
+        verify(phaseCasesService, never()).save(any(), anyInt(), any());
+    }
+
+    @Test
+    public void createTypeCaseFailsWhenPhaseSaveReturnsNull() {
+        // Arrange
+        when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(null);
+
+        TypeCase savedType = new TypeCase();
+        savedType.setId(TYPE_CASES_ID);
+        savedType.setName(TYPE_CASES_NAME);
+        savedType.setDescription(TYPE_CASES_DESCRIPTION);
+        when(typeCasesRepository.save(any())).thenReturn(savedType);
+
+        when(phaseCasesService.save(any(), eq(TYPE_CASES_ID), any())).thenReturn(null);
+
+        // Act & Assert
+        Exception exception = assertThrows(IllegalStateException.class, () -> {
+            typeCasesService.create(typeCasesRequest);
+        });
+
+        assertEquals("La fase no pudo ser guardada correctamente.", exception.getMessage());
+    }
+
+    @Test
+    public void updateTypeCaseSuccessfully() throws Exception {
+        when(typeCasesRepository.findById(TYPE_CASES_ID)).thenReturn(Optional.of(typeCase));
+        when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(typeCase);
+        when(phaseCasesService.save(any(), anyInt(), any())).thenReturn(phasesCase);
+
+        TypeCasesResponse result = typeCasesService.update(TYPE_CASES_ID, typeCasesRequest);
+
+        assertNotNull(result);
+        assertEquals(TYPE_CASES_NAME, result.name());
+    }
+
+    @Test
+    public void updateTypeCaseNotFound() {
+        when(typeCasesRepository.findById(TYPE_CASES_ID)).thenReturn(Optional.empty());
+
+        assertThrows(TypeCaseNotFoundException.class, () -> {
+            typeCasesService.update(TYPE_CASES_ID, typeCasesRequest);
+        });
+    }
+
+    @Test
+    public void updateTypeCaseWithDuplicateNameThrowsException() {
+        TypeCase otherTypeCase = new TypeCase();
+        otherTypeCase.setId(999);
+        otherTypeCase.setName(TYPE_CASES_NAME);
+
+        when(typeCasesRepository.findById(TYPE_CASES_ID)).thenReturn(Optional.of(typeCase));
+        when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(otherTypeCase);
+
+        assertThrows(NameTypeCaseAlreadyExist.class, () -> {
+            typeCasesService.update(TYPE_CASES_ID, typeCasesRequest);
+        });
+    }
+
+
+
+
 
 
 }
