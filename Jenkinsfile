@@ -36,9 +36,9 @@ pipeline {
         success {
             script {
                 jacoco (
-                    execPattern: '**/target/*.exec',
-                    classPattern: '**/target/*.classes',
-                    sourcePattern: '**/src/main/java',
+                execPattern: 'app-backend/target/jacoco.exec',
+                classPattern: 'app-backend/target/classes',
+                sourcePattern: 'app-backend/src/main/java'
                     exclusionPattern: '**/target/test-classes',
                     changeBuildStatus: true,
                     minimumLineCoverage: '85'
