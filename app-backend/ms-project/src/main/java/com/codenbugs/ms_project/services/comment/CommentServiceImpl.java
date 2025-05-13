@@ -53,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
         return new CommentCreated(comment);
     }
 
+
     @Override
     public List<CommentResponse> getCommentsByCaseId(Integer id, Integer idParent) throws UserNotFoundException {
         List<Comment> comments = commentRepository.findByFkCaseAndIdParentOrderByCreatedDateDesc(id, idParent);
