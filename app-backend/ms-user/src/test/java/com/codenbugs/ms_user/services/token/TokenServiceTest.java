@@ -92,12 +92,17 @@ class TokenServiceTest {
     }
     @Test
     void isTokenExpiredReturnsFalseForValidToken() {
-        DecodedJWT decoded = tokenService.decodedJWT(validToken);
-        System.out.println("Expires at: " + decoded.getExpiresAt());
+        // Arrange
+        TokenResponse tokens = tokenService.getTokens(user);
+        String refreshToken = tokens.refreshToken();
 
-        boolean isExpired = tokenService.isTokenExpired(validToken);
+        // Act
+        boolean isExpired = tokenService.isTokenExpired(refreshToken);
+
+        // Assert
         assertFalse(isExpired);
     }
+
 
     @Test
     void isTokenExpiredReturnsTrueForExpiredToken() {
