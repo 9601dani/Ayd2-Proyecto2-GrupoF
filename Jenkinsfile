@@ -25,8 +25,8 @@ pipeline {
 
         stage('Verify Jacoco Exec') {
             steps {
-                dir('app-backend/report/target') {
-                    sh 'ls -l'
+                dir('app-backend') {
+                    sh 'ls -l target'
                 }
             }
         }
