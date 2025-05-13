@@ -4,6 +4,7 @@ package com.codenbugs.ms_project.services.cases;
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseResponseDto;
+import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,4 +34,10 @@ import java.util.Optional;
 @Setter
 public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
 
+    private final HistoryCasePhaseRepository historyCasePhaseRepository;
+
+    @Override
+    public List<HistoryCaseWithCaseDto> getAllWithCaseInfo() {
+        return historyCasePhaseRepository.findAllWithCaseInfo();
+    }
 }
