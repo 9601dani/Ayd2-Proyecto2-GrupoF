@@ -12,5 +12,5 @@ import java.util.HashMap;
 public interface UploadRestClient {
 
     @PostMapping(value = "/images" , consumes = "multipart/form-data")
-    HashMap<String, String> uploadImage(@RequestPart("file") MultipartFile file);
+    HashMap<String, String> uploadImage(@RequestPart("file") MultipartFile file) throws NotCreatedException;
 }

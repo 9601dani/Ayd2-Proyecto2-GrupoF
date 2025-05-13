@@ -25,8 +25,16 @@ public class CustomErrorDecoder implements ErrorDecoder {
         }
 
         return switch (response.status()) {
-            case 400 -> new NotCreatedException(exceptionMessage != null ? exceptionMessage.getMessage() : "Resource Not Created.");
-            case 404 -> new ResourceNotFoundException(exceptionMessage != null ? exceptionMessage.getMessage() : "Resource Not Found.");
+            case 400 -> new NotCreatedException(
+                    exceptionMessage != null && exceptionMessage.getMessage() != null
+                            ? exceptionMessage.getMessage()
+                            : "Resource Not Created."
+            );
+            case 404 -> new ResourceNotFoundException(
+                    exceptionMessage != null && exceptionMessage.getMessage() != null
+                            ? exceptionMessage.getMessage()
+                            : "Resource Not Found."
+            );
             default -> errorDecoder.decode(methodKey, response);
         };
     }

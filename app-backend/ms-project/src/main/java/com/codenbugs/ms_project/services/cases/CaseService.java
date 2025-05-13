@@ -24,4 +24,5 @@ public interface CaseService {
 
     List<CaseResponseDto> getCasesByProjectId(Integer projectId);
 
+
 }

@@ -51,4 +51,6 @@ public class CaseController {
         List<CaseResponseDto> responseDtos = this.caseService.getCasesByProjectId(fkProject);
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
+
+
 }
