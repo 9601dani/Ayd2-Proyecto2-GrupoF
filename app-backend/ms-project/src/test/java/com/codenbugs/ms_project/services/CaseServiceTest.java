@@ -102,6 +102,7 @@ public class CaseServiceTest {
         testCase.setIsEnabled(IS_ENABLED);
         testCase.setIsCancelled(IS_CANCELED);
         testCase.setReasonCancellation(REASON_CANCELLATION);
+        testCase.setCreatedAt(CREATED_AT);
 
         request = new CaseRequestDto(ID, PROJECT_ID, CASE_TYPE, USER_ID, LIMIT_DATE, NAME, DESCRIPTION, CREATED_AT);
 
