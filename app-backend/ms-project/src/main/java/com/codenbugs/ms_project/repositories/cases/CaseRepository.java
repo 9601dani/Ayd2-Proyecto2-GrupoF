@@ -14,6 +14,8 @@ public interface CaseRepository extends JpaRepository<Case, Integer> {
 
     List<Case> findByFkProject(Integer projectId);
 
+    List<Case> findByIsCancelled(Boolean isCancelled);
+
     @Query("""
     SELECT new com.codenbugs.ms_project.dtos.cases.CaseWithUserDto(
         c.id, c.name, c.description, c.fkProject, c.progressPercentage, c.FK_Case_Type, h.fkUser,
