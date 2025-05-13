@@ -20,8 +20,6 @@ import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
-import com.codenbugs.ms_project.services.cases.CaseService;
-import com.codenbugs.ms_project.services.cases.CaseServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
