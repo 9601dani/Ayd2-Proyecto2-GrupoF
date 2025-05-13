@@ -89,6 +89,11 @@ public class TypeCasesServiceImpl implements TypeCasesService {
 
         for (PhasesCaseRequest phaseReq : reversedPhases) {
             PhasesCase saved = this.phaseCasesService.save(phaseReq, newTypeCase.getId(), nextPhaseId);
+
+            if (saved == null || saved.getId() == null) {
+                throw new IllegalStateException("La fase no pudo ser guardada correctamente.");
+            }
+
             savedPhases.add(saved);
             nextPhaseId = saved.getId();
         }

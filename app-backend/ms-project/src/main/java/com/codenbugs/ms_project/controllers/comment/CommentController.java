@@ -3,6 +3,7 @@ package com.codenbugs.ms_project.controllers.comment;
 import com.codenbugs.ms_project.dtos.comment.CommentCreated;
 import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
+import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.comment.CommentService;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping()
-    public ResponseEntity<CommentCreated> createComment(@RequestBody NewCommentRequest request) {
+    public ResponseEntity<CommentCreated> createComment(@RequestBody NewCommentRequest request) throws CommentNotCreatedException {
         CommentCreated comment = this.commentService.saveComment(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(comment);
     }
