@@ -6,7 +6,6 @@ import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -36,9 +35,6 @@ import static org.mockito.Mockito.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -184,7 +180,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    public void getCaseById_NotFound() {
+    public void getCaseByIdNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
 
         assertThrows(CaseNotFound.class, () -> caseService.getCaseById(ID));
