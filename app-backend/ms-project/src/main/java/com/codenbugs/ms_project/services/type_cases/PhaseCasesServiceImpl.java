@@ -18,8 +18,8 @@ import java.util.List;
 @Setter
 @Transactional(rollbackOn = PhaseCasesException.class)
 public class PhaseCasesServiceImpl implements PhaseCasesService {
-    private final PhaseCasesRepository phaseCasesRepository;
 
+    private final PhaseCasesRepository phaseCasesRepository;
 
     @Override
     public List<PhasesCase> findByCaseType(Integer caseId) {

@@ -97,6 +97,7 @@ public class CaseServiceImpl implements CaseService{
         hcp.setFkCasePhase(firstPhase.getId());
         hcp.setIsCompleted(false);
         hcp.setTimeSpent(BigDecimal.ZERO);
+        hcp.setPhaseName(firstPhase.getName());
 
         this.historyCasePhaseRepository.save(hcp);
 
@@ -154,6 +155,7 @@ public class CaseServiceImpl implements CaseService{
             hcp.setFkCasePhase(firstPhase.getId());
             hcp.setIsCompleted(false);
             hcp.setTimeSpent(BigDecimal.ZERO);
+            hcp.setPhaseName(firstPhase.getName());
 
             this.historyCasePhaseRepository.save(hcp);
         }
