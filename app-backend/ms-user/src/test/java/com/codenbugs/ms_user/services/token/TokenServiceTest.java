@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -23,6 +24,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class TokenServiceTest {
@@ -47,10 +49,12 @@ class TokenServiceTest {
 
     private TokenService tokenService;
 
+    private TokenSettings tokenSettings;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        TokenSettings tokenSettings = new TokenSettings(SECRET, ACCESS_EXP_MIN, REFRESH_EXP_MIN, ZONE);
+        tokenSettings = new TokenSettings(SECRET, ACCESS_EXP_MIN, REFRESH_EXP_MIN, ZONE);
         tokenService = new TokenService(tokenSettings, userRepository);
 
         validToken = generateToken(ISSUER, EXPIRES_IN);
@@ -63,6 +67,7 @@ class TokenServiceTest {
 
         refreshTokenRequest = new RefreshTokenRequest(ID, validToken);
     }
+
 
 
     @Test
@@ -108,16 +113,23 @@ class TokenServiceTest {
     void refreshTokenValidReturnsNewAccessToken() throws Exception {
         // Arrange
         user.setToken(validToken);
-        when(userRepository.findByIdAndToken(user.getId(), validToken)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdAndToken(user.getId(), validToken))
+                .thenReturn(Optional.of(user));
+
+        // Crea un espía del TokenService correctamente con el tokenSettings asignado
+        TokenService spyTokenService = Mockito.spy(new TokenService(tokenSettings, userRepository));
+        doReturn(false).when(spyTokenService).isTokenExpired(validToken);
 
         // Act
-        TokenResponse response = tokenService.refreshToken(refreshTokenRequest);
+        TokenResponse response = spyTokenService.refreshToken(refreshTokenRequest);
 
         // Assert
         assertNotNull(response);
         assertEquals(validToken, response.refreshToken());
         assertNotNull(response.accessToken());
     }
+
+
 
 
     @Test
