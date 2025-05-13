@@ -13,7 +13,6 @@ import com.codenbugs.ms_user.utils.token.TokenSettings;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -93,10 +92,10 @@ class TokenServiceTest {
     }
     @Test
     void isTokenExpiredReturnsFalseForValidToken() {
-        // Act
-        boolean isExpired = tokenService.isTokenExpired(validToken);
+        DecodedJWT decoded = tokenService.decodedJWT(validToken);
+        System.out.println("Expires at: " + decoded.getExpiresAt());
 
-        // Assert
+        boolean isExpired = tokenService.isTokenExpired(validToken);
         assertFalse(isExpired);
     }
 
@@ -157,7 +156,7 @@ class TokenServiceTest {
     private String generateToken(String issuer, long secondsFromNow) {
         Algorithm algorithm = Algorithm.HMAC256(SECRET);
         return JWT.create()
-                .withIssuer(issuer)
+                .withIssuer(ISSUER)
                 .withExpiresAt(Date.from(Instant.now().plusSeconds(secondsFromNow)))
                 .sign(algorithm);
     }
