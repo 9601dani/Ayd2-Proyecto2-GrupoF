@@ -6,4 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePhase, Integer> {
+
+    void deleteAllHistoryCasePhaseByFkCase(Integer fkCase);
 }

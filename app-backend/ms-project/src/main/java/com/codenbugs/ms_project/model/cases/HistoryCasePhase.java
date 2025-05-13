@@ -34,4 +34,7 @@ public class HistoryCasePhase{
 
     @Column(name = "time_spent",nullable = false)
     private BigDecimal timeSpent = BigDecimal.ZERO;
+
+    @Column(name = "phase_name", nullable = false)
+    private String phaseName;
 }

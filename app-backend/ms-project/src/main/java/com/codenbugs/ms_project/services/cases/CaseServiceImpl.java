@@ -97,6 +97,7 @@ public class CaseServiceImpl implements CaseService{
         hcp.setFkCasePhase(firstPhase.getId());
         hcp.setIsCompleted(false);
         hcp.setTimeSpent(BigDecimal.ZERO);
+        hcp.setPhaseName(firstPhase.getName());
 
         this.historyCasePhaseRepository.save(hcp);
 
@@ -137,6 +138,28 @@ public class CaseServiceImpl implements CaseService{
         caseToUpdate.setDescription(request.description());
         caseToUpdate.setLimitDate(request.limitDate());
 
+        if(!caseToUpdate.getFK_Case_Type().equals(request.fkCaseType())){
+
+            caseToUpdate.setFK_Case_Type(request.fkCaseType());
+            List<PhasesCase> phases = this.phaseCasesRepository.findByFkCaseType(request.fkCaseType());
+
+            Collections.reverse(phases);
+
+            PhasesCase firstPhase = phases.get(0);
+
+            this.historyCasePhaseRepository.deleteAllHistoryCasePhaseByFkCase(caseToUpdate.getId());
+
+            HistoryCasePhase hcp = new HistoryCasePhase();
+            hcp.setFkCase(caseToUpdate.getId());
+            hcp.setFkUser(request.fkUser());
+            hcp.setFkCasePhase(firstPhase.getId());
+            hcp.setIsCompleted(false);
+            hcp.setTimeSpent(BigDecimal.ZERO);
+            hcp.setPhaseName(firstPhase.getName());
+
+            this.historyCasePhaseRepository.save(hcp);
+        }
+
         Case updatedCase = this.caseRepository.save(caseToUpdate);
 
         return new CaseResponseDto(updatedCase);
@@ -173,5 +196,10 @@ public class CaseServiceImpl implements CaseService{
     @Override
     public List<CaseWithUserDto> getActiveCasesByProject(Integer fkProject) {
         return caseRepository.findAllEnabledNotCancelledCasesByProject(fkProject);
+    }
+
+    @Override
+    public List<CaseResponseDto> getCasesByIsCancelled(Boolean isCancelled) {
+        return this.caseRepository.findByIsCancelled(isCancelled).stream().map(CaseResponseDto::new).collect(Collectors.toList());
     }
 }

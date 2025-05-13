@@ -90,8 +90,10 @@ export class ProjectService {
   }
 
   
-  getCasesWithUserByFkProject(id: number): Observable<any> {
-    return this.http.get(`${this.CASE_API}/active/${id}`);
+  getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
+    return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
+  
+
 
 }

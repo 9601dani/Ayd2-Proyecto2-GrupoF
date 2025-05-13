@@ -28,4 +28,6 @@ public interface CaseService {
     List<CaseResponseDto> getCasesByProjectId(Integer projectId);
 
     List<CaseWithUserDto> getActiveCasesByProject(Integer fkProject);
+
+    List<CaseResponseDto> getCasesByIsCancelled(Boolean isCancelled);
 }
