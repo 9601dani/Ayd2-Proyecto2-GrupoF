@@ -1,0 +1,53 @@
+package com.codenbugs.ms_project.services.comment;
+
+import com.codenbugs.ms_project.clients.UserRestClient;
+import com.codenbugs.ms_project.dtos.comment.CommentCreated;
+import com.codenbugs.ms_project.dtos.comment.CommentResponse;
+import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
+import com.codenbugs.ms_project.dtos.user.UserResponse;
+import com.codenbugs.ms_project.exceptions.comment.CommentException;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.comment.Comment;
+import com.codenbugs.ms_project.repositories.comment.CommentRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+@Transactional(rollbackOn = Exception.class)
+@AllArgsConstructor
+public class CommentServiceImpl implements CommentService {
+
+    private final CommentRepository commentRepository;
+    private final UserRestClient userRestClient;
+
+    @Override
+    public CommentCreated saveComment(NewCommentRequest request) {
+        Comment comment = new Comment();
+        System.out.println("Comment created " + request.createdAt());
+        comment.setCreatedDate(request.createdAt());
+        comment.setContent(request.content());
+        comment.setFkCase(request.idCase());
+        comment.setFkUser(request.idUser());
+        comment.setIdParent(request.idParent());
+        comment = commentRepository.save(comment);
+        return new CommentCreated(comment);
+    }
+
+    @Override
+    public List<CommentResponse> getCommentsByCaseId(Integer id, Integer idParent) throws UserNotFoundException {
+        List<Comment> comments = commentRepository.findByFkCaseAndIdParentOrderByCreatedDateDesc(id, idParent);
+        List<CommentResponse> response = new ArrayList<>();
+        for (Comment comment : comments) {
+            UserResponse user = this.userRestClient.findById(comment.getFkUser());
+            CommentResponse commentResponse = new CommentResponse(comment, user);
+            response.add(commentResponse);
+        }
+
+        return response;
+    }
+}

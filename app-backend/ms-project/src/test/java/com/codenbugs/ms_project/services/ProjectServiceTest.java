@@ -189,7 +189,6 @@ public class ProjectServiceTest {
 //
 //    }
 
-
     @Test
     public void updateEnabledNotFound() throws ProjectNotFound {
         
