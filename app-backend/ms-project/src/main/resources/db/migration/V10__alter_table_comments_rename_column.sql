@@ -1,0 +1,1 @@
+ALTER TABLE comments CHANGE id_comment_response id_parent INT(11) NULL;

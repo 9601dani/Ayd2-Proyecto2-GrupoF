@@ -3,10 +3,13 @@ package com.codenbugs.ms_project.controllers.cases;
 import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
+import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
+import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.cases.CaseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,7 +26,7 @@ public class CaseController {
     private final CaseService caseService;
 
     @PostMapping("/save")
-    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFound {
+    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFound, UserNotFoundException, UserIsDisabled {
         CaseResponseDto responseDto = this.caseService.saveCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
@@ -52,5 +55,14 @@ public class CaseController {
         return new ResponseEntity<>(responseDtos, HttpStatus.OK);
     }
 
+    @GetMapping("/cancel/{isCancelled}")
+    public ResponseEntity<List<CaseResponseDto>> getCasesByIsCancelled(@PathVariable Boolean isCancelled)  {
+        List<CaseResponseDto> responseDtos = this.caseService.getCasesByIsCancelled(isCancelled);
+        return new ResponseEntity<>(responseDtos, HttpStatus.OK);
+    }
 
+    @GetMapping("/active/{projectId}")
+    public List<CaseWithUserDto> getActiveCasesByProject(@PathVariable Integer projectId) {
+        return caseService.getActiveCasesByProject(projectId);
+    }
 }

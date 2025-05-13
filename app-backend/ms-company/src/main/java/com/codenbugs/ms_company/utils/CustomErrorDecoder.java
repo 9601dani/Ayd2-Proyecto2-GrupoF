@@ -12,11 +12,11 @@ import java.io.InputStream;
 
 public class CustomErrorDecoder implements ErrorDecoder {
 
-    private ErrorDecoder errorDecoder = new ErrorDecoder.Default();
+    private final ErrorDecoder errorDecoder = new ErrorDecoder.Default();
 
     @Override
     public Exception decode(String methodKey, Response response) {
-        ExceptionMessage exceptionMessage = null;
+        ExceptionMessage exceptionMessage;
         try(InputStream stream = response.body().asInputStream()) {
             ObjectMapper mapper = new ObjectMapper();
             exceptionMessage = mapper.readValue(stream, ExceptionMessage.class);

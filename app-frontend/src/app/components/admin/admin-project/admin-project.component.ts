@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TemplateComponent } from '../../commons/template/template.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NumberSymbol } from '@angular/common';
 import { Project } from '../../commons/project/project.component';
-import { ActivatedRoute } from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import { ProjectService } from '../../../services/project/project.service';
 import { ModalComponent } from '../../commons/modal/modal.component';
 import { CaseFormComponent } from '../case-form/case-form.component';
@@ -23,10 +23,20 @@ export interface Case {
   fkProject: number;
   progressPercentage: number;
   fkCaseType: number;
+  fkUser: number;
   limitDate: Date;
   isEnabled: boolean;
   isCancelled: boolean;
   reasonCancellation: string;
+}
+
+export interface HistoryCase{
+  id: number,
+  fkCase: number,
+  fkUser: number,
+  fkCasePhase: number,
+  isCompleted: boolean,
+  timeSpent: number
 }
 
 @Component({
@@ -46,6 +56,7 @@ export class AdminProjectComponent implements OnInit {
   project: Project | undefined;
   projectId: number | undefined;
   cases: Case[] = [];
+  casesCancelled: Case[] = [];
 
   userId: number | undefined;
 
@@ -59,7 +70,8 @@ export class AdminProjectComponent implements OnInit {
     private _projectService: ProjectService,
     private _alertService: AlertService,
     private _commonService: CommonService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private _router: Router
   ) {
     this.form = this.fb.group({
       reason: ['', Validators.required],
@@ -80,11 +92,20 @@ export class AdminProjectComponent implements OnInit {
         },
       });
 
-      this._projectService.getCasesByFkProject(this.projectId).subscribe({
+      this._projectService.getCasesWithUserByFkProject(this.projectId).subscribe({
         next: (value: any) => {
-          
-          
           this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+      
+      this._projectService.getCasesByIsCancelled(true).subscribe({
+        next: (value: any) => {
+          this.casesCancelled = value;
+          console.log(value);
+          
         },
         error: (err) => {
           console.log(err);
@@ -114,6 +135,7 @@ export class AdminProjectComponent implements OnInit {
   onRegister(data: any) {
     data.fkProject = this.projectId;
     data.limitDate = new Date(data.limitDate);
+    data.createdAt = new Date()
 
     this._projectService.createCase(data).subscribe({
       next: (retCase) => {
@@ -140,7 +162,7 @@ export class AdminProjectComponent implements OnInit {
     data.fkProject = this.projectId;
     data.id = this.caseSelected.id;
     data.limitDate = new Date(data.limitDate);
-
+    
     this._projectService.updateCase(data).subscribe({
       next: (retCase) => {
         const index = this.cases.findIndex((u) => u.id === retCase.id);
@@ -194,5 +216,10 @@ export class AdminProjectComponent implements OnInit {
         this.closeModal();
       },
     });
+  }
+
+  openCase(id: number) {
+    console.log(id);
+    this._router.navigate([`/case/${id}`]);
   }
 }

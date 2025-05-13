@@ -1,0 +1,1 @@
+ALTER TABLE comments ADD COLUMN created_date DATETIME NOT NULL;
