@@ -7,8 +7,6 @@ import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
-import com.codenbugs.ms_project.model.cases.TypesCase;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
