@@ -5,6 +5,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCancelledCasesDto;
 import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -28,4 +29,6 @@ public interface ProjectService {
     List<Report1Dto> gerReport1();
 
     TopProjectByCompletedCasesDto getTopProjectByCompletedCases();
+
+    TopProjectByCancelledCasesDto getTopProjectByCancelledCases();
 }

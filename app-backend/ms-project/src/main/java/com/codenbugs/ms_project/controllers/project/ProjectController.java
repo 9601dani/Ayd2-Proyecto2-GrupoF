@@ -5,6 +5,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCancelledCasesDto;
 import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -64,6 +65,11 @@ public class ProjectController {
     @GetMapping("/top-project-completed")
     public TopProjectByCompletedCasesDto getTopProjectByCompletedCases() {
         return projectService.getTopProjectByCompletedCases();
+    }
+
+    @GetMapping("/top-project-cancelled")
+    public TopProjectByCancelledCasesDto getTopProjectByCancelledCases() {
+        return projectService.getTopProjectByCancelledCases();
     }
 
 }

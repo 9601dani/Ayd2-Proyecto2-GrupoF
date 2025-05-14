@@ -208,4 +208,9 @@ public class ReportServiceImpl implements ReportService {
     public TopProjectByCompletedCasesDto getReport10() throws UserNotFoundException {
         return this.projectRestClient.getTopProjectByCompletedCases();
     }
+
+    @Override
+    public TopProjectByCancelledCasesDto getReport11() throws UserNotFoundException {
+        return this.projectRestClient.getTopProjectByCancelledCases();
+    }
 }
