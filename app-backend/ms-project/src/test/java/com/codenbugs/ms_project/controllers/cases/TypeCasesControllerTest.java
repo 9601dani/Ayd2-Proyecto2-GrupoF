@@ -2,8 +2,8 @@ package com.codenbugs.ms_project.controllers.cases;
 
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
-import com.codenbugs.ms_project.model.cases.TypesCase;
+import com.codenbugs.ms_project.model.cases.CasePhase;
+import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.services.type_cases.TypeCasesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -37,17 +37,17 @@ public class TypeCasesControllerTest {
     private final Integer TYPE_ID = 1;
     private final String NAME = "Tipo Caso";
     private final String DESCRIPTION = "Descripción del tipo de caso";
-    private List<PhasesCase> PHASES;
+    private List<CasePhase> PHASES;
 
     private TypeCasesRequest request;
     private TypeCasesResponse response;
 
     @BeforeEach
     void setUp() {
-        PHASES = List.of(new PhasesCase());
+        PHASES = List.of(new CasePhase());
         request = new TypeCasesRequest(NAME, DESCRIPTION, List.of());
 
-        TypesCase typesCase = new TypesCase();
+        TypeCase typesCase = new TypeCase();
         typesCase.setId(TYPE_ID);
         typesCase.setName(NAME);
         typesCase.setDescription(DESCRIPTION);

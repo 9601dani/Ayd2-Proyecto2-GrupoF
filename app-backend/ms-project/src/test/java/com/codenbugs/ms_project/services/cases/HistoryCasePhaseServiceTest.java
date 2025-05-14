@@ -1,7 +1,12 @@
 package com.codenbugs.ms_project.services.cases;
 
+import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.repositories.cases.CasePhaseRepository;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
+import com.codenbugs.ms_project.repositories.project.ProjectRepository;
+import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,6 +19,11 @@ import static org.mockito.Mockito.*;
 
 public class HistoryCasePhaseServiceTest {
     private HistoryCasePhaseRepository historyCasePhaseRepository;
+    private CasePhaseRepository casePhaseRepository;
+    private TypeCasesRepository typeCasesRepository;
+    private CaseRepository caseRepository;
+    private UserRestClient userRestClient;
+    private ProjectRepository projectRepository;
     private HistoryCasePhaseServiceImpl hisotryCasePhaseService;
     private HistoryCaseWithCaseDto dto;
 
@@ -40,7 +50,13 @@ public class HistoryCasePhaseServiceTest {
     @BeforeEach
     public void setUp() {
         historyCasePhaseRepository = mock(HistoryCasePhaseRepository.class);
-        hisotryCasePhaseService = new HistoryCasePhaseServiceImpl(historyCasePhaseRepository);
+        casePhaseRepository = mock(CasePhaseRepository.class);
+        typeCasesRepository = mock(TypeCasesRepository.class);
+        caseRepository = mock(CaseRepository.class);
+        userRestClient = mock(UserRestClient.class);
+        projectRepository = mock(ProjectRepository.class);
+
+        hisotryCasePhaseService = new HistoryCasePhaseServiceImpl(historyCasePhaseRepository, casePhaseRepository, typeCasesRepository, caseRepository, userRestClient, projectRepository);
 
         dto = new HistoryCaseWithCaseDto(
                 ID_HISTORY,

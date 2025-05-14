@@ -3,7 +3,7 @@ package com.codenbugs.ms_project.controllers.project;
 import com.codenbugs.ms_project.dtos.project.*;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.project.ProjectService;
 import lombok.AllArgsConstructor;
@@ -27,13 +27,13 @@ public class ProjectController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ProjectResponseWithoutUser> updateProject(@RequestBody ProjectRequest projectRequest) throws  ProjectIsDisabled, ProjectNotFound {
+    public ResponseEntity<ProjectResponseWithoutUser> updateProject(@RequestBody ProjectRequest projectRequest) throws  ProjectIsDisabled, ProjectNotFoundException {
         ProjectResponseWithoutUser response = this.projectService.updateProject(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Integer id) throws ProjectNotFound, UserNotFoundException {
+    public ResponseEntity<ProjectResponse> getProjectById(@PathVariable Integer id) throws ProjectNotFoundException, UserNotFoundException {
         ProjectResponse response = this.projectService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -45,7 +45,7 @@ public class ProjectController {
     }
 
     @PutMapping("/update/enable")
-    public ResponseEntity<ProjectResponseWithoutUser> updateEnableProject(@RequestBody ProjectEnabledRequest projectRequest) throws ProjectNotFound, ProjectIsDisabled {
+    public ResponseEntity<ProjectResponseWithoutUser> updateEnableProject(@RequestBody ProjectEnabledRequest projectRequest) throws ProjectNotFoundException, ProjectIsDisabled {
         ProjectResponseWithoutUser response = this.projectService.updateEnabled(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

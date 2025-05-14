@@ -3,10 +3,10 @@ package com.codenbugs.ms_project.services.type_cases;
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
+import com.codenbugs.ms_project.model.cases.CasePhase;
+import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
-import com.codenbugs.ms_project.model.cases.TypesCase;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,9 +43,9 @@ public class TypeCasesServiceTest {
     private final Integer CASE_TYPE_ID = 1;
     private final Integer NEXT_PHASE_ID = 1;
 
-    private TypesCase typeCase;
-    private PhasesCase phasesCase;
-    private List<PhasesCase> phases;
+    private TypeCase typeCase;
+    private CasePhase phasesCase;
+    private List<CasePhase> phases;
 
     private TypeCasesRequest typeCasesRequest;
     private TypeCasesResponse typeCasesResponse;
@@ -59,12 +59,15 @@ public class TypeCasesServiceTest {
 
         typeCasesService = new TypeCasesServiceImpl(typeCasesRepository, phaseCasesService);
 
-        typeCase = new TypesCase();
+        typeCase = new TypeCase();
+
         typeCase.setId(TYPE_CASES_ID);
         typeCase.setName(TYPE_CASES_NAME);
         typeCase.setDescription(TYPE_CASES_DESCRIPTION);
 
-        phasesCase = new PhasesCase();
+
+        phasesCase = new CasePhase();
+
         phasesCase.setId(PHASE_ID);
         phasesCase.setName(PHASE_NAME);
         phasesCase.setFkCaseType(CASE_TYPE_ID);
@@ -118,7 +121,8 @@ public class TypeCasesServiceTest {
         // Arrange
         when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(null);
 
-        TypesCase savedType = new TypesCase();
+        TypeCase savedType = new TypeCase();
+
         savedType.setId(TYPE_CASES_ID);
         savedType.setName(TYPE_CASES_NAME);
         savedType.setDescription(TYPE_CASES_DESCRIPTION);
@@ -157,7 +161,9 @@ public class TypeCasesServiceTest {
 
     @Test
     public void updateTypeCaseWithDuplicateNameThrowsException() {
-        TypesCase otherTypeCase = new TypesCase();
+
+        TypeCase otherTypeCase = new TypeCase();
+
         otherTypeCase.setId(999);
         otherTypeCase.setName(TYPE_CASES_NAME);
 

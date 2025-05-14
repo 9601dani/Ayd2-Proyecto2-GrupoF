@@ -73,4 +73,8 @@ export class UserService {
   updateUserMyProfile(userData: any): Observable<any> {
     return this.http.put(`${this.USER_API}/myProfile`, userData);
   }
+
+  getUserById(id: number): Observable<any> {
+    return this.http.get(`${this.USER_API}/${id}`);
+  }
 }

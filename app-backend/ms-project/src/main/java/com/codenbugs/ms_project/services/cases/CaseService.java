@@ -1,14 +1,10 @@
 package com.codenbugs.ms_project.services.cases;
 
-import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
-import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
-import com.codenbugs.ms_project.exceptions.cases.CaseException;
+import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
-import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 
@@ -17,17 +13,19 @@ import java.util.List;
 
 public interface CaseService {
 
-    CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFound, ProjectIsDisabled, UserNotFoundException, UserIsDisabled;
+    CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFoundException, ProjectIsDisabled, UserNotFoundException, UserIsDisabled;
 
-    CaseResponseDto getCaseById(Integer id) throws CaseNotFound;
+    CaseResponseDto getCaseById(Integer id) throws CaseNotFoundException;
 
-    CaseResponseDto updateCase(CaseRequestDto request) throws CaseIsDisabled, CaseNotFound;
+    CaseResponseDto updateCase(CaseRequestDto request) throws CaseIsDisabled, CaseNotFoundException;
 
-    CaseResponseDto cancelCase(CaseCancelledRequestDto request) throws CaseNotFound, CaseIsDisabled;
+    CaseResponseDto cancelCase(CaseCancelledRequestDto request) throws CaseNotFoundException, CaseIsDisabled;
 
     List<CaseResponseDto> getCasesByProjectId(Integer projectId);
 
     List<CaseWithUserDto> getActiveCasesByProject(Integer fkProject);
 
     List<CaseResponseDto> getCasesByIsCancelled(Boolean isCancelled);
+
+    CaseDetailsResponse getCaseDetails(Integer id) throws CaseNotFoundException;
 }
