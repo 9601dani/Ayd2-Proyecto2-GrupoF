@@ -94,12 +94,21 @@ export class AdminProjectComponent implements OnInit {
 
       this._projectService.getCasesWithUserByFkProject(this.projectId).subscribe({
         next: (value: any) => {
-          this.cases = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
+          const filtered = value.filter((c: Case) => c.isEnabled && !c.isCancelled);
+      
+          this.cases = Object.values(
+            filtered.reduce((acc: Record<string, Case>, curr: Case) => {
+              acc[curr.name] = curr;
+              return acc;
+            }, {} as Record<string, Case>)
+          );
+      
+          console.log(this.cases);
         },
         error: (err) => {
           console.log(err);
         },
-      });
+      });    
       
       this._projectService.getCasesByIsCancelled(true).subscribe({
         next: (value: any) => {
@@ -199,6 +208,7 @@ export class AdminProjectComponent implements OnInit {
         const index = this.cases.findIndex((u) => u.id === retCase.id);
         if (index !== -1) {
           this.cases.splice(index, 1);
+          this.casesCancelled.push(retCase); 
         }
 
         this._alertService.success(

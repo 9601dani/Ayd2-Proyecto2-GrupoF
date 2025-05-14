@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CaseRepository extends JpaRepository<Case, Integer> {
@@ -27,5 +28,10 @@ public interface CaseRepository extends JpaRepository<Case, Integer> {
     AND c.fkProject = :fkProject
 """)
     List<CaseWithUserDto> findAllEnabledNotCancelledCasesByProject(@Param("fkProject") Integer fkProject);
+
+    List<Case> findByNameAndFkProject(String name, Integer fkProject);
+
+
+
 
 }

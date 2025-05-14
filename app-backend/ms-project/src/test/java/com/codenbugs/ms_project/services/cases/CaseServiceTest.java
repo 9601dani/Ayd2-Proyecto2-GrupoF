@@ -6,6 +6,7 @@ import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
 import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
+import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -190,7 +191,7 @@ public class CaseServiceTest {
 
 
     @Test
-    public void updateCaseSuccessfullyWithoutTypeChange() throws CaseIsDisabled, CaseNotFoundException {
+    public void updateCaseSuccessfullyWithoutTypeChange() throws CaseIsDisabled, CaseException {
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));
         when(caseRepository.save(any())).thenReturn(testCase);
 
@@ -203,22 +204,40 @@ public class CaseServiceTest {
 
 
     @Test
-    public void updateCaseSuccessfullyWithTypeChange() throws CaseIsDisabled, CaseNotFoundException {
+    public void updateCaseSuccessfullyWithTypeChange() throws CaseIsDisabled, CaseException {
         testCase.setFK_Case_Type(999);
+        testCase.setProgressPercentage(BigDecimal.ZERO);
 
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));
         when(caseRepository.save(any())).thenReturn(testCase);
 
         CasePhase newPhase = new CasePhase();
         newPhase.setId(10);
+        newPhase.setName("Fase Inicial");
         when(phaseCasesRepository.findByFkCaseType(CASE_TYPE)).thenReturn(List.of(newPhase));
+
+        CaseResponseDto expected = new CaseResponseDto(
+                ID, PROJECT_ID, BigDecimal.ZERO, CASE_TYPE, LIMIT_DATE,
+                IS_ENABLED, NAME, DESCRIPTION, IS_CANCELED, REASON_CANCELLATION, CREATED_AT
+        );
 
         CaseResponseDto actual = caseService.updateCase(request);
 
-        assertEquals(response, actual);
+        assertEquals(expected, actual);
         verify(historyCasePhaseRepository).deleteAllHistoryCasePhaseByFkCase(ID);
         verify(historyCasePhaseRepository).save(any());
     }
+
+
+    @Test
+    public void updateCaseThrowsWhenNotFound() {
+        when(caseRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThrows(CaseNotFoundException.class, () -> {
+            caseService.updateCase(request);
+        });
+    }
+
 
     @Test
     public void updateCaseNotFound() {

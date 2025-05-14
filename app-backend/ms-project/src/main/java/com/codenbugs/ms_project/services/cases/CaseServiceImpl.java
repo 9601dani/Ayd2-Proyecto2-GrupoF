@@ -4,6 +4,7 @@ package com.codenbugs.ms_project.services.cases;
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
+import com.codenbugs.ms_project.exceptions.cases.CaseAlreadyExistException;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
@@ -50,7 +51,7 @@ public class CaseServiceImpl implements CaseService{
     private final TypeCasesRepository typeCasesRepository;
 
     @Override
-    public CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFoundException, ProjectIsDisabled, UserNotFoundException, UserIsDisabled {
+    public CaseResponseDto saveCase(CaseRequestDto request) throws ProjectNotFoundException, ProjectIsDisabled, UserNotFoundException, UserIsDisabled, CaseException {
 
         Optional<Project> optionalProject = this.projectRepository.findById(request.fkProject());
 
@@ -68,6 +69,10 @@ public class CaseServiceImpl implements CaseService{
 
         if(!user.isEnabled()){
             throw new UserIsDisabled("El usuario esta deshabilitado");
+        }
+
+        if (!caseRepository.findByNameAndFkProject(request.name(), request.fkProject()).isEmpty()) {
+            throw new CaseAlreadyExistException("Ya existe un caso con ese nombre en este proyecto");
         }
 
         Case newCase = new Case();
@@ -114,7 +119,7 @@ public class CaseServiceImpl implements CaseService{
     }
 
     @Override
-    public CaseResponseDto updateCase(CaseRequestDto request) throws CaseIsDisabled, CaseNotFoundException {
+    public CaseResponseDto updateCase(CaseRequestDto request) throws CaseIsDisabled, CaseException {
 
         Optional<Case> optionalCase = this.caseRepository.findById(request.id());
 
@@ -130,6 +135,17 @@ public class CaseServiceImpl implements CaseService{
 
         if(caseToUpdate.getIsCancelled()){
             throw new CaseIsDisabled("El caso está cancelado");
+        }
+
+        if (!caseToUpdate.getName().equalsIgnoreCase(request.name())) {
+            List<Case> existingCases = caseRepository.findByNameAndFkProject(request.name(), request.fkProject());
+
+            boolean nameConflict = existingCases.stream()
+                    .anyMatch(c -> !c.getId().equals(request.id()));
+
+            if (nameConflict) {
+                throw new CaseAlreadyExistException("Ya existe un caso con ese nombre en este proyecto");
+            }
         }
 
         caseToUpdate.setName(request.name());
@@ -156,6 +172,8 @@ public class CaseServiceImpl implements CaseService{
             hcp.setPhaseName(firstPhase.getName());
 
             this.historyCasePhaseRepository.save(hcp);
+
+            caseToUpdate.setProgressPercentage(BigDecimal.ZERO);
         }
 
         Case updatedCase = this.caseRepository.save(caseToUpdate);

@@ -166,4 +166,79 @@ public class CustomErrorDecoderTest {
         assertNotNull(ex);
         assertInstanceOf(Exception.class, ex);
     }
+
+    @Test
+    void testStatus400ReturnsNotCreatedExceptionWithNullMessage() throws Exception {
+        ExceptionMessage message = new ExceptionMessage(TIMESTAMP, 400, ERROR, null, PATH, TRACE);
+        byte[] body = mapper.writeValueAsBytes(message);
+
+        Response response = Response.builder()
+                .status(400)
+                .reason("Bad Request")
+                .request(Request.create(Request.HttpMethod.GET, PATH, Collections.emptyMap(), null, StandardCharsets.UTF_8, null))
+                .body(body)
+                .build();
+
+        Exception ex = decoder.decode(METHOD_KEY, response);
+
+        assertInstanceOf(NotCreatedException.class, ex);
+        assertEquals("Resource Not Created.", ex.getMessage());
+    }
+
+    @Test
+    void testStatus404ReturnsResourceNotFoundExceptionWithNullMessage() throws Exception {
+        ExceptionMessage message = new ExceptionMessage(TIMESTAMP, 404, "Not Found", null, PATH, TRACE);
+        byte[] body = mapper.writeValueAsBytes(message);
+
+        Response response = Response.builder()
+                .status(404)
+                .reason("Not Found")
+                .request(Request.create(Request.HttpMethod.GET, PATH, Collections.emptyMap(), null, StandardCharsets.UTF_8, null))
+                .body(body)
+                .build();
+
+        Exception ex = decoder.decode(METHOD_KEY, response);
+
+        assertInstanceOf(ResourceNotFoundException.class, ex);
+        assertEquals("Resource Not Found.", ex.getMessage());
+    }
+
+    @Test
+    void testStatus400ReturnsNotCreatedExceptionWithRealMessage() throws Exception {
+        String customMessage = "Ya existe el recurso";
+        ExceptionMessage message = new ExceptionMessage(TIMESTAMP, 400, ERROR, customMessage, PATH, TRACE);
+        byte[] body = mapper.writeValueAsBytes(message);
+
+        Response response = Response.builder()
+                .status(400)
+                .reason("Bad Request")
+                .request(Request.create(Request.HttpMethod.GET, PATH, Collections.emptyMap(), null, StandardCharsets.UTF_8, null))
+                .body(body)
+                .build();
+
+        Exception ex = decoder.decode(METHOD_KEY, response);
+
+        assertInstanceOf(NotCreatedException.class, ex);
+        assertEquals(customMessage, ex.getMessage());
+    }
+
+    @Test
+    void testStatus404ReturnsResourceNotFoundExceptionWithRealMessage() throws Exception {
+        String customMessage = "El recurso no fue encontrado";
+        ExceptionMessage message = new ExceptionMessage(TIMESTAMP, 404, "Not Found", customMessage, PATH, TRACE);
+        byte[] body = mapper.writeValueAsBytes(message);
+
+        Response response = Response.builder()
+                .status(404)
+                .reason("Not Found")
+                .request(Request.create(Request.HttpMethod.GET, PATH, Collections.emptyMap(), null, StandardCharsets.UTF_8, null))
+                .body(body)
+                .build();
+
+        Exception ex = decoder.decode(METHOD_KEY, response);
+
+        assertInstanceOf(ResourceNotFoundException.class, ex);
+        assertEquals(customMessage, ex.getMessage());
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.codenbugs.ms_project.controllers.cases;
 
 import com.codenbugs.ms_project.dtos.cases.*;
+import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -23,25 +24,25 @@ public class CaseController {
     private final CaseService caseService;
 
     @PostMapping("/save")
-    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFoundException, UserNotFoundException, UserIsDisabled {
+    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFoundException, UserNotFoundException, UserIsDisabled, CaseException {
         CaseResponseDto responseDto = this.caseService.saveCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CaseResponseDto> getCaseById(@PathVariable Integer id) throws CaseNotFoundException {
+    public ResponseEntity<CaseResponseDto> getCaseById(@PathVariable Integer id) throws CaseException {
         CaseResponseDto responseDto = this.caseService.getCaseById(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CaseResponseDto> updateCase(@RequestBody CaseRequestDto caseRequestDto) throws CaseNotFoundException, CaseIsDisabled {
+    public ResponseEntity<CaseResponseDto> updateCase(@RequestBody CaseRequestDto caseRequestDto) throws CaseException, CaseIsDisabled {
         CaseResponseDto responseDto = this.caseService.updateCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/update/cancel")
-    public ResponseEntity<CaseResponseDto> updateCancelCase(@RequestBody CaseCancelledRequestDto caseRequestDto) throws CaseNotFoundException, CaseIsDisabled {
+    public ResponseEntity<CaseResponseDto> updateCancelCase(@RequestBody CaseCancelledRequestDto caseRequestDto) throws CaseException, CaseIsDisabled {
         CaseResponseDto responseDto = this.caseService.cancelCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
