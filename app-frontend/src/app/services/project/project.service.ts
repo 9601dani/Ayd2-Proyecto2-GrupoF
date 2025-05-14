@@ -94,6 +94,11 @@ export class ProjectService {
     return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
   
+  /*-------------------------------MY-CASES--------------------------------*/
+
+  getMyCases(username:string):Observable<any>{
+    return this.http.get(`${this.PROJECT_API}/my-cases/${username}`)
+  }
 
 
 }
