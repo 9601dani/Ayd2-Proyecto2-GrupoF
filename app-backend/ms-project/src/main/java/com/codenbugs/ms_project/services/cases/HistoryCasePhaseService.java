@@ -18,6 +18,6 @@ public interface HistoryCasePhaseService {
 
     HistoryCaseResponseDto saveNextPhase(NextPhaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException, UserNotFoundException;
 
-    void completeCase(Integer id) throws CaseNotFoundException;
     List<HistoryCasePhase> findByFkUser(Integer fkUser);
+
 }
