@@ -159,6 +159,7 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
         }
     }
 
+    @Override
     public List<HistoryCasePhase> findByFkUser(Integer fkUser) {
         return historyCasePhaseRepository.findByFkUser(fkUser);
     }
