@@ -5,6 +5,9 @@ import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.TopContributorDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
@@ -39,5 +42,20 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
     @Override
     public List<HistoryCaseWithCaseDto> getAllWithCaseInfo() {
         return historyCasePhaseRepository.findAllWithCaseInfo();
+    }
+
+    @Override
+    public List<ProjectUserHoursDto> getProjectUserHoursSummary() {
+        return historyCasePhaseRepository.getProjectUserHoursSummary();
+    }
+
+    @Override
+    public List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport() {
+        return historyCasePhaseRepository.getCaseTypeUserHoursReport();
+    }
+
+    @Override
+    public TopContributorDto getTopContributor() {
+        return historyCasePhaseRepository.getTopContributor();
     }
 }

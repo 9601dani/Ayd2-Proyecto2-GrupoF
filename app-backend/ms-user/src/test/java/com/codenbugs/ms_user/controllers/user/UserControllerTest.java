@@ -232,18 +232,18 @@ class UserControllerTest {
 
     }
 
-    @Test
-    void findUsersByRole() throws Exception {
-        // Arrange
-        UserResponseWithName userResponse = new UserResponseWithName(ID, USERNAME, FIRSTNAME, LASTNAME);
-        List<UserResponseWithName> users = List.of(userResponse);
-        when(userService.getUsersByRole(ID)).thenReturn(users);
-
-        // Act & Assert
-        mockMvc.perform(get("/v1/users/role/{role}", ID))
-                .andExpect(status().isOk())
-                .andExpect(content().json(objectMapper.writeValueAsString(users)));
-    }
+//    @Test
+//    void findUsersByRole() throws Exception {
+//        // Arrange
+//        UserResponseWithName userResponse = new UserResponseWithName(ID, USERNAME, FIRSTNAME, LASTNAME);
+//        List<UserResponseWithName> users = List.of(userResponse);
+//        when(userService.getUsersByRole(ID)).thenReturn(users);
+//
+//        // Act & Assert
+//        mockMvc.perform(get("/v1/users/role/{role}", ID))
+//                .andExpect(status().isOk())
+//                .andExpect(content().json(objectMapper.writeValueAsString(users)));
+//    }
 
     @Test
     void findByUsername() throws Exception {

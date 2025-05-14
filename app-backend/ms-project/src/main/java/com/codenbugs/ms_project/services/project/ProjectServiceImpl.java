@@ -5,6 +5,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.report.Report1Dto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectException;
@@ -108,8 +109,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = optionalProject.get();
 
-        if(request.enable()==project.getIsEnabled()){
-            if(request.enable()){
+        if (request.enable() == project.getIsEnabled()) {
+            if (request.enable()) {
                 throw new ProjectIsDisabled("El proyecto ya está habilitado");
             } else {
                 throw new ProjectIsDisabled("El proyecto ya está deshabilitado");
@@ -127,5 +128,10 @@ public class ProjectServiceImpl implements ProjectService {
         Project updated = this.projectRepository.save(project);
 
         return new ProjectResponseWithoutUser(updated);
+    }
+
+    @Override
+    public List<Report1Dto> gerReport1() {
+        return this.projectRepository.getReport1();
     }
 }

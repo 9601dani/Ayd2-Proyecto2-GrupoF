@@ -4,6 +4,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.report.Report1Dto;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
@@ -52,4 +53,11 @@ public class ProjectController {
         ProjectResponseWithoutUser response = this.projectService.updateEnabled(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    // Reports
+    @GetMapping("/report1")
+    public List<Report1Dto> getProjectReport() {
+        return projectService.gerReport1();
+    }
+
 }

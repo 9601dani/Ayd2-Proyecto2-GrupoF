@@ -1,6 +1,9 @@
 package com.codenbugs.ms_project.repositories.cases;
 
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.TopContributorDto;
 import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -22,4 +25,44 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         JOIN Case c ON h.fkCase = c.id
     """)
     List<HistoryCaseWithCaseDto> findAllWithCaseInfo();
+
+    @Query("""
+        SELECT new com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto(
+            c.fkProject,
+            p.name,
+            h.fkUser,
+            SUM(h.timeSpent)
+        )
+        FROM HistoryCasePhase h
+        JOIN Case c ON h.fkCase = c.id
+        JOIN Project p ON c.fkProject = p.id
+        GROUP BY c.fkProject, h.fkUser
+    """)
+    List<ProjectUserHoursDto> getProjectUserHoursSummary();
+
+    @Query("""
+        SELECT new com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto(
+            t.id,
+            t.name,
+            h.fkUser,
+            SUM(h.timeSpent)
+        )
+        FROM HistoryCasePhase h
+        JOIN Case c ON h.fkCase = c.id
+        JOIN TypesCase t ON t.id = c.FK_Case_Type
+        GROUP BY t.id, t.name, h.fkUser
+    """)
+    List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport();
+
+    @Query(value = """
+        SELECT new com.codenbugs.ms_project.dtos.report.TopContributorDto(
+            h.fkUser,
+            COUNT(DISTINCT h.fkCase)
+        )
+        FROM HistoryCasePhase h
+        GROUP BY h.fkUser
+        ORDER BY COUNT(DISTINCT h.fkCase) DESC
+        LIMIT 1
+    """)
+    TopContributorDto getTopContributor();
 }
