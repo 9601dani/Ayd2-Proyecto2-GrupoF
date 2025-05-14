@@ -62,7 +62,7 @@ public class HistoryCasePhaseControllerTest {
         List<HistoryCaseWithCaseDto> list = List.of(historyDto);
         when(historyCasePhaseService.getAllWithCaseInfo()).thenReturn(list);
 
-        mockMvc.perform(get("/v1/history/all-cases")
+        mockMvc.perform(get("/v1/histories/all-cases")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(list)));

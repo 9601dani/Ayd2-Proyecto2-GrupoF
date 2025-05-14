@@ -25,4 +25,7 @@ public record CaseResponseDto(
         );
     }
 
+    public CaseResponseDto(Integer caseId, Integer fkProject, BigDecimal progressPercentage, Integer fkCaseType, LocalDateTime created, Boolean enabled, String name, String description, Boolean isCancelled, String cancelReason) {
+        this(caseId, fkProject, progressPercentage, fkCaseType, created, enabled, name, description, isCancelled, cancelReason, null);
+    }
 }

@@ -20,4 +20,5 @@ public interface HistoryCasePhaseService {
 
     List<HistoryCasePhase> findByFkUser(Integer fkUser);
 
+    void completeCase(Integer id) throws CaseNotFoundException;
 }

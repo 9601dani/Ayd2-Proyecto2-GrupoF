@@ -32,7 +32,7 @@ public class HistoryCasePhaseController {
     }
 
     @PutMapping()
-    public ResponseEntity<HistoryCaseResponseDto> updateCasePhase(@RequestBody HistoryCaseRequest historyCaseRequest) throws CasePhaseNotFoundException {
+    public ResponseEntity<HistoryCaseResponseDto> updateCasePhase(@RequestBody HistoryCaseRequest historyCaseRequest) throws CasePhaseNotFoundException, CaseNotFoundException {
         HistoryCaseResponseDto response = this.historyCasePhaseService.updateCasePhase(historyCaseRequest);
         return ResponseEntity.ok(response);
     }

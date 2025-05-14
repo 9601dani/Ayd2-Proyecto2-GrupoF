@@ -245,7 +245,7 @@ public class ProjectServiceTest {
         when(projectRepository.findById(request.id())).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(ProjectNotFound.class, () -> {
+        assertThrows(ProjectNotFoundException.class, () -> {
             projectService.updateEnabled(request);
         });
     }
