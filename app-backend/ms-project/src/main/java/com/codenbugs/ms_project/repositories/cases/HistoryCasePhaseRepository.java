@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePhase, Integer> {
@@ -22,4 +23,6 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         JOIN Case c ON h.fkCase = c.id
     """)
     List<HistoryCaseWithCaseDto> findAllWithCaseInfo();
+
+    Optional<HistoryCasePhase> findFirstByFkCaseOrderByIdDesc(Integer fkCase);
 }

@@ -9,7 +9,7 @@ import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.project.Project;
@@ -58,11 +58,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseWithoutUser updateProject(ProjectRequest request) throws ProjectNotFound, ProjectIsDisabled {
+    public ProjectResponseWithoutUser updateProject(ProjectRequest request) throws ProjectNotFoundException, ProjectIsDisabled {
 
         Optional<Project> optionalProject = this.projectRepository.findById(request.id());
         if (optionalProject.isEmpty()) {
-            throw new ProjectNotFound("El proyecto no existe");
+            throw new ProjectNotFoundException("El proyecto no existe");
         }
 
         Project project = optionalProject.get();
@@ -81,10 +81,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponse getById(Integer id) throws ProjectNotFound, UserNotFoundException {
+    public ProjectResponse getById(Integer id) throws ProjectNotFoundException, UserNotFoundException {
         Optional<Project> optionalProject = this.projectRepository.findById(id);
         if (optionalProject.isEmpty()) {
-            throw new ProjectNotFound("El proyecto no existe");
+            throw new ProjectNotFoundException("El proyecto no existe");
         }
 
         Project project = optionalProject.get();
@@ -99,11 +99,11 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound, ProjectIsDisabled {
+    public ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFoundException, ProjectIsDisabled {
 
         Optional<Project> optionalProject = this.projectRepository.findById(request.id());
         if (optionalProject.isEmpty()) {
-            throw new ProjectNotFound("El proyecto no existe");
+            throw new ProjectNotFoundException("El proyecto no existe");
         }
 
         Project project = optionalProject.get();

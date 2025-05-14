@@ -1,7 +1,7 @@
 package com.codenbugs.ms_project.services;
 
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
+import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
 import com.codenbugs.ms_project.services.type_cases.PhaseCasesService;
 import com.codenbugs.ms_project.services.type_cases.PhaseCasesServiceImpl;
@@ -29,7 +29,7 @@ public class PhaseCasesServiceTest {
     private final Integer CASE_TYPE_ID = 1;
     private final Integer NEXT_PHASE_ID = 1;
 
-    private PhasesCase phasesCase;
+    private CasePhase phasesCase;
     private PhasesCaseRequest phasesCaseRequest;
 
     @BeforeEach
@@ -38,7 +38,7 @@ public class PhaseCasesServiceTest {
 
         phaseCasesService = new PhaseCasesServiceImpl(phaseCasesRepository);
 
-        phasesCase = new PhasesCase();
+        phasesCase = new CasePhase();
         phasesCase.setId(PHASE_ID);
         phasesCase.setName(PHASE_NAME);
         phasesCase.setFkCaseType(CASE_TYPE_ID);
@@ -49,11 +49,11 @@ public class PhaseCasesServiceTest {
 
     @Test
     public void findByCaseTypeReturnsPhasesSuccessfully() {
-        List<PhasesCase> expected = List.of(phasesCase);
+        List<CasePhase> expected = List.of(phasesCase);
 
         when(phaseCasesRepository.findByFkCaseType(CASE_TYPE_ID)).thenReturn(expected);
 
-        List<PhasesCase> actual = phaseCasesService.findByCaseType(CASE_TYPE_ID);
+        List<CasePhase> actual = phaseCasesService.findByCaseType(CASE_TYPE_ID);
 
         assertEquals(expected, actual);
     }
@@ -61,9 +61,9 @@ public class PhaseCasesServiceTest {
     @Test
     public void savePhaseCaseSuccessfully() {
 
-        when(phaseCasesRepository.save(any(PhasesCase.class))).thenReturn(phasesCase);
+        when(phaseCasesRepository.save(any(CasePhase.class))).thenReturn(phasesCase);
 
-        PhasesCase actual = phaseCasesService.save(phasesCaseRequest, CASE_TYPE_ID, NEXT_PHASE_ID);
+        CasePhase actual = phaseCasesService.save(phasesCaseRequest, CASE_TYPE_ID, NEXT_PHASE_ID);
 
         assertEquals(phasesCase.getFkCaseType(), actual.getFkCaseType());
         assertEquals(phasesCase.getName(), actual.getName());

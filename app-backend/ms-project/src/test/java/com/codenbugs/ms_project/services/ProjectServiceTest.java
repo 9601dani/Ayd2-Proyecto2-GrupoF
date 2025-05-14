@@ -8,7 +8,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
@@ -104,7 +104,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateProjectSuccesfully() throws ProjectNotFound, ProjectIsDisabled {
+    public void updateProjectSuccesfully() throws ProjectNotFoundException, ProjectIsDisabled {
 
         project.setIsEnabled(true);
         when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
@@ -118,16 +118,16 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateProjectNotFound() throws ProjectNotFound, ProjectIsDisabled {
+    public void updateProjectNotFound() throws ProjectNotFoundException, ProjectIsDisabled {
 
         when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.empty());
 
-        assertThrows(ProjectNotFound.class, () -> projectService.updateProject(projectRequest));
+        assertThrows(ProjectNotFoundException.class, () -> projectService.updateProject(projectRequest));
 
     }
 
     @Test
-    public void updateProjectDisabled() throws ProjectNotFound, ProjectIsDisabled {
+    public void updateProjectDisabled() throws ProjectNotFoundException, ProjectIsDisabled {
 
         project.setIsEnabled(false);
 
@@ -138,7 +138,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void getProjectByIdSuccesfully() throws ProjectNotFound, UserNotFoundException {
+    public void getProjectByIdSuccesfully() throws ProjectNotFoundException, UserNotFoundException {
 
         when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.of(project));
 
@@ -151,11 +151,11 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void getProjectByIdNotFound() throws ProjectNotFound, UserNotFoundException {
+    public void getProjectByIdNotFound() throws ProjectNotFoundException, UserNotFoundException {
 
         when(this.projectRepository.findById(projectRequest.id())).thenReturn(Optional.empty());
 
-        assertThrows(ProjectNotFound.class, () -> projectService.getById(PROJECT_ID));
+        assertThrows(ProjectNotFoundException.class, () -> projectService.getById(PROJECT_ID));
 
     }
 
@@ -171,7 +171,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateEnabledProjectSuccessfully_Enable() throws ProjectNotFound, ProjectIsDisabled {
+    public void updateEnabledProjectSuccessfully_Enable() throws ProjectNotFoundException, ProjectIsDisabled {
         project.setIsEnabled(false);
         ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, true);
 
@@ -185,7 +185,7 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateEnabledProjectSuccessfully_Disable() throws ProjectNotFound, ProjectIsDisabled {
+    public void updateEnabledProjectSuccessfully_Disable() throws ProjectNotFoundException, ProjectIsDisabled {
         project.setIsEnabled(true);
         ProjectEnabledRequest request = new ProjectEnabledRequest(PROJECT_ID, false);
 
@@ -219,11 +219,11 @@ public class ProjectServiceTest {
     }
 
     @Test
-    public void updateEnabledNotFound() throws ProjectNotFound {
+    public void updateEnabledNotFound() throws ProjectNotFoundException {
         
         when(this.projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
-        assertThrows(ProjectNotFound.class, () -> projectService.getById(PROJECT_ID));
+        assertThrows(ProjectNotFoundException.class, () -> projectService.getById(PROJECT_ID));
 
     }
 

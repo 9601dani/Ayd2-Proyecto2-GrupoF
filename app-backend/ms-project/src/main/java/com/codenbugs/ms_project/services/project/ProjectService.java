@@ -6,7 +6,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 
 import java.util.List;
@@ -15,12 +15,12 @@ public interface ProjectService {
 
     ProjectResponseWithoutUser saveProject(ProjectRequest request) throws ProjectAlreadyExists;
 
-    ProjectResponseWithoutUser updateProject(ProjectRequest request) throws ProjectNotFound, ProjectIsDisabled;
+    ProjectResponseWithoutUser updateProject(ProjectRequest request) throws ProjectNotFoundException, ProjectIsDisabled;
 
-    ProjectResponse getById(Integer id) throws ProjectNotFound, UserNotFoundException;
+    ProjectResponse getById(Integer id) throws ProjectNotFoundException, UserNotFoundException;
 
     List<ProjectResponseWithoutUser> getAllProjects();
 
-    ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFound, ProjectIsDisabled;
+    ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFoundException, ProjectIsDisabled;
 
 }

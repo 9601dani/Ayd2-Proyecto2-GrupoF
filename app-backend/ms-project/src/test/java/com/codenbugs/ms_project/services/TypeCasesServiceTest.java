@@ -3,10 +3,8 @@ package com.codenbugs.ms_project.services;
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
-import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
-import com.codenbugs.ms_project.model.cases.TypesCase;
-import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
+import com.codenbugs.ms_project.model.cases.CasePhase;
+import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import com.codenbugs.ms_project.services.type_cases.PhaseCasesService;
 import com.codenbugs.ms_project.services.type_cases.TypeCasesService;
@@ -44,9 +42,9 @@ public class TypeCasesServiceTest {
     private final Integer CASE_TYPE_ID = 1;
     private final Integer NEXT_PHASE_ID = 1;
 
-    private TypesCase typeCase;
-    private PhasesCase phasesCase;
-    private List<PhasesCase> phases;
+    private TypeCase typeCase;
+    private CasePhase phasesCase;
+    private List<CasePhase> phases;
 
     private TypeCasesRequest typeCasesRequest;
     private TypeCasesResponse typeCasesResponse;
@@ -60,12 +58,12 @@ public class TypeCasesServiceTest {
 
         typeCasesService = new TypeCasesServiceImpl(typeCasesRepository, phaseCasesService);
 
-        typeCase = new TypesCase();
+        typeCase = new TypeCase();
         typeCase.setId(TYPE_CASES_ID);
         typeCase.setName(TYPE_CASES_NAME);
         typeCase.setDescription(TYPE_CASES_DESCRIPTION);
 
-        phasesCase = new PhasesCase();
+        phasesCase = new CasePhase();
         phasesCase.setId(PHASE_ID);
         phasesCase.setName(PHASE_NAME);
         phasesCase.setFkCaseType(CASE_TYPE_ID);

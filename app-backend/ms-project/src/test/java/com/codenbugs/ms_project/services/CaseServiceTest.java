@@ -7,21 +7,21 @@ import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
-import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.cases.Case;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
+import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
+import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import com.codenbugs.ms_project.services.cases.CaseService;
 import com.codenbugs.ms_project.services.cases.CaseServiceImpl;
-import com.codenbugs.ms_project.services.project.ProjectService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -59,6 +59,9 @@ public class CaseServiceTest {
     @Mock
     private PhaseCasesRepository phaseCasesRepository;
 
+    @Mock
+    private TypeCasesRepository typeCasesRepository;
+
     private final Integer ID = 1;
     private final Integer PROJECT_ID = 1;
     private final BigDecimal PROGRESS_PERCENTAGE = BigDecimal.valueOf(50.67);
@@ -89,7 +92,7 @@ public class CaseServiceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        caseService = new CaseServiceImpl(caseRepository, historyCasePhaseRepository, phaseCasesRepository, projectRepository, userRestClient);
+        caseService = new CaseServiceImpl(caseRepository, historyCasePhaseRepository, phaseCasesRepository, projectRepository, userRestClient, typeCasesRepository);
 
         testCase = new Case();
         testCase.setId(ID);
@@ -125,9 +128,9 @@ public class CaseServiceTest {
 
         when(caseRepository.save(any())).thenReturn(testCase);
 
-        PhasesCase firstPhase = new PhasesCase();
+        CasePhase firstPhase = new CasePhase();
         firstPhase.setId(1);
-        List<PhasesCase> phases = new ArrayList<>();
+        List<CasePhase> phases = new ArrayList<>();
         phases.add(firstPhase);
 
         when(phaseCasesRepository.findByFkCaseType(CASE_TYPE)).thenReturn(phases);
@@ -141,7 +144,7 @@ public class CaseServiceTest {
     public void saveCaseProjectNotFound() {
         when(projectRepository.findById(PROJECT_ID)).thenReturn(Optional.empty());
 
-        assertThrows(ProjectNotFound.class, () -> caseService.saveCase(request));
+        assertThrows(ProjectNotFoundException.class, () -> caseService.saveCase(request));
     }
 
     @Test
@@ -172,7 +175,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    public void getCaseByIdSuccessfully() throws CaseNotFound {
+    public void getCaseByIdSuccessfully() throws CaseNotFoundException {
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));
 
         CaseResponseDto actual = caseService.getCaseById(ID);
@@ -184,12 +187,12 @@ public class CaseServiceTest {
     public void getCaseByIdNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
 
-        assertThrows(CaseNotFound.class, () -> caseService.getCaseById(ID));
+        assertThrows(CaseNotFoundException.class, () -> caseService.getCaseById(ID));
     }
 
 
     @Test
-    public void updateCaseSuccessfullyWithoutTypeChange() throws CaseIsDisabled, CaseNotFound {
+    public void updateCaseSuccessfullyWithoutTypeChange() throws CaseIsDisabled, CaseNotFoundException {
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));
         when(caseRepository.save(any())).thenReturn(testCase);
 
@@ -202,13 +205,13 @@ public class CaseServiceTest {
 
 
     @Test
-    public void updateCaseSuccessfullyWithTypeChange() throws CaseIsDisabled, CaseNotFound {
+    public void updateCaseSuccessfullyWithTypeChange() throws CaseIsDisabled, CaseNotFoundException {
         testCase.setFK_Case_Type(999);
 
         when(caseRepository.findById(ID)).thenReturn(Optional.of(testCase));
         when(caseRepository.save(any())).thenReturn(testCase);
 
-        PhasesCase newPhase = new PhasesCase();
+        CasePhase newPhase = new CasePhase();
         newPhase.setId(10);
         when(phaseCasesRepository.findByFkCaseType(CASE_TYPE)).thenReturn(List.of(newPhase));
 
@@ -223,7 +226,7 @@ public class CaseServiceTest {
     public void updateCaseNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
 
-        assertThrows(CaseNotFound.class, () -> caseService.updateCase(request));
+        assertThrows(CaseNotFoundException.class, () -> caseService.updateCase(request));
     }
 
     @Test
@@ -243,7 +246,7 @@ public class CaseServiceTest {
     }
 
     @Test
-    public void cancelCaseSuccessfully() throws CaseNotFound, CaseIsDisabled {
+    public void cancelCaseSuccessfully() throws CaseNotFoundException, CaseIsDisabled {
         CaseResponseDto expected = new CaseResponseDto(
                 ID, PROJECT_ID, PROGRESS_PERCENTAGE, CASE_TYPE, LIMIT_DATE, IS_ENABLED,
                 NAME, DESCRIPTION, true, REASON_CANCELLATION, CREATED_AT
@@ -261,7 +264,7 @@ public class CaseServiceTest {
     public void cancelCaseNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
 
-        assertThrows(CaseNotFound.class, () -> caseService.cancelCase(requestCancelled));
+        assertThrows(CaseNotFoundException.class, () -> caseService.cancelCase(requestCancelled));
     }
 
     @Test
