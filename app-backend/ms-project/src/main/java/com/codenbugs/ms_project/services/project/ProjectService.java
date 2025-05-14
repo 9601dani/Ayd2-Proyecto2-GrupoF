@@ -1,9 +1,6 @@
 package com.codenbugs.ms_project.services.project;
 
-import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectResponse;
-import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.project.*;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
@@ -22,5 +19,7 @@ public interface ProjectService {
     List<ProjectResponseWithoutUser> getAllProjects();
 
     ProjectResponseWithoutUser updateEnabled(ProjectEnabledRequest request) throws ProjectNotFoundException, ProjectIsDisabled;
+
+    List<ActiveCaseReponse> getActiveCasesByUsername(String username) throws UserNotFoundException;
 
 }

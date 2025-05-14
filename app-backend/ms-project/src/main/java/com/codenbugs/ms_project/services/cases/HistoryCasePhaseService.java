@@ -4,6 +4,7 @@ import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.cases.CasePhaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface HistoryCasePhaseService {
     HistoryCaseResponseDto saveNextPhase(NextPhaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException, UserNotFoundException;
 
     void completeCase(Integer id) throws CaseNotFoundException;
+    List<HistoryCasePhase> findByFkUser(Integer fkUser);
 }

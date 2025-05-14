@@ -154,8 +154,12 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
 
     public void updatePercentage(Case c) {
         Double percentage = this.casePhaseRepository.getPercentageByFkCaseType(c.getFK_Case_Type());
-        if(c.getProgressPercentage().doubleValue() < 100) {
+        if (c.getProgressPercentage().doubleValue() < 100) {
             c.setProgressPercentage(c.getProgressPercentage().add(BigDecimal.valueOf(percentage)));
         }
+    }
+
+    public List<HistoryCasePhase> findByFkUser(Integer fkUser) {
+        return historyCasePhaseRepository.findByFkUser(fkUser);
     }
 }

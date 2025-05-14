@@ -1,9 +1,6 @@
 package com.codenbugs.ms_project.controllers.project;
 
-import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectResponse;
-import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.project.*;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
@@ -52,4 +49,11 @@ public class ProjectController {
         ProjectResponseWithoutUser response = this.projectService.updateEnabled(projectRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @GetMapping("/my-cases/{username}")
+    public ResponseEntity<List<ActiveCaseReponse>> getMyCases(@PathVariable String username) throws UserNotFoundException {
+        List<ActiveCaseReponse> myCases = this.projectService.getActiveCasesByUsername(username);
+        return new ResponseEntity<>(myCases, HttpStatus.OK);
+    }
+
 }

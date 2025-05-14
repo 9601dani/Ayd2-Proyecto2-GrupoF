@@ -1,0 +1,63 @@
+<app-template>
+    <div body class="body">
+      <section class="section">
+        <div class="container">
+          <h1 class="title is-2 has-text-weight-bold">Tus Casos Activos</h1>
+        </div>
+      </section>
+  
+      <section class="section">
+        <div class="columns is-multiline">
+          <div
+            class="column is-full-mobile is-half-tablet is-one-third-desktop"
+            *ngFor="let caseItem of cases"
+          >
+            <div class="card has-text-centered is-flex is-flex-direction-column" style="height: 100%;">
+              <header class="card-header">
+                <p class="card-header-title is-size-5 has-text-weight-bold">
+                  {{ caseItem.caseName }}
+                </p>
+              </header>
+  
+              <div class="card-content is-flex-grow-1">
+                <div class="content is-size-8 has-text-grey-dark" style="min-height: 80px">
+                  {{
+                    caseItem.description?.length > 100
+                      ? (caseItem.description | slice: 0:100) + '...'
+                      : caseItem.description
+                  }}
+                  <br />
+                  <small><strong>Fase actual:</strong> {{ caseItem.currentPhaseName }}</small><br />
+                  <small><strong>Fecha límite:</strong> {{ caseItem.limitDate | date:'dd/MM/yyyy' }}</small><br />
+                  
+                  <div class="mt-3">
+                    <small><strong>Progreso: {{caseItem.progressPercentage}} %</strong></small>
+                    <progress
+                      class="progress is-primary is-small"
+                      [value]="caseItem.progressPercentage"
+                      max="100"
+                    >
+                      {{ caseItem.progressPercentage }}%
+                    </progress>
+                  </div>
+                </div>
+              </div>
+  
+              <footer
+                class="card-footer is-justify-content-center is-align-items-center"
+                style="height: 50px"
+              >
+                <a
+                  class="card-footer-item has-background-primary has-text-white"
+                  (click)="viewCase(caseItem)"
+                >
+                  Ver Caso
+                </a>
+              </footer>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </app-template>
+  

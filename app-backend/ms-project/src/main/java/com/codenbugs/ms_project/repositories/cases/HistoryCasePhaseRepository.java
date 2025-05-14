@@ -25,4 +25,5 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
     List<HistoryCaseWithCaseDto> findAllWithCaseInfo();
 
     Optional<HistoryCasePhase> findFirstByFkCaseOrderByIdDesc(Integer fkCase);
+    List<HistoryCasePhase> findByFkUser(Integer fkUser);
 }

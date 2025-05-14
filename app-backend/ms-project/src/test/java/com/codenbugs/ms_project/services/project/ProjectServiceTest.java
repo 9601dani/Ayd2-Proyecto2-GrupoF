@@ -1,24 +1,24 @@
 package com.codenbugs.ms_project.services.project;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
-import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectRequest;
-import com.codenbugs.ms_project.dtos.project.ProjectResponse;
-import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.project.*;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.cases.Case;
+import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.project.ProjectRepository;
+import com.codenbugs.ms_project.services.cases.HistoryCasePhaseService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,6 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.Set;
 
 public class ProjectServiceTest {
 
@@ -52,17 +53,28 @@ public class ProjectServiceTest {
     private final BigDecimal SALARY_PER_HOUR = BigDecimal.valueOf(1.0);
     private final Boolean IS_ENABLED = true;
 
+    private final String USERNAME = "username";
+    private final Integer CASE_ID = 101;
+    private final String CASE_NAME = "Case A";
+    private final String CASE_DESCRIPTION = "Description A";
+    private final BigDecimal PROGRESS_PERCENTAGE = BigDecimal.valueOf(75.0);
+    private final LocalDateTime LIMIT_DATE = LocalDateTime.now();
+    private final String PHASE_NAME = "Initial Phase";
+
     private Project project;
     private ProjectResponse projectResponse;
     private ProjectResponseWithoutUser projectResponseWithoutUser;
     private UserResponse userResponse;
     private ProjectRequest projectRequest;
 
+    @Mock
+    private HistoryCasePhaseService historyCasePhaseService;
+
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
-        projectService = new ProjectServiceImpl(projectRepository, userRestClient, caseRepository);
+        projectService = new ProjectServiceImpl(projectRepository, userRestClient, caseRepository, historyCasePhaseService);
 
         project = new Project();
         project.setId(PROJECT_ID);
@@ -273,5 +285,60 @@ public class ProjectServiceTest {
 
         assertEquals("El proyecto ya está deshabilitado", ex.getMessage());
     }
+
+    @Test
+    void getActiveCasesByUsernameShouldReturnListOfActiveCases() throws UserNotFoundException {
+        // Arrange
+        UserResponse user = new UserResponse(USER_ID, USER_NAME, ROLE, PHOTO, SALARY_PER_HOUR, IS_ENABLED);
+
+        HistoryCasePhase phase = new HistoryCasePhase();
+        phase.setFkCase(CASE_ID);
+        phase.setFkUser(USER_ID);
+        phase.setPhaseName(PHASE_NAME);
+        phase.setIsCompleted(false);
+
+        Case caseModel = new Case();
+        caseModel.setId(CASE_ID);
+        caseModel.setName(CASE_NAME);
+        caseModel.setDescription(CASE_DESCRIPTION);
+        caseModel.setProgressPercentage(PROGRESS_PERCENTAGE);
+        caseModel.setLimitDate(LIMIT_DATE);
+        caseModel.setIsEnabled(true);
+        caseModel.setIsCancelled(false);
+
+        when(userRestClient.findByUsername(USERNAME)).thenReturn(user);
+        when(historyCasePhaseService.findByFkUser(USER_ID)).thenReturn(List.of(phase));
+        when(caseRepository.findAllById(Set.of(CASE_ID))).thenReturn(List.of(caseModel));
+
+        // Act
+        List<ActiveCaseReponse> result = projectService.getActiveCasesByUsername(USERNAME);
+
+        // Assert
+        assertEquals(1, result.size());
+        ActiveCaseReponse response = result.get(0);
+        assertEquals(CASE_ID, response.caseId());
+        assertEquals(CASE_NAME, response.caseName());
+        assertEquals(CASE_DESCRIPTION, response.description());
+        assertEquals(PROGRESS_PERCENTAGE, response.progressPercentage());
+        assertEquals(LIMIT_DATE, response.limitDate());
+        assertEquals(PHASE_NAME, response.currentPhaseName());
+    }
+
+    @Test
+    void getActiveCasesByUsernameShouldThrowUserNotFoundExceptionWhenUserIsNull() throws UserNotFoundException {
+        // Arrange
+        final String USERNAME = "nonexistent_user";
+
+        when(userRestClient.findByUsername(USERNAME)).thenReturn(null);
+
+        // Act & Assert
+        UserNotFoundException ex = assertThrows(UserNotFoundException.class, () -> {
+            projectService.getActiveCasesByUsername(USERNAME);
+        });
+
+        assertEquals("El usuario no existe", ex.getMessage());
+    }
+
+
 
 }
