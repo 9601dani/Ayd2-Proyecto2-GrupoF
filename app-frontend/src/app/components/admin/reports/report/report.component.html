@@ -1,0 +1,24 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-2 has-text-weight-bold">Reportes de la empresa</h1>
+
+        <div class="columns is-multiline mt-5">
+          <div class="column is-6" *ngFor="let report of reports">
+            <div class="card">
+              <div class="card-content">
+                <p class="title is-5">{{ report.title }}</p>
+                <p class="subtitle is-6">{{ report.description }}</p>
+                <button class="button is-link mt-3" (click)="goTo(report.route)">
+                  Ver reporte
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</app-template>

@@ -1,0 +1,51 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Reporte de proyectos con cantidad de casos</h1>
+
+        <div class="field mt-4">
+          <label class="label">Filtrar por estado del proyecto</label>
+          <div class="control">
+            <div class="select">
+              <select [(ngModel)]="filter" (change)="loadReport()">
+                <option [ngValue]="null">Todos</option>
+                <option [ngValue]="true">Activos</option>
+                <option [ngValue]="false">Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table class="table is-striped is-fullwidth mt-5" *ngIf="report.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Casos</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of report">
+              <td>{{ row.projectId }}</td>
+              <td>{{ row.projectName }}</td>
+              <td>{{ row.description }}</td>
+              <td>
+                <span class="tag" [ngClass]="row.isEnabled ? 'is-success' : 'is-danger'">
+                  {{ row.isEnabled ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>{{ row.caseCount }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="report.length === 0" class="has-text-centered mt-5">
+          <p class="is-size-5 has-text-grey">No se encontraron resultados.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>
