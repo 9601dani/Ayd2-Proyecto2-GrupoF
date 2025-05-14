@@ -12,9 +12,11 @@ import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import com.codenbugs.ms_project.model.cases.TypeCase;
+import com.codenbugs.ms_project.model.project.Project;
 import com.codenbugs.ms_project.repositories.cases.CasePhaseRepository;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
+import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -39,6 +41,7 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
     private final TypeCasesRepository typeCasesRepository;
     private final CaseRepository caseRepository;
     private final UserRestClient userRestClient;
+    private final ProjectRepository projectRepository;
 
     @Override
     public List<HistoryCaseWithCaseDto> getAllWithCaseInfo() {
@@ -62,15 +65,22 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
     }
 
     @Override
-    public HistoryCaseResponseDto updateCasePhase(HistoryCaseRequest request) throws CasePhaseNotFoundException {
+    public HistoryCaseResponseDto updateCasePhase(HistoryCaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException {
         HistoryCasePhase historyCasePhase = this.historyCasePhaseRepository.findById(request.id())
                 .orElseThrow(() -> new CasePhaseNotFoundException("No se encontró la fase"));
 
         Case c = this.caseRepository.findById(historyCasePhase.getFkCase())
                 .orElseThrow(() -> new CasePhaseNotFoundException("No se encontró el caso."));
 
+        Project p = this.projectRepository.findByIdAndIsEnabled(c.getFkProject(), true)
+                .orElseThrow(() -> new CaseNotFoundException("El caso no existe"));
+
         if(!c.getIsEnabled()) {
             throw new CasePhaseNotFoundException("El caso no se encuentra habilitado.");
+        }
+
+        if(!p.getIsEnabled()) {
+            throw new CaseNotFoundException("El proyecto no se encuentra habilitado.");
         }
 
         historyCasePhase.setIsCompleted(request.isCompleted());
@@ -88,8 +98,15 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
         Case c = this.caseRepository.findById(request.caseId())
                 .orElseThrow(() -> new CaseNotFoundException("No se encontró el caso."));
 
+        Project p = this.projectRepository.findByIdAndIsEnabled(c.getFkProject(), true)
+                .orElseThrow(() -> new CaseNotFoundException("El caso no existe"));
+
         if(!c.getIsEnabled()) {
             throw new CaseNotFoundException("El caso no se encuentra habilitado.");
+        }
+
+        if(!p.getIsEnabled()) {
+            throw new CaseNotFoundException("El proyecto no se encuentra habilitado.");
         }
 
         CasePhase casePhase = this.casePhaseRepository.findById(request.nextPhaseId())
@@ -121,8 +138,15 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
         Case c = this.caseRepository.findById(id)
                 .orElseThrow(() -> new CaseNotFoundException("No se encontró el caso."));
 
+        Project p = this.projectRepository.findByIdAndIsEnabled(c.getFkProject(), true)
+                .orElseThrow(() -> new CaseNotFoundException("El caso no existe"));
+
         if(!c.getIsEnabled()) {
             throw new CaseNotFoundException("El caso no se encuentra habilitado.");
+        }
+
+        if(!p.getIsEnabled()) {
+            throw new CaseNotFoundException("El proyecto no se encuentra habilitado.");
         }
 
         this.updatePercentage(c);

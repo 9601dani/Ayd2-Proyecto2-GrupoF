@@ -13,7 +13,7 @@ public interface HistoryCasePhaseService {
 
     CasePhaseResponse getNextPhase(Integer id) throws CasePhaseNotFoundException;
 
-    HistoryCaseResponseDto updateCasePhase(HistoryCaseRequest request) throws CasePhaseNotFoundException;
+    HistoryCaseResponseDto updateCasePhase(HistoryCaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException;
 
     HistoryCaseResponseDto saveNextPhase(NextPhaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException, UserNotFoundException;
 
