@@ -6,6 +6,7 @@ import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
 import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.TopContributorDto;
+import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
@@ -22,4 +23,6 @@ public interface HistoryCasePhaseService {
     List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport();
 
     TopContributorDto getTopContributor();
+
+    TopWorkerByHoursDto getTopWorkerByHours();
 }

@@ -2,6 +2,8 @@ package com.codenbugs.ms_report.clients;
 
 import com.codenbugs.ms_report.dtos.utils.CaseTypeUserHoursDto;
 import com.codenbugs.ms_report.dtos.utils.ProjectUserHoursDto;
+import com.codenbugs.ms_report.dtos.utils.TopContributorDto;
+import com.codenbugs.ms_report.dtos.utils.TopWorkerByHoursDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -15,4 +17,10 @@ public interface HistoryRestClient {
 
     @GetMapping("/case-type-user-hours")
     List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport();
+
+    @GetMapping("/top-contributor")
+    TopContributorDto getTopContributor();
+
+    @GetMapping("/top-worker")
+    TopWorkerByHoursDto getTopWorkerByHours();
 }

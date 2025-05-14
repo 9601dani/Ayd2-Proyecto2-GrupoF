@@ -2,6 +2,7 @@ package com.codenbugs.ms_report.clients;
 
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_report.dtos.report.Report1Dto;
+import com.codenbugs.ms_report.dtos.utils.TopProjectByCompletedCasesDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,4 +19,7 @@ public interface ProjectRestClient {
 
     @GetMapping("/all")
     List<ProjectResponseWithoutUser> getAllProjects();
+
+    @GetMapping("/top-project-completed")
+    TopProjectByCompletedCasesDto getTopProjectByCompletedCases();
 }

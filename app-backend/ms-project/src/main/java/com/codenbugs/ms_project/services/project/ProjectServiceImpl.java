@@ -6,6 +6,7 @@ import com.codenbugs.ms_project.dtos.project.ProjectRequest;
 import com.codenbugs.ms_project.dtos.project.ProjectResponse;
 import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectException;
@@ -133,5 +134,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<Report1Dto> gerReport1() {
         return this.projectRepository.getReport1();
+    }
+
+    @Override
+    public TopProjectByCompletedCasesDto getTopProjectByCompletedCases() {
+        return projectRepository.getTopProjectByCompletedCases();
     }
 }

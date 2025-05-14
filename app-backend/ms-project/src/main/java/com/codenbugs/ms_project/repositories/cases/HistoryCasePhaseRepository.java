@@ -4,6 +4,7 @@ import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
 import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.TopContributorDto;
+import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
 import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -65,4 +66,16 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         LIMIT 1
     """)
     TopContributorDto getTopContributor();
+
+    @Query("""
+        SELECT new com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto(
+            h.fkUser,
+            SUM(h.timeSpent)
+        )
+        FROM HistoryCasePhase h
+        GROUP BY h.fkUser
+        ORDER BY SUM(h.timeSpent) DESC
+        LIMIT 1
+    """)
+    TopWorkerByHoursDto getTopWorkerByHours();
 }

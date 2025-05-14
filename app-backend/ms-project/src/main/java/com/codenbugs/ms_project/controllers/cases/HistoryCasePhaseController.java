@@ -5,6 +5,7 @@ import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
 import com.codenbugs.ms_project.dtos.report.TopContributorDto;
+import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
@@ -46,6 +47,11 @@ public class HistoryCasePhaseController {
     @GetMapping("/top-contributor")
     public TopContributorDto getTopContributor() {
         return historyCasePhaseService.getTopContributor();
+    }
+
+    @GetMapping("/top-worker")
+    public TopWorkerByHoursDto getTopWorkerByHours() {
+        return historyCasePhaseService.getTopWorkerByHours();
     }
 
 }

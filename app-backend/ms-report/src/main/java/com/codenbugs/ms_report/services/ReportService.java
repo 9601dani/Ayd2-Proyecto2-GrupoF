@@ -2,11 +2,10 @@ package com.codenbugs.ms_report.services;
 
 
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
-import com.codenbugs.ms_report.dtos.report.Report1Dto;
-import com.codenbugs.ms_report.dtos.report.Report2Dto;
-import com.codenbugs.ms_report.dtos.report.Report3Dto;
-import com.codenbugs.ms_report.dtos.report.Report4Dto;
+import com.codenbugs.ms_report.dtos.report.*;
 import com.codenbugs.ms_report.dtos.user.UserResponseWithName;
+import com.codenbugs.ms_report.dtos.utils.TopProjectByCompletedCasesDto;
+import com.codenbugs.ms_report.dtos.utils.TopWorkerByHoursDto;
 import com.codenbugs.ms_report.exceptions.user.UserNotFoundException;
 
 import java.util.List;
@@ -24,4 +23,12 @@ public interface ReportService {
     List<UserResponseWithName> getReport6();
 
     List<ProjectResponseWithoutUser> getReport7();
+
+    Report8Dto getReport8() throws UserNotFoundException;
+
+    Report9Dto getReport9() throws UserNotFoundException;
+
+    TopProjectByCompletedCasesDto getReport10() throws UserNotFoundException;
+
+
 }

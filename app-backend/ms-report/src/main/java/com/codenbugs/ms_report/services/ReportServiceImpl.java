@@ -4,14 +4,10 @@ import com.codenbugs.ms_report.clients.HistoryRestClient;
 import com.codenbugs.ms_report.clients.ProjectRestClient;
 import com.codenbugs.ms_report.clients.UserRestClient;
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
-import com.codenbugs.ms_report.dtos.report.Report1Dto;
-import com.codenbugs.ms_report.dtos.report.Report2Dto;
-import com.codenbugs.ms_report.dtos.report.Report3Dto;
-import com.codenbugs.ms_report.dtos.report.Report4Dto;
+import com.codenbugs.ms_report.dtos.report.*;
 import com.codenbugs.ms_report.dtos.user.UserResponse;
 import com.codenbugs.ms_report.dtos.user.UserResponseWithName;
-import com.codenbugs.ms_report.dtos.utils.CaseTypeUserHoursDto;
-import com.codenbugs.ms_report.dtos.utils.ProjectUserHoursDto;
+import com.codenbugs.ms_report.dtos.utils.*;
 import com.codenbugs.ms_report.exceptions.user.UserNotFoundException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -186,5 +182,30 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public List<ProjectResponseWithoutUser> getReport7() {
         return this.projectRestClient.getAllProjects();
+    }
+
+    @Override
+    public Report8Dto getReport8() throws UserNotFoundException {
+
+        TopContributorDto top = this.historyRestClient.getTopContributor();
+
+        UserResponse user = this.userRestClient.findById(top.userId());
+
+        return new Report8Dto(user.id(), user.username(), user.salaryPerHour(), top.totalCases());
+    }
+
+    @Override
+    public Report9Dto getReport9() throws UserNotFoundException {
+
+        TopWorkerByHoursDto top = this.historyRestClient.getTopWorkerByHours();
+
+        UserResponse user = this.userRestClient.findById(top.userId());
+
+        return new Report9Dto(user.id(), user.username(), user.salaryPerHour(), top.totalHours(), top.totalHours().multiply(user.salaryPerHour()));
+    }
+
+    @Override
+    public TopProjectByCompletedCasesDto getReport10() throws UserNotFoundException {
+        return this.projectRestClient.getTopProjectByCompletedCases();
     }
 }

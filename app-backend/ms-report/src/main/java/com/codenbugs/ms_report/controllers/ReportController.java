@@ -1,11 +1,9 @@
 package com.codenbugs.ms_report.controllers;
 
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
-import com.codenbugs.ms_report.dtos.report.Report1Dto;
-import com.codenbugs.ms_report.dtos.report.Report2Dto;
-import com.codenbugs.ms_report.dtos.report.Report3Dto;
-import com.codenbugs.ms_report.dtos.report.Report4Dto;
+import com.codenbugs.ms_report.dtos.report.*;
 import com.codenbugs.ms_report.dtos.user.UserResponseWithName;
+import com.codenbugs.ms_report.dtos.utils.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_report.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_report.services.ReportService;
 import lombok.AllArgsConstructor;
@@ -51,6 +49,21 @@ public class ReportController {
     @GetMapping("/report7")
     public List<ProjectResponseWithoutUser> getReport7() {
         return reportService.getReport7();
+    }
+
+    @GetMapping("/report8")
+    public Report8Dto getReport8() throws UserNotFoundException {
+        return reportService.getReport8();
+    }
+
+    @GetMapping("/report9")
+    public Report9Dto getReport9() throws UserNotFoundException {
+        return reportService.getReport9();
+    }
+
+    @GetMapping("/report10")
+    public TopProjectByCompletedCasesDto getReport10() throws UserNotFoundException {
+        return reportService.getReport10();
     }
 
 

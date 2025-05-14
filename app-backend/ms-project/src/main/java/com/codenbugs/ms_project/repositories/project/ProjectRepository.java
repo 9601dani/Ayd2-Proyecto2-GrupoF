@@ -1,6 +1,7 @@
 package com.codenbugs.ms_project.repositories.project;
 
 import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.model.project.Project;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -27,5 +28,20 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
                 ORDER BY p.id
             """)
     List<Report1Dto> getReport1();
+
+    @Query("""
+        SELECT new com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto(
+            p.id,
+            p.name,
+            COUNT(c.id)
+        )
+        FROM Project p
+        JOIN Case c ON p.id = c.fkProject
+        WHERE c.isCancelled = false AND c.isEnabled = true
+        GROUP BY p.id, p.name
+        ORDER BY COUNT(c.id) DESC
+        LIMIT 1
+    """)
+    TopProjectByCompletedCasesDto getTopProjectByCompletedCases();
 
 }
