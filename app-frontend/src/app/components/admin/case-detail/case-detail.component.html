@@ -10,12 +10,32 @@
         <div class="mb-4">
           <p><strong>Fecha de creación:</strong> {{ case?.createdAt | date: 'dd/MM/yyyy' }}</p>
           <p><strong>Fecha límite:</strong> {{ case?.limitDate | date: 'dd/MM/yyyy' }}</p>
+          <p><strong>Tipo de caso:</strong> {{ case?.typeCaseName }}</p>
+          <p><strong>Fase actual:</strong> {{ case?.phaseName }}</p>
+          <p><strong>Estado:</strong> {{ case?.isCompleted ? 'Completada' : 'Pendiente' }}</p>
         </div>
 
-        <button class="button is-success" (click)="markAsCompleted()">Marcar como completado</button>
+        @if(this.userRole === 1) {
+          @if(this.userId === this.case?.adminId) {
+            @if(this.case?.isCompleted) {
+              <button class="button is-success mr-3" (click)="markAsAccepted()">Aceptar</button>
+              <button class="button is-warning" (click)="markAsRejected()">Rechazar</button>
+            }
+          }
+        } @else if (this.userRole === 2) {
+          @if(this.userId === this.case?.userId) {
+            <button [disabled]="this.case?.isCompleted" class="button is-success" (click)="markAsCompleted()">Marcar como completado</button>
+          }
+        }
       </div>
     </section>
 
     <app-comments [caseId]="id"></app-comments>
   </div>
 </app-template>
+
+@if(this.modalActive === 'complete') {
+  <app-complete-phase-modal [case]="this.case" (closed)="onModalClosed()"></app-complete-phase-modal>
+} @else if (this.modalActive === 'new') {
+  <app-new-phase-modal [case]="this.case" (closed)="onModalClosed()"></app-new-phase-modal>
+}

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TypesCase {
+public class TypeCase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
