@@ -10,6 +10,7 @@ import { AdminProjectComponent } from './components/admin/admin-project/admin-pr
 import { CaseDetailComponent } from './components/admin/case-detail/case-detail.component';
 import { ReportComponent } from './components/admin/reports/report/report.component';
 import { ProjectsCasesComponent } from './components/admin/reports/projects-cases/projects-cases.component';
+import { TimeCostByProjectComponent } from './components/admin/reports/time-cost-by-project/time-cost-by-project.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -30,5 +31,9 @@ export const routes: Routes = [
   {
     path: 'projects-cases',
     component: ProjectsCasesComponent,
+  },
+  {
+    path: 'time-cost-by-project',
+    component: TimeCostByProjectComponent,
   },
 ];
