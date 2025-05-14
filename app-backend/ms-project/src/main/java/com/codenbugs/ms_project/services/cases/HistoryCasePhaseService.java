@@ -12,6 +12,7 @@ public interface HistoryCasePhaseService {
 
     List<HistoryCaseWithCaseDto> getAllWithCaseInfo();
 
+
     CasePhaseResponse getNextPhase(Integer id) throws CasePhaseNotFoundException;
 
     HistoryCaseResponseDto updateCasePhase(HistoryCaseRequest request) throws CasePhaseNotFoundException, CaseNotFoundException;
@@ -21,4 +22,5 @@ public interface HistoryCasePhaseService {
     List<HistoryCasePhase> findByFkUser(Integer fkUser);
 
     void completeCase(Integer id) throws CaseNotFoundException;
+
 }

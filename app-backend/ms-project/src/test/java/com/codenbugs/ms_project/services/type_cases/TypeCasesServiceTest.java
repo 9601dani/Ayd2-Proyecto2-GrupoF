@@ -60,11 +60,14 @@ public class TypeCasesServiceTest {
         typeCasesService = new TypeCasesServiceImpl(typeCasesRepository, phaseCasesService);
 
         typeCase = new TypeCase();
+
         typeCase.setId(TYPE_CASES_ID);
         typeCase.setName(TYPE_CASES_NAME);
         typeCase.setDescription(TYPE_CASES_DESCRIPTION);
 
+
         phasesCase = new CasePhase();
+
         phasesCase.setId(PHASE_ID);
         phasesCase.setName(PHASE_NAME);
         phasesCase.setFkCaseType(CASE_TYPE_ID);
@@ -119,6 +122,7 @@ public class TypeCasesServiceTest {
         when(typeCasesRepository.findByName(TYPE_CASES_NAME)).thenReturn(null);
 
         TypeCase savedType = new TypeCase();
+
         savedType.setId(TYPE_CASES_ID);
         savedType.setName(TYPE_CASES_NAME);
         savedType.setDescription(TYPE_CASES_DESCRIPTION);
@@ -157,7 +161,9 @@ public class TypeCasesServiceTest {
 
     @Test
     public void updateTypeCaseWithDuplicateNameThrowsException() {
+
         TypeCase otherTypeCase = new TypeCase();
+
         otherTypeCase.setId(999);
         otherTypeCase.setName(TYPE_CASES_NAME);
 

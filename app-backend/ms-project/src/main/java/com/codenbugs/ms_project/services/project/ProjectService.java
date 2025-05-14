@@ -22,4 +22,6 @@ public interface ProjectService {
 
     List<ActiveCaseReponse> getActiveCasesByUsername(String username) throws UserNotFoundException;
 
+    List<ActiveCaseReponse> getActiveCasesByUsername(String username) throws UserNotFoundException;
+
 }

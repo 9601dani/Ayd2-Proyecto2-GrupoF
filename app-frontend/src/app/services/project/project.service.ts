@@ -94,7 +94,7 @@ export class ProjectService {
   getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
     return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
-
+  
   /*-------------------------------MY-CASES--------------------------------*/
 
   getMyCases(username:string):Observable<any>{
