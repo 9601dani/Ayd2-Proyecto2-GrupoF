@@ -1,0 +1,63 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Reporte de desarrolladores</h1>
+
+        <div class="columns is-multiline">
+          <div class="column is-4">
+            <label class="label">Buscar por nombre o usuario</label>
+            <input class="input" [(ngModel)]="search" (input)="applyFilters()" placeholder="Ej. developer1, Juan Pérez" />
+          </div>
+
+          <div class="column is-4">
+            <label class="label">Salario mínimo por hora</label>
+            <input class="input" type="number" [(ngModel)]="minSalary" (input)="applyFilters()" placeholder="Ej. 20" />
+          </div>
+
+          <div class="column is-4">
+            <label class="label">Estado</label>
+            <div class="select is-fullwidth">
+              <select [(ngModel)]="stateFilter" (change)="applyFilters()">
+                <option [ngValue]="null">Todos</option>
+                <option [ngValue]="true">Activos</option>
+                <option [ngValue]="false">Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table class="table is-fullwidth is-striped mt-5" *ngIf="filteredUsers.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Salario/Hora</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUsers">
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.firstName }} {{ user.lastName }}</td>
+              <td>{{ user.email }}</td>
+              <td>Q {{ user.salaryPerHour | number:'1.2-2' }}</td>
+              <td>
+                <span class="tag" [ngClass]="user.isEnabled ? 'is-success' : 'is-danger'">
+                  {{ user.isEnabled ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="filteredUsers.length === 0" class="has-text-centered mt-5">
+          <p class="is-size-5 has-text-grey">No se encontraron desarrolladores que coincidan con los filtros.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

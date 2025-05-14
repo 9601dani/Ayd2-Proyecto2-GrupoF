@@ -16,10 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -102,33 +99,32 @@ public class ReportServiceImpl implements ReportService {
     public List<Report3Dto> getReport3(Integer userId) throws UserNotFoundException {
         List<ProjectUserHoursDto> hours = this.historyRestClient.getProjectUserHoursSummary();
 
-        List<UserResponse> users = new ArrayList<>();
-
+        Map<Integer, BigDecimal> userHoursMap = new HashMap<>();
         for (ProjectUserHoursDto hour : hours) {
-            UserResponse user = this.userRestClient.findById(hour.userId());
-            users.add(user);
+            userHoursMap.merge(hour.userId(), hour.totalHours(), BigDecimal::add);
         }
 
-        BigDecimal total = new BigDecimal(0);
-        BigDecimal totalHours = new BigDecimal(0);
+        Set<Integer> userIds = userHoursMap.keySet();
         List<Report3Dto> reports = new ArrayList<>();
 
-        for (int i = 0; i < users.size(); i++) {
-            UserResponse user = users.get(i);
-            ProjectUserHoursDto hour = hours.get(i);
+        for (Integer uid : userIds) {
+            UserResponse user = this.userRestClient.findById(uid);
+            if (user.role() != 2) continue;
 
-            BigDecimal salary = user.salaryPerHour();
-            BigDecimal tHours = hour.totalHours();
+            BigDecimal totalHours = userHoursMap.get(uid);
+            BigDecimal totalSalary = user.salaryPerHour().multiply(totalHours);
 
-            Report3Dto dto = new Report3Dto(user.id(), user.username(), user.salaryPerHour(), tHours, salary.multiply(tHours));
+            Report3Dto dto = new Report3Dto(user.id(), user.username(), user.salaryPerHour(), totalHours, totalSalary);
             reports.add(dto);
         }
 
-        if(userId != null) {
+        if (userId != null) {
             return reports.stream().filter(r -> r.id().equals(userId)).toList();
         }
+
         return reports;
     }
+
 
     @Override
     public List<Report4Dto> getReport4(Integer typeId) throws UserNotFoundException {

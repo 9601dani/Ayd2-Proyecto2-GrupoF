@@ -43,7 +43,7 @@ export class ReportComponent {
     {
       title: 'Reporte de desarrolladores',
       description: 'Con opción de aplicar múltiples filtros.',
-      route: '/users'
+      route: '/users-report'
     },
     {
       title: 'Reporte de proyectos',

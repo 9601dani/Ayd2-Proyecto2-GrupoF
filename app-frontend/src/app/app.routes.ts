@@ -11,6 +11,9 @@ import { CaseDetailComponent } from './components/admin/case-detail/case-detail.
 import { ReportComponent } from './components/admin/reports/report/report.component';
 import { ProjectsCasesComponent } from './components/admin/reports/projects-cases/projects-cases.component';
 import { TimeCostByProjectComponent } from './components/admin/reports/time-cost-by-project/time-cost-by-project.component';
+import { TimeCostByUserComponent } from './components/admin/reports/time-cost-by-user/time-cost-by-user.component';
+import { TimeCostCaseTypeComponent } from './components/admin/reports/time-cost-case-type/time-cost-case-type.component';
+import { UsersReportComponent } from './components/admin/reports/users-report/users-report.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -35,5 +38,17 @@ export const routes: Routes = [
   {
     path: 'time-cost-by-project',
     component: TimeCostByProjectComponent,
+  },
+  {
+    path: 'time-cost-by-user',
+    component: TimeCostByUserComponent,
+  },
+  {
+    path: 'time-cost-by-case-type',
+    component: TimeCostCaseTypeComponent,
+  },
+  {
+    path: 'users-report',
+    component: UsersReportComponent,
   },
 ];

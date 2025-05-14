@@ -33,8 +33,6 @@ export class TimeCostByProjectComponent implements OnInit {
     this._projectService.getAllProjects().subscribe({
       next: (value) => {
         this.projects = value;
-        console.log(value);
-        
       },
     })
   }
