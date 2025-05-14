@@ -3,7 +3,10 @@ package com.codenbugs.ms_project.clients;
 
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import jdk.jshell.spi.ExecutionControl;
+import org.apache.catalina.User;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -12,4 +15,7 @@ public interface UserRestClient {
 
     @GetMapping("/{id}")
     UserResponse findById(@PathVariable("id") Integer id) throws UserNotFoundException;
+
+    @GetMapping("/byUsername/{username}")
+    UserResponse findByUsername(@PathVariable String username)  throws UserNotFoundException;
 }

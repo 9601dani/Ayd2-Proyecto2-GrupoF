@@ -22,4 +22,6 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         JOIN Case c ON h.fkCase = c.id
     """)
     List<HistoryCaseWithCaseDto> findAllWithCaseInfo();
+
+    List<HistoryCasePhase> findByFkUser(Integer fkUser);
 }

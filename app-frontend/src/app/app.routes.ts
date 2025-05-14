@@ -8,6 +8,7 @@ import { CaseTypeComponent } from './components/admin/case-type/case-type.compon
 import {CompanySettingsComponent} from './components/company/company-settings/company-settings.component';
 import { AdminProjectComponent } from './components/admin/admin-project/admin-project.component';
 import {CaseDetailComponent} from './components/admin/case-detail/case-detail.component';
+import { MyCasesComponent } from './components/dev/my-cases/my-cases.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,5 +22,6 @@ export const routes: Routes = [
     { path: 'project/:id', component: AdminProjectComponent},
     { path: 'profile', component: MyProfileComponent},
     { path: 'company-settings', component: CompanySettingsComponent },
-    { path: 'case/:id', component: CaseDetailComponent }
+    { path: 'case/:id', component: CaseDetailComponent },
+    { path: 'cases', component: MyCasesComponent}
  ];

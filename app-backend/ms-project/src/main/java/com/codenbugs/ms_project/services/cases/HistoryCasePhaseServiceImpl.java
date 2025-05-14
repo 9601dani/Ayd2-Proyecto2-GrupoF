@@ -40,4 +40,9 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
     public List<HistoryCaseWithCaseDto> getAllWithCaseInfo() {
         return historyCasePhaseRepository.findAllWithCaseInfo();
     }
+
+    @Override
+    public List<HistoryCasePhase> findByFkUser(Integer fkUser) {
+        return historyCasePhaseRepository.findByFkUser(fkUser);
+    }
 }

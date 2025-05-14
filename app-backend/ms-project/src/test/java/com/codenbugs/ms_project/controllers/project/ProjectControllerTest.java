@@ -13,6 +13,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -43,10 +44,18 @@ public class ProjectControllerTest {
     private final String PHOTO = "photo";
     private final BigDecimal SALARY = new BigDecimal("100");
 
+    private final String CURRENT_PHASE_NAME = "Fase actual";
+    private final Integer CASE_ID = 99;
+    private final String CASE_NAME = "Caso A";
+    private final String DESCRIPTION_CASE = "Descripción del caso A";
+    private final BigDecimal PROGRESS = new BigDecimal("75.00");
+    private final LocalDateTime LIMIT_DATE = LocalDateTime.now().plusDays(7);
+
     private ProjectRequest projectRequest;
     private ProjectEnabledRequest projectEnabledRequest;
     private ProjectResponseWithoutUser responseWithoutUser;
     private ProjectResponse responseWithUser;
+    private ActiveCaseReponse activeCaseResponse;
 
     @BeforeEach
     void setUp() {
@@ -55,6 +64,7 @@ public class ProjectControllerTest {
         responseWithoutUser = new ProjectResponseWithoutUser(ID, NAME, DESCRIPTION, ENABLED, FK_USER);
         responseWithUser = new ProjectResponse(ID, NAME, DESCRIPTION, ENABLED,
                 new UserResponse(FK_USER, USERNAME,ROLE,PHOTO,SALARY, ENABLED));
+        activeCaseResponse = new ActiveCaseReponse(CASE_ID, CASE_NAME, DESCRIPTION_CASE, PROGRESS, LIMIT_DATE, CURRENT_PHASE_NAME);
     }
 
     @Test
@@ -107,5 +117,17 @@ public class ProjectControllerTest {
                         .content(objectMapper.writeValueAsString(projectEnabledRequest)))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(responseWithoutUser)));
+    }
+
+    @Test
+    void getMyCases_shouldReturnListOfActiveCases() throws Exception {
+        // Arrange
+        List<ActiveCaseReponse> cases = List.of(activeCaseResponse);
+        when(projectService.getActiveCasesByUsername(USERNAME)).thenReturn(cases);
+
+        // Act & Assert
+        mockMvc.perform(get("/v1/projects/my-cases/{username}", USERNAME))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(cases)));
     }
 }
