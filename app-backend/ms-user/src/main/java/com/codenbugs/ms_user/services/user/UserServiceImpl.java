@@ -140,6 +140,8 @@ public class UserServiceImpl implements UserService {
 
         boolean isValidPassword = passwordEncoder.matches(password, userPassword);
 
+        System.out.println("isValidPassword: " + isValidPassword);
+        System.out.println("encryptedPassword: " + passwordEncoder.encode(password));
         if (!isValidPassword) {
             throw new UserNotFoundException("Invalid password");
         }
