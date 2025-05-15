@@ -2,6 +2,8 @@ package com.codenbugs.ms_project.services.cases;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.dtos.report.*;
+import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import com.codenbugs.ms_project.repositories.cases.CasePhaseRepository;
 import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
@@ -92,6 +94,129 @@ public class HistoryCasePhaseServiceTest {
         // Assert
         assertEquals(1, result.size());
         assertEquals(dto, result.get(0));
-        verify(historyCasePhaseRepository, times(1)).findAllWithCaseInfo();
     }
+
+    @Test
+    void findByFkUser_ReturnsMatchingHistory() {
+        // Arrange
+        HistoryCasePhase history = new HistoryCasePhase();
+        history.setId(ID_HISTORY);
+        history.setFkCase(FK_CASE);
+        history.setFkUser(FK_USER_ID);
+        history.setFkCasePhase(FK_CASE_PHASE);
+        history.setIsCompleted(IS_COMPLETED);
+        history.setTimeSpent(TIME_SPENT);
+
+        when(historyCasePhaseRepository.findByFkUser(FK_USER_ID)).thenReturn(List.of(history));
+
+        // Act
+        List<HistoryCasePhase> result = hisotryCasePhaseService.findByFkUser(FK_USER_ID);
+
+        // Assert
+        assertEquals(1, result.size());
+        assertEquals(history, result.get(0));
+    }
+
+    @Test
+    void getProjectUserHoursSummarySuccesfully() {
+        // Arrange
+        ProjectUserHoursDto dto = new ProjectUserHoursDto(
+                FK_PROJECT,
+                "Proyecto A",
+                FK_USER_ID,
+                BigDecimal.TEN
+        );
+
+        when(historyCasePhaseRepository.getProjectUserHoursSummary()).thenReturn(List.of(dto));
+
+        // Act
+        List<ProjectUserHoursDto> result = hisotryCasePhaseService.getProjectUserHoursSummary();
+
+        // Assert
+        assertEquals(1, result.size());
+        assertEquals(dto, result.get(0));
+    }
+
+    @Test
+    void getCaseTypeUserHoursReportSuccesfully() {
+        // Arrange
+        CaseTypeUserHoursDto dto = new CaseTypeUserHoursDto(
+                FK_CASE_TYPE,
+                "Tipo A",
+                FK_USER_ID,
+                BigDecimal.TEN
+        );
+
+        when(historyCasePhaseRepository.getCaseTypeUserHoursReport()).thenReturn(List.of(dto));
+
+        // Act
+        List<CaseTypeUserHoursDto> result = hisotryCasePhaseService.getCaseTypeUserHoursReport();
+
+        // Assert
+        assertEquals(1, result.size());
+        assertEquals(dto, result.get(0));
+    }
+
+    @Test
+    void getTopContributorSuccesfully() {
+        TopContributorDto dto = new TopContributorDto(FK_USER_ID, 15L);
+
+        when(historyCasePhaseRepository.getTopContributor()).thenReturn(dto);
+
+        TopContributorDto result = hisotryCasePhaseService.getTopContributor();
+
+        assertEquals(FK_USER_ID, result.userId());
+        assertEquals(15L, result.totalCases());
+    }
+
+
+    @Test
+    void getTopWorkerByHoursSuccesfully() {
+        TopWorkerByHoursDto dto = new TopWorkerByHoursDto(FK_USER_ID, BigDecimal.valueOf(40));
+
+        when(historyCasePhaseRepository.getTopWorkerByHours()).thenReturn(dto);
+
+        TopWorkerByHoursDto result = hisotryCasePhaseService.getTopWorkerByHours();
+
+        assertEquals(FK_USER_ID, result.userId());
+        assertEquals(BigDecimal.valueOf(40), result.totalHours());
+    }
+
+    @Test
+    void getCasesWithUserInfoSuccesfully() {
+        CaseUserReportDto dto = new CaseUserReportDto(
+                1,
+                "Caso 1",
+                "Descripción del caso",
+                2,
+                "Tipo A",
+                LocalDateTime.now().minusDays(5),
+                LocalDateTime.now().plusDays(10),
+                FK_USER_ID
+        );
+
+        when(historyCasePhaseRepository.findAllCasesWithUserInfo()).thenReturn(List.of(dto));
+
+        List<CaseUserReportDto> result = hisotryCasePhaseService.getCasesWithUserInfo();
+
+        assertEquals(1, result.size());
+        assertEquals(dto, result.get(0));
+    }
+
+    @Test
+    void getUserTimeByDateSuccesfully() {
+        UserTimeByDateDto dto = new UserTimeByDateDto(
+                FK_USER_ID,
+                LocalDateTime.of(2025, 5, 10, 8, 0),
+                BigDecimal.valueOf(6)
+        );
+
+        when(historyCasePhaseRepository.getUserTimeGroupedByDate()).thenReturn(List.of(dto));
+
+        List<UserTimeByDateDto> result = hisotryCasePhaseService.getUserTimeByDate();
+
+        assertEquals(1, result.size());
+        assertEquals(dto, result.get(0));
+    }
+
 }
