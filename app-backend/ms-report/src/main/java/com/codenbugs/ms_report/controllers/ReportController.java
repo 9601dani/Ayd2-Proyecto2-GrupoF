@@ -3,6 +3,7 @@ package com.codenbugs.ms_report.controllers;
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_report.dtos.report.*;
 import com.codenbugs.ms_report.dtos.user.UserResponseWithName;
+import com.codenbugs.ms_report.dtos.utils.CaseUserReportDto;
 import com.codenbugs.ms_report.dtos.utils.TopProjectByCancelledCasesDto;
 import com.codenbugs.ms_report.dtos.utils.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_report.exceptions.user.UserNotFoundException;
@@ -70,6 +71,11 @@ public class ReportController {
     @GetMapping("/report11")
     public TopProjectByCancelledCasesDto getReport11() throws UserNotFoundException {
         return reportService.getReport11();
+    }
+
+    @GetMapping("/report13")
+    public List<CaseUserReportDto> getReport13(@RequestParam(required = false) Integer userId) throws UserNotFoundException {
+        return reportService.getReport13(userId);
     }
 
 

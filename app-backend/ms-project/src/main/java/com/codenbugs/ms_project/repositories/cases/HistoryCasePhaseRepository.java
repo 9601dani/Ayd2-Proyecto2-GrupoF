@@ -1,10 +1,7 @@
 package com.codenbugs.ms_project.repositories.cases;
 
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
-import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.TopContributorDto;
-import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
+import com.codenbugs.ms_project.dtos.report.*;
 import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -83,4 +80,22 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
     Optional<HistoryCasePhase> findFirstByFkCaseOrderByIdDesc(Integer fkCase);
 
     List<HistoryCasePhase> findByFkUser(Integer fkUser);
+
+    @Query("""
+                SELECT new com.codenbugs.ms_project.dtos.report.CaseUserReportDto(
+                    c.id,
+                    c.name,
+                    c.description,
+                    t.id,
+                    t.name,
+                    c.createdAt,
+                    c.limitDate,
+                    h.fkUser
+                )
+                FROM HistoryCasePhase h
+                JOIN Case c ON h.fkCase = c.id
+                JOIN TypeCase t ON c.FK_Case_Type = t.id
+            """)
+    List<CaseUserReportDto> findAllCasesWithUserInfo();
+
 }

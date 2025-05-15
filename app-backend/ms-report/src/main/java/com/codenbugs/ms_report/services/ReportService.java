@@ -4,6 +4,7 @@ package com.codenbugs.ms_report.services;
 import com.codenbugs.ms_report.dtos.project.ProjectResponseWithoutUser;
 import com.codenbugs.ms_report.dtos.report.*;
 import com.codenbugs.ms_report.dtos.user.UserResponseWithName;
+import com.codenbugs.ms_report.dtos.utils.CaseUserReportDto;
 import com.codenbugs.ms_report.dtos.utils.TopProjectByCancelledCasesDto;
 import com.codenbugs.ms_report.dtos.utils.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_report.dtos.utils.TopWorkerByHoursDto;
@@ -33,5 +34,6 @@ public interface ReportService {
 
     TopProjectByCancelledCasesDto getReport11() throws UserNotFoundException;
 
+    List<CaseUserReportDto> getReport13(Integer userId);
 
 }
