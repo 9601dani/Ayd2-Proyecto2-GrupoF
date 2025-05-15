@@ -36,4 +36,6 @@ public interface ReportService {
 
     List<CaseUserReportDto> getReport13(Integer userId);
 
+    List<CaseUserReportDto> getReport14(Integer typeId);
+
 }

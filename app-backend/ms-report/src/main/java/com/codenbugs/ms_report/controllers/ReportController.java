@@ -78,6 +78,11 @@ public class ReportController {
         return reportService.getReport13(userId);
     }
 
+    @GetMapping("/report14")
+    public List<CaseUserReportDto> getReport14(@RequestParam(required = false) Integer typeId) throws UserNotFoundException {
+        return reportService.getReport14(typeId);
+    }
+
 
 
 }

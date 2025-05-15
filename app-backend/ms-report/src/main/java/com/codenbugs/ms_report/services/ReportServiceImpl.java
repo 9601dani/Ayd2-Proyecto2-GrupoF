@@ -220,4 +220,15 @@ public class ReportServiceImpl implements ReportService {
 
         return cases;
     }
+
+    @Override
+    public List<CaseUserReportDto> getReport14(Integer typeId) {
+        List<CaseUserReportDto> cases = this.historyRestClient.getCasesWithUserInfo();
+
+        if (typeId != null) {
+            return cases.stream().filter(caseUserReportDto -> caseUserReportDto.caseTypeId().equals(typeId)).toList();
+        }
+
+        return cases;
+    }
 }
