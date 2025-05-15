@@ -22,6 +22,7 @@ public class UserController {
     @PostMapping("/authenticate")
     public ResponseEntity<UserAuthenticatedResponse> authenticate(@RequestBody UserAuthRequest userAuthRequest) throws UserException {
         UserAuthenticatedResponse response = this.userService.authenticate(userAuthRequest);
+        System.out.println("RESPONSE: " + response);
         return ResponseEntity.ok(response);
     }
 

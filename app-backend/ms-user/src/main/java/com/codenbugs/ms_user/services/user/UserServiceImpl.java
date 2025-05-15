@@ -135,7 +135,7 @@ public class UserServiceImpl implements UserService {
 
         System.out.println("REQUEST: " + userAuthRequest);
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
-        System.out.println("USER: " + user.toString());
+        System.out.println("USER: " + user.getUsername());
         String userPassword = user.getPassword();
 
         boolean isValidPassword = passwordEncoder.matches(password, userPassword);
@@ -150,8 +150,10 @@ public class UserServiceImpl implements UserService {
 
         TokenResponse tokenResponse = this.tokenService.getTokens(user);
         user.setToken(tokenResponse.refreshToken());
+        System.out.println("USER SAVED: " + user.getIsEnabled());
         user = this.userRepository.save(user);
 
+        System.out.println("RETURN " + user.getToken());
         return new UserAuthenticatedResponse(user, tokenResponse);
     }
 
