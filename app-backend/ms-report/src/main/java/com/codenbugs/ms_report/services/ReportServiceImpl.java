@@ -179,7 +179,7 @@ public class ReportServiceImpl implements ReportService {
 
         List<UserTimeByDateDto> filtered = data.stream()
                 .filter(d -> (from == null || !d.createdAt().isBefore(from)) &&
-                        (to == null   || !d.createdAt().isAfter(to)))
+                        (to == null || !d.createdAt().isAfter(to)))
                 .toList();
 
         BigDecimal totalHours = BigDecimal.ZERO;
@@ -203,7 +203,7 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public List<Report7Dto> getReport7() throws UserNotFoundException {
-        List<ProjectResponseWithoutUser> projects =  this.projectRestClient.getAllProjects();
+        List<ProjectResponseWithoutUser> projects = this.projectRestClient.getAllProjects();
         List<Report7Dto> reports = new ArrayList<>();
         for (ProjectResponseWithoutUser project : projects) {
             UserResponse user = this.userRestClient.findById(project.fkUser());
