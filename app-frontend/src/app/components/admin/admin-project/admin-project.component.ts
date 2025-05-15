@@ -120,6 +120,17 @@ export class AdminProjectComponent implements OnInit {
           console.log(err);
         },
       });
+      
+      this._projectService.getCasesByIsCancelled(true).subscribe({
+        next: (value: any) => {
+          this.casesCancelled = value;
+          console.log(value);
+          
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
     }
   }
 

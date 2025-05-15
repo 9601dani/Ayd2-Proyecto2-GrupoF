@@ -36,6 +36,7 @@ public class HistoryCasePhaseControllerTest {
     private final Integer ID = 1;
     private final Integer FK_CASE = 2;
     private final Integer FK_NEXT = 3;
+
     private final Integer FK_USER = 3;
     private final Integer FK_CASE_PHASE = 4;
     private final Boolean IS_COMPLETED = true;
@@ -62,7 +63,6 @@ public class HistoryCasePhaseControllerTest {
     void getAllWithCaseInfo() throws Exception {
         List<HistoryCaseWithCaseDto> list = List.of(historyDto);
         when(historyCasePhaseService.getAllWithCaseInfo()).thenReturn(list);
-
         mockMvc.perform(get("/v1/histories/all-cases")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -115,7 +115,4 @@ public class HistoryCasePhaseControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-
-
-
 }

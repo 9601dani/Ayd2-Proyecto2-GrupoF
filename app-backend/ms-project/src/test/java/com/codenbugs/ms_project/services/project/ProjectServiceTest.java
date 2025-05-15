@@ -116,6 +116,7 @@ public class ProjectServiceTest {
     }
 
     @Test
+
     public void updateProjectSuccesfully() throws ProjectNotFoundException, ProjectIsDisabled {
 
         project.setIsEnabled(true);
@@ -238,6 +239,7 @@ public class ProjectServiceTest {
         assertThrows(ProjectNotFoundException.class, () -> projectService.getById(PROJECT_ID));
 
     }
+
     @Test
     void updateEnabledShouldThrowProjectNotFoundWhenProjectDoesNotExist() {
         // Arrange
@@ -338,7 +340,4 @@ public class ProjectServiceTest {
 
         assertEquals("El usuario no existe", ex.getMessage());
     }
-
-
-
 }

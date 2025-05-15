@@ -21,6 +21,7 @@ public class PhaseCasesServiceImpl implements PhaseCasesService {
 
     private final PhaseCasesRepository phaseCasesRepository;
 
+
     @Override
     public List<CasePhase> findByCaseType(Integer caseId) {
         return phaseCasesRepository.findByFkCaseType(caseId);

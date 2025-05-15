@@ -1,0 +1,49 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Horas y dinero invertido por proyecto</h1>
+
+        <div class="field mt-4">
+          <label class="label">Selecciona un proyecto</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select [(ngModel)]="projectId" (change)="loadReport()">
+                <option [ngValue]="null">Todos los proyectos</option>
+                <option *ngFor="let project of projects" [ngValue]="project.id">
+                  {{ project.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table
+          class="table is-striped is-fullwidth mt-5"
+          *ngIf="report.length > 0"
+        >
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Total Horas</th>
+              <th>Total Invertido</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of report">
+              <td>{{ r.projectId }}</td>
+              <td>{{ r.projectName }}</td>
+              <td>{{ r.totalHours | number : "1.2-2" }}</td>
+              <td>Q {{ r.totalInvested | number : "1.2-2" }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="report.length === 0" class="has-text-centered mt-5">
+          <p class="is-size-5 has-text-grey">No se encontraron datos.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

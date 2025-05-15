@@ -29,4 +29,5 @@ public interface CaseService {
     List<CaseResponseDto> getCasesByIsCancelled(Boolean isCancelled);
 
     CaseDetailsResponse getCaseDetails(Integer id) throws CaseNotFoundException;
+
 }

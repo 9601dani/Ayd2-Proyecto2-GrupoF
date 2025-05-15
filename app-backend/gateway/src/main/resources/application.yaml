@@ -52,6 +52,10 @@ spring:
             - Path=/v1/users/**,/v1/roles/**
           filters:
             - JWTVerifyFilterFactory
+        - id: report-public-routers
+          uri: ${USER_ROUTE_URI:http://localhost:8030}
+          predicates:
+            - Path=/v1/reports/**
         - id: upload-private-routes
           uri: ${USER_ROUTE_URI:http://localhost:8010}
           predicates:

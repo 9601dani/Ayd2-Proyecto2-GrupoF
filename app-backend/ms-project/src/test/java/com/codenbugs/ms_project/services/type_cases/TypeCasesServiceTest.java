@@ -3,10 +3,12 @@ package com.codenbugs.ms_project.services.type_cases;
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesRequest;
 import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
+
 import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
+
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -64,7 +66,6 @@ public class TypeCasesServiceTest {
         typeCase.setId(TYPE_CASES_ID);
         typeCase.setName(TYPE_CASES_NAME);
         typeCase.setDescription(TYPE_CASES_DESCRIPTION);
-
 
         phasesCase = new CasePhase();
 
@@ -163,7 +164,6 @@ public class TypeCasesServiceTest {
     public void updateTypeCaseWithDuplicateNameThrowsException() {
 
         TypeCase otherTypeCase = new TypeCase();
-
         otherTypeCase.setId(999);
         otherTypeCase.setName(TYPE_CASES_NAME);
 

@@ -2,6 +2,10 @@ package com.codenbugs.ms_project.controllers.cases;
 
 
 import com.codenbugs.ms_project.dtos.cases.*;
+import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
+import com.codenbugs.ms_project.dtos.report.TopContributorDto;
+import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.cases.CasePhaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
@@ -47,5 +51,24 @@ public class HistoryCasePhaseController {
     public ResponseEntity<Void> completeCase(@PathVariable Integer id) throws CaseNotFoundException {
         this.historyCasePhaseService.completeCase(id);
         return ResponseEntity.ok().build();
+    }
+    @GetMapping("/project-user-hours")
+    public List<ProjectUserHoursDto> getProjectUserHoursSummary() {
+        return historyCasePhaseService.getProjectUserHoursSummary();
+    }
+
+    @GetMapping("/case-type-user-hours")
+    public List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport() {
+        return historyCasePhaseService.getCaseTypeUserHoursReport();
+    }
+
+    @GetMapping("/top-contributor")
+    public TopContributorDto getTopContributor() {
+        return historyCasePhaseService.getTopContributor();
+    }
+
+    @GetMapping("/top-worker")
+    public TopWorkerByHoursDto getTopWorkerByHours() {
+        return historyCasePhaseService.getTopWorkerByHours();
     }
 }
