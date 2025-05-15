@@ -194,5 +194,11 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
         return historyCasePhaseRepository.findAllCasesWithUserInfo();
     }
 
+    @Override
+    public List<UserTimeByDateDto> getUserTimeByDate() {
+        return historyCasePhaseRepository.getUserTimeGroupedByDate();
+    }
+
+
 
 }

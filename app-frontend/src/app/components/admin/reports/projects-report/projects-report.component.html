@@ -22,6 +22,18 @@
           </div>
         </div>
 
+        <br><br>
+        <button
+          class="button is-primary"
+          (click)="exportPdf()"
+          [disabled]="!allProjects"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Generar PDF</span>
+        </button>
+      <br><br>
         <table class="table is-fullwidth is-striped mt-5" *ngIf="filteredProjects.length > 0">
           <thead>
             <tr>
@@ -42,7 +54,7 @@
                   {{ p.isEnabled ? 'Activo' : 'Inactivo' }}
                 </span>
               </td>
-              <td>{{ p.fkUser }}</td>
+              <td>{{ p.username }}</td>
             </tr>
           </tbody>
         </table>

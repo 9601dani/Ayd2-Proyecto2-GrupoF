@@ -22,9 +22,11 @@ public interface ReportService {
 
     List<Report4Dto> getReport4(Integer typeId) throws UserNotFoundException;
 
+    Report5Dto getReport5(String dateInit, String dateEnd) throws UserNotFoundException;
+
     List<UserResponseWithName> getReport6();
 
-    List<ProjectResponseWithoutUser> getReport7();
+    List<Report7Dto> getReport7() throws UserNotFoundException;
 
     Report8Dto getReport8() throws UserNotFoundException;
 
@@ -35,5 +37,7 @@ public interface ReportService {
     TopProjectByCancelledCasesDto getReport11() throws UserNotFoundException;
 
     List<CaseUserReportDto> getReport13(Integer userId);
+
+    List<CaseUserReportDto> getReport14(Integer typeId);
 
 }

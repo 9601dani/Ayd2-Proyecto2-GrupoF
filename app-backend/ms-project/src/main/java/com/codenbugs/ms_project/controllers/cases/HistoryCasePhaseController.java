@@ -75,4 +75,10 @@ public class HistoryCasePhaseController {
         return historyCasePhaseService.getCasesWithUserInfo();
     }
 
+    @GetMapping("/report-interval-time")
+    public List<UserTimeByDateDto> getUserTimeByDate() {
+        return historyCasePhaseService.getUserTimeByDate();
+    }
+
+
 }

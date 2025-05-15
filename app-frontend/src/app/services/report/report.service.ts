@@ -10,6 +10,8 @@ import { Report8Dto } from '../../components/admin/reports/top-user-by-cases/top
 import { Report9Dto } from '../../components/admin/reports/top-user-by-pay/top-user-by-pay.component';
 import { TopProjectByCompletedCasesDto } from '../../components/admin/reports/top-project-completed/top-project-completed.component';
 import { TopProjectByCancelledCasesDto } from '../../components/admin/reports/top-project-cancelled/top-project-cancelled.component';
+import { CaseUserReportDto } from '../../components/admin/reports/cases-by-user/cases-by-user.component';
+import { Report5Dto } from '../../components/admin/reports/time-cost-by-date/time-cost-by-date.component';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +58,15 @@ export class ReportService {
     });
   }
 
+  getReport5(dateInit?: string, dateEnd?: string) {
+  const params: any = {};
+  if (dateInit) params.dateInit = dateInit;
+  if (dateEnd) params.dateEnd = dateEnd;
+
+  return this.http.get<Report5Dto>(`${this.REPORT_API}/report5`, { params });
+}
+
+
   getReport6() {
     return this.http.get<UserResponseWithName[]>(`${this.REPORT_API}/report6`);
   }
@@ -85,4 +96,25 @@ export class ReportService {
       `${this.REPORT_API}/report11`
     );
   }
+
+  getReport13(userId?: number) {
+    const params: any = {};
+    if (userId !== undefined && userId !== null) {
+      params.userId = userId;
+    }
+
+    return this.http.get<CaseUserReportDto[]>(`${this.REPORT_API}/report13`, {
+      params,
+    });
+  }
+
+  getReport14(typeId?: number) {
+  const params: any = {};
+  if (typeId !== undefined && typeId !== null) {
+    params.typeId = typeId;
+  }
+
+  return this.http.get<CaseUserReportDto[]>(`${this.REPORT_API}/report14`, { params });
+}
+
 }
