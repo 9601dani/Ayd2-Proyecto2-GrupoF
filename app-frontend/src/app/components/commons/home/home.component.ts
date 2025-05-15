@@ -13,6 +13,17 @@ import { AlertService } from '../../../services/commons/alert.service';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatIcon } from '@angular/material/icon';
 import { ImagePipe } from '../../../pipes/image.pipe';
+import { generateReportPDF, CompanyInfo, ColumnDefinition, getBase64ImageFromUrl } from '../../../utils/pdf-generator.utils';
+import { environment } from '../../../../environments/environment';
+import { UploadService } from '../../../services/upload/upload.service';
+
+
+type ReporteSimulado = {
+  projectId: number;
+  projectName: string;
+  totalHours: number;
+  totalInvested: number;
+};
 
 @Component({
   selector: 'app-home',
@@ -27,6 +38,8 @@ export class HomeComponent {
   private _companyService: CompanyService = inject(CompanyService);
   private _alertService: AlertService = inject(AlertService);
   private _fb: FormBuilder = inject(FormBuilder);
+  private _localStorageService = inject(LocalStorageService)
+  private _uploadService:UploadService = inject(UploadService)
   settingsForm!: FormGroup;
   settingModules: any[] = [];
   currentModule: string = '';
@@ -71,4 +84,5 @@ export class HomeComponent {
         this.formFields.push({ key: s.keyName, control, setting: s });
       });
     }
+    
 }

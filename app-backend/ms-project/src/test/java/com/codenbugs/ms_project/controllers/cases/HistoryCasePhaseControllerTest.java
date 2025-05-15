@@ -1,6 +1,6 @@
 package com.codenbugs.ms_project.controllers.cases;
 
-import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.services.cases.HistoryCasePhaseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -35,6 +35,8 @@ public class HistoryCasePhaseControllerTest {
     private HistoryCaseWithCaseDto historyDto;
     private final Integer ID = 1;
     private final Integer FK_CASE = 2;
+    private final Integer FK_NEXT = 3;
+
     private final Integer FK_USER = 3;
     private final Integer FK_CASE_PHASE = 4;
     private final Boolean IS_COMPLETED = true;
@@ -61,10 +63,56 @@ public class HistoryCasePhaseControllerTest {
     void getAllWithCaseInfo() throws Exception {
         List<HistoryCaseWithCaseDto> list = List.of(historyDto);
         when(historyCasePhaseService.getAllWithCaseInfo()).thenReturn(list);
-
-        mockMvc.perform(get("/v1/history/all-cases")
+        mockMvc.perform(get("/v1/histories/all-cases")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(list)));
+    }
+
+    @Test
+    void getNextPhaseSuccessfully() throws Exception {
+        CasePhaseResponse response = new CasePhaseResponse(1, "Fase siguiente", "Tipo A");
+
+        when(historyCasePhaseService.getNextPhase(ID)).thenReturn(response);
+
+        mockMvc.perform(get("/v1/histories/next/{id}", ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    void updateCasePhaseSuccessfully() throws Exception {
+        HistoryCaseRequest request = new HistoryCaseRequest(ID,IS_COMPLETED, TIME_SPENT);
+        HistoryCaseResponseDto response = new HistoryCaseResponseDto(ID, FK_CASE, FK_USER, FK_CASE_PHASE, IS_COMPLETED, TIME_SPENT);
+
+        when(historyCasePhaseService.updateCasePhase(request)).thenReturn(response);
+
+        mockMvc.perform(put("/v1/histories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    void saveNextPhaseSuccessfully() throws Exception {
+        NextPhaseRequest request = new NextPhaseRequest(FK_CASE,FK_NEXT, FK_USER);
+        HistoryCaseResponseDto response = new HistoryCaseResponseDto(ID, FK_CASE, FK_USER, FK_CASE_PHASE, IS_COMPLETED, TIME_SPENT);
+
+        when(historyCasePhaseService.saveNextPhase(request)).thenReturn(response);
+
+        mockMvc.perform(post("/v1/histories")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+    }
+
+    @Test
+    void completeCaseSuccessfully() throws Exception {
+        mockMvc.perform(put("/v1/histories/complete/{id}", ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

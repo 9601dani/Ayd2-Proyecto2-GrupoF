@@ -6,9 +6,8 @@ import com.codenbugs.ms_project.dtos.cases.TypeCasesResponse;
 import com.codenbugs.ms_project.exceptions.typeCases.NameTypeCaseAlreadyExist;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.typeCases.TypeCasesException;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
-import com.codenbugs.ms_project.model.cases.TypesCase;
-import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
+import com.codenbugs.ms_project.model.cases.CasePhase;
+import com.codenbugs.ms_project.model.cases.TypeCase;
 import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import jakarta.transaction.Transactional;
 import lombok.Getter;
@@ -36,25 +35,25 @@ public class TypeCasesServiceImpl implements TypeCasesService {
 
     @Override
     public List<TypeCasesResponse> getAllTypeCases() {
-        List<TypesCase> cases = typeCasesRepository.findAll();
+        List<TypeCase> cases = typeCasesRepository.findAll();
         List<TypeCasesResponse> responses = new ArrayList<>();
 
-        for (TypesCase type : cases) {
-            List<PhasesCase> unorderedPhases = this.phaseCasesService.findByCaseType(type.getId());
+        for (TypeCase type : cases) {
+            List<CasePhase> unorderedPhases = this.phaseCasesService.findByCaseType(type.getId());
 
-            Map<Integer, PhasesCase> idToPhase = unorderedPhases.stream()
-                    .collect(Collectors.toMap(PhasesCase::getId, p -> p));
+            Map<Integer, CasePhase> idToPhase = unorderedPhases.stream()
+                    .collect(Collectors.toMap(CasePhase::getId, p -> p));
 
-            Map<Integer, PhasesCase> nextToCurrent = unorderedPhases.stream()
+            Map<Integer, CasePhase> nextToCurrent = unorderedPhases.stream()
                     .filter(p -> p.getNextPhase() != null)
-                    .collect(Collectors.toMap(PhasesCase::getNextPhase, p -> p));
+                    .collect(Collectors.toMap(CasePhase::getNextPhase, p -> p));
 
-            PhasesCase current = unorderedPhases.stream()
+            CasePhase current = unorderedPhases.stream()
                     .filter(p -> p.getNextPhase() == null)
                     .findFirst()
                     .orElse(null);
 
-            List<PhasesCase> orderedPhases = new ArrayList<>();
+            List<CasePhase> orderedPhases = new ArrayList<>();
             while (current != null) {
                 orderedPhases.add(0, current);
                 current = nextToCurrent.get(current.getId());
@@ -69,26 +68,26 @@ public class TypeCasesServiceImpl implements TypeCasesService {
     @Override
     public TypeCasesResponse create(TypeCasesRequest typeCasesRequest) throws NameTypeCaseAlreadyExist {
 
-        TypesCase typeCase = this.typeCasesRepository.findByName(typeCasesRequest.name());
+        TypeCase typeCase = this.typeCasesRepository.findByName(typeCasesRequest.name());
 
         if(typeCase != null) {
           throw  new NameTypeCaseAlreadyExist("El nombre de caso : '"+typeCasesRequest.name()+"' ya existe, cambia el nombre del caso");
         }
 
-        TypesCase newTypeCase = new TypesCase();
+        TypeCase newTypeCase = new TypeCase();
         newTypeCase.setName(typeCasesRequest.name());
         newTypeCase.setDescription(typeCasesRequest.description());
 
         this.typeCasesRepository.save(newTypeCase);
 
-        List<PhasesCase> savedPhases = new ArrayList<>();
+        List<CasePhase> savedPhases = new ArrayList<>();
         Integer nextPhaseId = null;
 
         List<PhasesCaseRequest> reversedPhases = new ArrayList<>(typeCasesRequest.phases());
         Collections.reverse(reversedPhases);
 
         for (PhasesCaseRequest phaseReq : reversedPhases) {
-            PhasesCase saved = this.phaseCasesService.save(phaseReq, newTypeCase.getId(), nextPhaseId);
+            CasePhase saved = this.phaseCasesService.save(phaseReq, newTypeCase.getId(), nextPhaseId);
 
             if (saved == null || saved.getId() == null) {
                 throw new IllegalStateException("La fase no pudo ser guardada correctamente.");
@@ -104,10 +103,10 @@ public class TypeCasesServiceImpl implements TypeCasesService {
 
     @Override
     public TypeCasesResponse update(Integer id, TypeCasesRequest typeCasesRequest) throws TypeCasesException {
-        TypesCase existingTypeCase = this.typeCasesRepository.findById(id).
+        TypeCase existingTypeCase = this.typeCasesRepository.findById(id).
                 orElseThrow(()-> new TypeCaseNotFoundException("El Tipo de Caso con id : "+id+ " No existe "));
 
-        TypesCase byName = this.typeCasesRepository.findByName(typeCasesRequest.name());
+        TypeCase byName = this.typeCasesRepository.findByName(typeCasesRequest.name());
         if (byName != null && !byName.getId().equals(id)) {
             throw new NameTypeCaseAlreadyExist("Ya existe un Tipo de Caso con el nombre '" + typeCasesRequest.name() + "'");
         }
@@ -119,14 +118,14 @@ public class TypeCasesServiceImpl implements TypeCasesService {
 
         this.phaseCasesService.deleteAllByFKCaseType(existingTypeCase.getId());
 
-        List<PhasesCase> savedPhases = new ArrayList<>();
+        List<CasePhase> savedPhases = new ArrayList<>();
         Integer nextPhaseId = null;
 
         List<PhasesCaseRequest> reversedPhases = new ArrayList<>(typeCasesRequest.phases());
         Collections.reverse(reversedPhases);
 
         for (PhasesCaseRequest phaseReq : reversedPhases) {
-            PhasesCase saved = this.phaseCasesService.save(phaseReq, id, nextPhaseId);
+            CasePhase saved = this.phaseCasesService.save(phaseReq, id, nextPhaseId);
             savedPhases.add(saved);
             nextPhaseId = saved.getId();
         }

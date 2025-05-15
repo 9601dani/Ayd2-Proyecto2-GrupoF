@@ -4,9 +4,7 @@ import java.math.BigDecimal;
 
 public record HistoryCaseRequest (
         Integer id,
-        Integer fkCase,
-        Integer fkUser,
-        Integer fkCasePhase,
+        Boolean isCompleted,
         BigDecimal timeSpent
 ){
 }

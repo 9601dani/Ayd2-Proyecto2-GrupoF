@@ -1,0 +1,28 @@
+<app-modal>
+  <p modalTitle class="modal-card-title">Completar tarea</p>
+  <button modalCloseButton class="delete" aria-label="close" (click)="closeModal()"></button>
+  <div modalContent>
+    <div class="field">
+      <label class="label">Tiempo invertido (En horas)</label>
+      <div class="control">
+        <input
+          [formControl]="timeSpentControl"
+          type="number"
+          class="input"
+          min="0"
+          [ngClass]="{ 'is-danger': (this.timeSpentControl.hasError('required') || this.timeSpentControl.hasError('min')) && this.timeSpentControl.dirty }"
+          placeholder="Ingrese el tiempo invertido para esta fase"
+        />
+      </div>
+      @if(this.timeSpentControl.hasError('required') && this.timeSpentControl.dirty) {
+        <p class="help is-danger">Este campo es obligatorio.</p>
+      } @else if(this.timeSpentControl.hasError('min') && this.timeSpentControl.dirty) {
+        <p class="help is-danger">No se admiten valores negativos.</p>
+      }
+    </div>
+  </div>
+  <div modalButtons>
+    <button type="submit" class="button is-success" (click)="updatePhase()">Completar</button>
+    <button type="button" class="button ml-2" (click)="closeModal()">Cancelar</button>
+  </div>
+</app-modal>

@@ -72,11 +72,12 @@
                 style="height: 50px"
               >
                 <a class="card-footer-item" (click)="openCase(case.id)">Ver</a>
-                <a
-                  class="card-footer-item"
-                  (click)="openModal('edit', case)"
-                >Editar</a>
-                <a class="card-footer-item" (click)="openModal('cancel', case)">Cancelar</a>
+                <a class="card-footer-item" (click)="openModal('edit', case)"
+                  >Editar</a
+                >
+                <a class="card-footer-item" (click)="openModal('cancel', case)"
+                  >Cancelar</a
+                >
               </footer>
             </div>
           </div>
@@ -111,9 +112,7 @@
                   class="content is-size-8 has-text-grey-dark"
                   style="min-height: 80px"
                 >
-                  {{
-                    case.reasonCancellation
-                  }}
+                  {{ case.reasonCancellation }}
                 </div>
               </div>
             </div>

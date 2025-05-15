@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePhase, Integer> {
@@ -50,7 +51,7 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         )
         FROM HistoryCasePhase h
         JOIN Case c ON h.fkCase = c.id
-        JOIN TypesCase t ON t.id = c.FK_Case_Type
+        JOIN TypeCase t ON t.id = c.FK_Case_Type
         GROUP BY t.id, t.name, h.fkUser
     """)
     List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport();
@@ -78,4 +79,8 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
         LIMIT 1
     """)
     TopWorkerByHoursDto getTopWorkerByHours();
+
+    Optional<HistoryCasePhase> findFirstByFkCaseOrderByIdDesc(Integer fkCase);
+
+    List<HistoryCasePhase> findByFkUser(Integer fkUser);
 }

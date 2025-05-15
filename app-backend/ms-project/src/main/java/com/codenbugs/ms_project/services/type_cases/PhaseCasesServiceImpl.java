@@ -2,7 +2,7 @@ package com.codenbugs.ms_project.services.type_cases;
 
 import com.codenbugs.ms_project.dtos.cases.PhasesCaseRequest;
 import com.codenbugs.ms_project.exceptions.typeCases.PhaseCasesException;
-import com.codenbugs.ms_project.model.cases.PhasesCase;
+import com.codenbugs.ms_project.model.cases.CasePhase;
 import com.codenbugs.ms_project.repositories.typeCases.PhaseCasesRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,14 +21,15 @@ public class PhaseCasesServiceImpl implements PhaseCasesService {
 
     private final PhaseCasesRepository phaseCasesRepository;
 
+
     @Override
-    public List<PhasesCase> findByCaseType(Integer caseId) {
+    public List<CasePhase> findByCaseType(Integer caseId) {
         return phaseCasesRepository.findByFkCaseType(caseId);
     }
 
     @Override
-    public PhasesCase save(PhasesCaseRequest phasesCase, Integer caseId, Integer nextPhaseId) {
-        PhasesCase newCase = new PhasesCase();
+    public CasePhase save(PhasesCaseRequest phasesCase, Integer caseId, Integer nextPhaseId) {
+        CasePhase newCase = new CasePhase();
         newCase.setFkCaseType(caseId);
         newCase.setName(phasesCase.name());
         newCase.setNextPhase(nextPhaseId);

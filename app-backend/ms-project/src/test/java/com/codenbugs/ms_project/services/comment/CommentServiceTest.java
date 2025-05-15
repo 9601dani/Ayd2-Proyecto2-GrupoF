@@ -5,7 +5,7 @@ import com.codenbugs.ms_project.dtos.comment.CommentCreated;
 import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
 import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
@@ -63,7 +63,7 @@ public class CommentServiceTest {
 
 
     @Test
-    public void saveComment_shouldReturnCreatedComment() throws CommentNotCreatedException, CaseNotFound {
+    public void saveComment_shouldReturnCreatedComment() throws CommentNotCreatedException {
         // Arrange
         NewCommentRequest request = new NewCommentRequest(
                 CONTENT,
@@ -81,11 +81,6 @@ public class CommentServiceTest {
         savedComment.setIdParent(request.idParent());
         savedComment.setCreatedDate(request.createdAt());
 
-        Case commentCase = new Case();
-        commentCase.setFkProject(IDPROJECT);
-
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.of(commentCase));
-        when(projectRepository.existsByIdAndIsEnabled(IDPROJECT, true)).thenReturn(true);
         when(commentRepository.save(any(Comment.class))).thenReturn(savedComment);
 
         // Act
@@ -128,43 +123,37 @@ public class CommentServiceTest {
     }
 
     @Test
-    public void saveComment_shouldThrowCommentException() {
+    public void getCommentsByCaseId_shouldThrowCommentException_whenUserRestClientFails() throws Exception {
         // Arrange
-        NewCommentRequest request = new NewCommentRequest(
-                CONTENT,
-                IDUSER,
-                IDCASE,
-                CREATEDAT,
-                IDPARENT
-        );
+        Comment comment = new Comment();
+        comment.setId(IDCOMMENT);
+        comment.setFkCase(IDCASE);
+        comment.setFkUser(IDUSER);
+        comment.setContent(CONTENT);
+        comment.setCreatedDate(CREATEDAT);
+        comment.setIdParent(IDPARENT);
 
-        Case commentCase = new Case();
-        commentCase.setFkProject(IDPROJECT);
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.of(commentCase));
-        when(projectRepository.existsByIdAndIsEnabled(IDPROJECT, true)).thenReturn(false);
+        when(commentRepository.findByFkCaseAndIdParentOrderByCreatedDateDesc(IDCASE, IDPARENT))
+                .thenReturn(List.of(comment));
 
+        when(userRestClient.findById(IDUSER)).thenThrow(new UserNotFoundException("User not found"));
 
         // Act & Assert
-        assertThrows(CommentException.class, () -> {
-            commentService.saveComment(request);
+        assertThrows(UserNotFoundException.class, () -> {
+            commentService.getCommentsByCaseId(IDCASE, IDPARENT);
         });
     }
 
     @Test
-    public void saveComment_shouldThrowException_whenProjectCaseNotFound() {
+    public void saveComment_shouldThrowException_whenRepositoryFails() {
         // Arrange
-        NewCommentRequest request = new NewCommentRequest(
-                CONTENT,
-                IDUSER,
-                IDCASE,
-                CREATEDAT,
-                IDPARENT
-        );
+        NewCommentRequest request = new NewCommentRequest(CONTENT, IDUSER, IDCASE, CREATEDAT, IDPARENT);
 
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.empty());
+        when(commentRepository.save(any(Comment.class)))
+                .thenThrow(new RuntimeException("Simulated database error"));
 
         // Act & Assert
-        assertThrows(CaseNotFound.class, () -> {
+        assertThrows(CommentNotCreatedException.class, () -> {
             commentService.saveComment(request);
         });
     }

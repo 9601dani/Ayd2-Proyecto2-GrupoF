@@ -17,6 +17,7 @@ public interface ProjectRepository extends JpaRepository<Project, Integer> {
 
     Optional<Project> findByName(String name);
 
+    Optional<Project> findByIdAndIsEnabled(Integer id, Boolean isEnabled);
     boolean existsByIdAndIsEnabled(Integer id, Boolean isEnabled);
 
     @Query(value = """

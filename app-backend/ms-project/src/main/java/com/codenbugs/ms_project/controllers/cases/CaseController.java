@@ -1,13 +1,11 @@
 package com.codenbugs.ms_project.controllers.cases;
 
-import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
-import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
+import com.codenbugs.ms_project.dtos.cases.*;
+import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseIsDisabled;
-import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
-import com.codenbugs.ms_project.exceptions.project.ProjectNotFound;
+import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
 import com.codenbugs.ms_project.exceptions.user.UserIsDisabled;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.services.cases.CaseService;
@@ -26,25 +24,25 @@ public class CaseController {
     private final CaseService caseService;
 
     @PostMapping("/save")
-    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFound, UserNotFoundException, UserIsDisabled {
+    public ResponseEntity<CaseResponseDto> createCase(@RequestBody CaseRequestDto caseRequestDto) throws ProjectIsDisabled, ProjectNotFoundException, UserNotFoundException, UserIsDisabled, CaseException {
         CaseResponseDto responseDto = this.caseService.saveCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CaseResponseDto> getCaseById(@PathVariable Integer id) throws  CaseNotFound {
+    public ResponseEntity<CaseResponseDto> getCaseById(@PathVariable Integer id) throws CaseException {
         CaseResponseDto responseDto = this.caseService.getCaseById(id);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/update")
-    public ResponseEntity<CaseResponseDto> updateCase(@RequestBody CaseRequestDto caseRequestDto) throws  CaseNotFound, CaseIsDisabled {
+    public ResponseEntity<CaseResponseDto> updateCase(@RequestBody CaseRequestDto caseRequestDto) throws CaseException, CaseIsDisabled {
         CaseResponseDto responseDto = this.caseService.updateCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
 
     @PutMapping("/update/cancel")
-    public ResponseEntity<CaseResponseDto> updateCancelCase(@RequestBody CaseCancelledRequestDto caseRequestDto) throws  CaseNotFound, CaseIsDisabled {
+    public ResponseEntity<CaseResponseDto> updateCancelCase(@RequestBody CaseCancelledRequestDto caseRequestDto) throws CaseException, CaseIsDisabled {
         CaseResponseDto responseDto = this.caseService.cancelCase(caseRequestDto);
         return new ResponseEntity<>(responseDto, HttpStatus.OK);
     }
@@ -66,4 +64,9 @@ public class CaseController {
         return caseService.getActiveCasesByProject(projectId);
     }
 
+    @GetMapping("/details/{id}")
+    public ResponseEntity<CaseDetailsResponse> getCaseDetails(@PathVariable Integer id) throws CaseNotFoundException {
+        CaseDetailsResponse caseDetailsResponse = this.caseService.getCaseDetails(id);
+        return ResponseEntity.ok(caseDetailsResponse);
+    }
 }

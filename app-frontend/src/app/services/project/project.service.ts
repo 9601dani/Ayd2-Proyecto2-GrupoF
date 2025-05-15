@@ -12,6 +12,7 @@ export class ProjectService {
   readonly TYPE_CASE_API = `${environment.API_URL}/v1/type_cases`;
   readonly CASE_API = `${environment.API_URL}/v1/cases`;
   readonly COMMENT_API = `${environment.API_URL}/v1/comments`;
+  readonly HISTORY_API = `${environment.API_URL}/v1/histories`;
 
   constructor(private http: HttpClient) {}
 
@@ -74,10 +75,6 @@ export class ProjectService {
     return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
 
-  getCasesWithUserByFkProject(id: number): Observable<any> {
-    return this.http.get(`${this.CASE_API}/active/${id}`);
-  }
-
   /*-------------------------------COMMENTS--------------------------------*/
 
   saveComment(data: any): Observable<any> {
@@ -92,4 +89,36 @@ export class ProjectService {
     return this.http.get(`${this.COMMENT_API}/find-by-case-id/${id}`, {params});
   }
 
+
+  /*-------------------------------MY-CASES--------------------------------*/
+
+  getMyCases(username:string):Observable<any>{
+    return this.http.get(`${this.PROJECT_API}/my-cases/${username}`)
+  }
+
+
+  /*----------------------CASE DETAILS-------------------*/
+  getCaseDetails(id: number): Observable<any> {
+    return this.http.get(`${this.CASE_API}/details/${id}`);
+  }
+
+  updateCasePhase(data: any): Observable<any> {
+    return this.http.put(`${this.HISTORY_API}`, data);
+  }
+
+  getNextPhase(id: number): Observable<any> {
+    return this.http.get(`${this.HISTORY_API}/next/${id}`);
+  }
+
+  completeCase(id: number): Observable<any> {
+    return this.http.put(`${this.HISTORY_API}/complete/${id}`, {});
+  }
+
+  saveNextPhase(data: any): Observable<any> {
+    return this.http.post(`${this.HISTORY_API}`, data);
+  }
+
+  getCasesWithUserByFkProject(id: number): Observable<any> {
+    return this.http.get(`${this.CASE_API}/active/${id}`);
+  }
 }

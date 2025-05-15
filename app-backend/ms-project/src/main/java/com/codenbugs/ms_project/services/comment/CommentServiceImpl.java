@@ -5,7 +5,6 @@ import com.codenbugs.ms_project.dtos.comment.CommentCreated;
 import com.codenbugs.ms_project.dtos.comment.CommentResponse;
 import com.codenbugs.ms_project.dtos.comment.NewCommentRequest;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
-import com.codenbugs.ms_project.exceptions.cases.CaseNotFound;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
 import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
@@ -27,30 +26,22 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
-    private final CaseRepository caseRepository;
-    private final ProjectRepository projectRepository;
     private final UserRestClient userRestClient;
 
     @Override
-    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException, CaseNotFound {
-
-        Case commentCase = this.caseRepository.findByIdAndIsEnabled(request.idCase(), true)
-                .orElseThrow(() -> new CaseNotFound("No se encontró el caso."));
-
-        boolean isProjectEnabled = this.projectRepository.existsByIdAndIsEnabled(commentCase.getFkProject(), true);
-
-        if(!isProjectEnabled){
-            throw new CommentNotCreatedException("El projecto no se encuentra habilitado.");
+    public CommentCreated saveComment(NewCommentRequest request) throws CommentNotCreatedException {
+        try {
+            Comment comment = new Comment();
+            comment.setCreatedDate(request.createdAt());
+            comment.setContent(request.content());
+            comment.setFkCase(request.idCase());
+            comment.setFkUser(request.idUser());
+            comment.setIdParent(request.idParent());
+            comment = commentRepository.save(comment);
+            return new CommentCreated(comment);
+        } catch (Exception e) {
+            throw new CommentNotCreatedException("No se pudo crear el comentario");
         }
-
-        Comment comment = new Comment();
-        comment.setCreatedDate(request.createdAt());
-        comment.setContent(request.content());
-        comment.setFkCase(request.idCase());
-        comment.setFkUser(request.idUser());
-        comment.setIdParent(request.idParent());
-        comment = commentRepository.save(comment);
-        return new CommentCreated(comment);
     }
 
 

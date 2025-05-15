@@ -1,9 +1,7 @@
 package com.codenbugs.ms_project.controllers.cases;
 
-import com.codenbugs.ms_project.dtos.cases.CaseCancelledRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseRequestDto;
-import com.codenbugs.ms_project.dtos.cases.CaseResponseDto;
-import com.codenbugs.ms_project.dtos.cases.CaseWithUserDto;
+import com.codenbugs.ms_project.dtos.cases.*;
+import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.services.cases.CaseService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +46,13 @@ public class CaseControllerTest {
     private final Boolean ENABLED = true;
     private final String CANCEL_REASON = "Ya no es necesario";
     private final LocalDateTime CREATED = LocalDateTime.now();
+
+    private final Integer HISTORY_ID = 10;
+    private final Boolean IS_COMPLETED = false;
+    private final String TYPE_CASE_NAME = "Tipo A";
+    private final String PHASE_NAME = "Inicio";
+    private final Integer PHASE_ID = 99;
+    private final LocalDateTime LIMIT_DATE = CREATED.plusDays(10);
 
     private CaseRequestDto caseRequestDto;
     private CaseResponseDto caseResponseDto;
@@ -132,4 +137,28 @@ public class CaseControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(list)));
     }
+
+    @Test
+    void getCaseDetailsSuccessfully() throws Exception {
+ CaseDetailsResponse caseDetailsResponse = new CaseDetailsResponse(CASE_ID,FK_PROJECT,NAME,DESCRIPTION,
+            HISTORY_ID,USER_ID,IS_COMPLETED, CREATED, LIMIT_DATE, TYPE_CASE_NAME, PHASE_NAME, PHASE_ID
+    );
+
+        when(caseService.getCaseDetails(CASE_ID)).thenReturn(caseDetailsResponse);
+
+        mockMvc.perform(get("/v1/cases/details/{id}", CASE_ID)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(caseDetailsResponse)));
+    }
+
+    @Test
+    void getCaseDetailsNotFound() throws Exception {
+        when(caseService.getCaseDetails(CASE_ID))
+                .thenThrow(new CaseNotFoundException("No se encontró el caso"));
+
+        mockMvc.perform(get("/v1/cases/details/{id}", CASE_ID))
+                .andExpect(status().isNotFound());
+    }
+
 }

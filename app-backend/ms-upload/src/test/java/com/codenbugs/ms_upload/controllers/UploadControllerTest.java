@@ -10,11 +10,13 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -61,5 +63,30 @@ class UploadControllerTest {
         String actual = this.uploadService.uploadFile(multipartFile, PATH);
         assertEquals(FILENAME, actual);
 
+    }
+
+    @Test
+    void getImageAsBase64Success() throws Exception {
+        String fileKey = "test-image.png";
+        String base64Image = "data:image/png;base64,abc123";
+
+        when(uploadService.getFileAsBase64(fileKey)).thenReturn(base64Image);
+
+        mockMvc.perform(get("/v1/uploads/images/base64")
+                        .param("fileKey", fileKey))
+                .andExpect(status().isOk())
+                .andExpect(content().string(base64Image));
+    }
+
+    @Test
+    void getImageAsBase64_NotFound() throws Exception {
+        String fileKey = "non-existent.png";
+
+        when(uploadService.getFileAsBase64(fileKey)).thenThrow(new IOException("Archivo no encontrado"));
+
+        mockMvc.perform(get("/v1/uploads/images/base64")
+                        .param("fileKey", fileKey))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("No se pudo cargar la imagen: Archivo no encontrado"));
     }
 }

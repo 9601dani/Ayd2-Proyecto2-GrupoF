@@ -1,9 +1,16 @@
 package com.codenbugs.ms_project.services.cases;
 
+import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
+import com.codenbugs.ms_project.repositories.cases.CasePhaseRepository;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.cases.HistoryCasePhaseRepository;
+import com.codenbugs.ms_project.repositories.project.ProjectRepository;
+import com.codenbugs.ms_project.repositories.typeCases.TypeCasesRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -13,7 +20,23 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class HistoryCasePhaseServiceTest {
+    @Mock
     private HistoryCasePhaseRepository historyCasePhaseRepository;
+
+    @Mock
+    private CasePhaseRepository casePhaseRepository;
+
+    @Mock
+    private TypeCasesRepository typeCasesRepository;
+
+    @Mock
+    private CaseRepository caseRepository;
+
+    @Mock
+    private UserRestClient userRestClient;
+
+    @Mock
+    private ProjectRepository projectRepository;
     private HistoryCasePhaseServiceImpl hisotryCasePhaseService;
     private HistoryCaseWithCaseDto dto;
 
@@ -39,8 +62,8 @@ public class HistoryCasePhaseServiceTest {
 
     @BeforeEach
     public void setUp() {
-        historyCasePhaseRepository = mock(HistoryCasePhaseRepository.class);
-        hisotryCasePhaseService = new HistoryCasePhaseServiceImpl(historyCasePhaseRepository);
+        MockitoAnnotations.initMocks(this);
+        hisotryCasePhaseService = new HistoryCasePhaseServiceImpl(historyCasePhaseRepository, casePhaseRepository, typeCasesRepository, caseRepository, userRestClient, projectRepository);
 
         dto = new HistoryCaseWithCaseDto(
                 ID_HISTORY,

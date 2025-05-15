@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,5 +40,16 @@ public class UploadController {
     public String uploadFile(MultipartFile file, String path) throws NotCreatedException {
         return this.uploadService.uploadFile(file, path);
     }
+    @GetMapping("/images/base64")
+    public ResponseEntity<?> getImageAsBase64(@RequestParam("fileKey") String fileKey) {
+        try {
+            String base64Image = uploadService.getFileAsBase64(fileKey);
+            return ResponseEntity.ok(base64Image);
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("No se pudo cargar la imagen: " + e.getMessage());
+        }
+    }
+
 
 }
