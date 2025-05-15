@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "history_case_phases")
@@ -37,4 +38,7 @@ public class HistoryCasePhase{
 
     @Column(name = "phase_name", nullable = false)
     private String phaseName;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
 }
