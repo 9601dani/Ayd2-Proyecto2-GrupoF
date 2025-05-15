@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
         this.reloadPage();
       },
       error: (error: any) => {
-        this._alertService.error("Error!", error.error.message);
+        this._alertService.error("Error!", error.error.message || "Usuario o contraseña incorrecta.");
         this.isLoading = false;
       }
     })
