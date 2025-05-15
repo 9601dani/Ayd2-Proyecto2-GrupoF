@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -168,6 +169,31 @@ public class ReportServiceImpl implements ReportService {
 
         return reports;
     }
+
+    @Override
+    public Report5Dto getReport5(String dateInit, String dateEnd) throws UserNotFoundException {
+        List<UserTimeByDateDto> data = this.historyRestClient.getUserTimeByDate();
+
+        LocalDateTime from = (dateInit != null) ? LocalDateTime.parse(dateInit) : null;
+        LocalDateTime to = (dateEnd != null) ? LocalDateTime.parse(dateEnd) : null;
+
+        List<UserTimeByDateDto> filtered = data.stream()
+                .filter(d -> (from == null || !d.createdAt().isBefore(from)) &&
+                        (to == null   || !d.createdAt().isAfter(to)))
+                .toList();
+
+        BigDecimal totalHours = BigDecimal.ZERO;
+        BigDecimal totalInvested = BigDecimal.ZERO;
+
+        for (UserTimeByDateDto user : filtered) {
+            UserResponse userResponse = this.userRestClient.findById(user.userId());
+            totalHours = totalHours.add(user.totalHours());
+            totalInvested = totalInvested.add(user.totalHours().multiply(userResponse.salaryPerHour()));
+        }
+
+        return new Report5Dto(totalHours, totalInvested);
+    }
+
 
     @Override
     public List<UserResponseWithName> getReport6() {

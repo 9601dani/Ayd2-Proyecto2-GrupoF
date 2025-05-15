@@ -16,65 +16,65 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
     void deleteAllHistoryCasePhaseByFkCase(Integer fkCase);
 
     @Query("""
-        SELECT new com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto(
-            h.id, h.fkCase, h.fkUser, h.fkCasePhase, h.isCompleted, h.timeSpent, h.phaseName,
-            c.fkProject, c.progressPercentage, c.limitDate, c.isEnabled, c.isCancelled, c.createdAt
-        )
-        FROM HistoryCasePhase h
-        JOIN Case c ON h.fkCase = c.id
-    """)
+                SELECT new com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto(
+                    h.id, h.fkCase, h.fkUser, h.fkCasePhase, h.isCompleted, h.timeSpent, h.phaseName,
+                    c.fkProject, c.progressPercentage, c.limitDate, c.isEnabled, c.isCancelled, c.createdAt
+                )
+                FROM HistoryCasePhase h
+                JOIN Case c ON h.fkCase = c.id
+            """)
     List<HistoryCaseWithCaseDto> findAllWithCaseInfo();
 
     @Query("""
-        SELECT new com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto(
-            c.fkProject,
-            p.name,
-            h.fkUser,
-            SUM(h.timeSpent)
-        )
-        FROM HistoryCasePhase h
-        JOIN Case c ON h.fkCase = c.id
-        JOIN Project p ON c.fkProject = p.id
-        GROUP BY c.fkProject, h.fkUser
-    """)
+                SELECT new com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto(
+                    c.fkProject,
+                    p.name,
+                    h.fkUser,
+                    SUM(h.timeSpent)
+                )
+                FROM HistoryCasePhase h
+                JOIN Case c ON h.fkCase = c.id
+                JOIN Project p ON c.fkProject = p.id
+                GROUP BY c.fkProject, h.fkUser
+            """)
     List<ProjectUserHoursDto> getProjectUserHoursSummary();
 
     @Query("""
-        SELECT new com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto(
-            t.id,
-            t.name,
-            h.fkUser,
-            SUM(h.timeSpent)
-        )
-        FROM HistoryCasePhase h
-        JOIN Case c ON h.fkCase = c.id
-        JOIN TypeCase t ON t.id = c.FK_Case_Type
-        GROUP BY t.id, t.name, h.fkUser
-    """)
+                SELECT new com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto(
+                    t.id,
+                    t.name,
+                    h.fkUser,
+                    SUM(h.timeSpent)
+                )
+                FROM HistoryCasePhase h
+                JOIN Case c ON h.fkCase = c.id
+                JOIN TypeCase t ON t.id = c.FK_Case_Type
+                GROUP BY t.id, t.name, h.fkUser
+            """)
     List<CaseTypeUserHoursDto> getCaseTypeUserHoursReport();
 
     @Query(value = """
-        SELECT new com.codenbugs.ms_project.dtos.report.TopContributorDto(
-            h.fkUser,
-            COUNT(DISTINCT h.fkCase)
-        )
-        FROM HistoryCasePhase h
-        GROUP BY h.fkUser
-        ORDER BY COUNT(DISTINCT h.fkCase) DESC
-        LIMIT 1
-    """)
+                SELECT new com.codenbugs.ms_project.dtos.report.TopContributorDto(
+                    h.fkUser,
+                    COUNT(DISTINCT h.fkCase)
+                )
+                FROM HistoryCasePhase h
+                GROUP BY h.fkUser
+                ORDER BY COUNT(DISTINCT h.fkCase) DESC
+                LIMIT 1
+            """)
     TopContributorDto getTopContributor();
 
     @Query("""
-        SELECT new com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto(
-            h.fkUser,
-            SUM(h.timeSpent)
-        )
-        FROM HistoryCasePhase h
-        GROUP BY h.fkUser
-        ORDER BY SUM(h.timeSpent) DESC
-        LIMIT 1
-    """)
+                SELECT new com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto(
+                    h.fkUser,
+                    SUM(h.timeSpent)
+                )
+                FROM HistoryCasePhase h
+                GROUP BY h.fkUser
+                ORDER BY SUM(h.timeSpent) DESC
+                LIMIT 1
+            """)
     TopWorkerByHoursDto getTopWorkerByHours();
 
     Optional<HistoryCasePhase> findFirstByFkCaseOrderByIdDesc(Integer fkCase);
@@ -97,5 +97,19 @@ public interface HistoryCasePhaseRepository extends JpaRepository<HistoryCasePha
                 JOIN TypeCase t ON c.FK_Case_Type = t.id
             """)
     List<CaseUserReportDto> findAllCasesWithUserInfo();
+
+    @Query("""
+                SELECT new com.codenbugs.ms_project.dtos.report.UserTimeByDateDto(
+                    h.fkUser,
+                    h.createdAt,
+                    SUM(h.timeSpent)
+                )
+                FROM HistoryCasePhase h
+                JOIN Case c ON h.fkCase = c.id
+                JOIN TypeCase t ON t.id = c.FK_Case_Type
+                GROUP BY h.fkUser, h.createdAt
+            """)
+    List<UserTimeByDateDto> getUserTimeGroupedByDate();
+
 
 }

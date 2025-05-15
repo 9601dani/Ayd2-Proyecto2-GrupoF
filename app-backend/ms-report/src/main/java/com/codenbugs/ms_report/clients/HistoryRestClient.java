@@ -23,4 +23,7 @@ public interface HistoryRestClient {
 
     @GetMapping("/cases-user-report")
     List<CaseUserReportDto> getCasesWithUserInfo();
+
+    @GetMapping("/report-interval-time")
+    List<UserTimeByDateDto> getUserTimeByDate();
 }

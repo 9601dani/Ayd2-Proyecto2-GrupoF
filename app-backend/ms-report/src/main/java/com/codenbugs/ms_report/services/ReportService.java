@@ -22,6 +22,8 @@ public interface ReportService {
 
     List<Report4Dto> getReport4(Integer typeId) throws UserNotFoundException;
 
+    Report5Dto getReport5(String dateInit, String dateEnd) throws UserNotFoundException;
+
     List<UserResponseWithName> getReport6();
 
     List<Report7Dto> getReport7() throws UserNotFoundException;
