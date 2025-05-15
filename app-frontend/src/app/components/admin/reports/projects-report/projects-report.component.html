@@ -1,0 +1,56 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Reporte de proyectos</h1>
+
+        <div class="columns is-multiline">
+          <div class="column is-6">
+            <label class="label">Buscar por nombre o descripción</label>
+            <input class="input" [(ngModel)]="search" (input)="applyFilters()" placeholder="Ej. Biblioteca, Inventario" />
+          </div>
+
+          <div class="column is-6">
+            <label class="label">Estado del proyecto</label>
+            <div class="select is-fullwidth">
+              <select [(ngModel)]="stateFilter" (change)="applyFilters()">
+                <option [ngValue]="null">Todos</option>
+                <option [ngValue]="true">Activos</option>
+                <option [ngValue]="false">Inactivos</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <table class="table is-fullwidth is-striped mt-5" *ngIf="filteredProjects.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Usuario asignado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of filteredProjects">
+              <td>{{ p.id }}</td>
+              <td>{{ p.name }}</td>
+              <td>{{ p.description }}</td>
+              <td>
+                <span class="tag" [ngClass]="p.isEnabled ? 'is-success' : 'is-danger'">
+                  {{ p.isEnabled ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+              <td>{{ p.fkUser }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="filteredProjects.length === 0" class="has-text-centered mt-5">
+          <p class="is-size-5 has-text-grey">No se encontraron proyectos que coincidan con los filtros.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

@@ -1,0 +1,23 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Proyecto con más casos cancelados</h1>
+
+        <div *ngIf="loaded; else loading">
+          <div class="box">
+            <p><strong>ID del proyecto:</strong> {{ report.projectId }}</p>
+            <p><strong>Nombre del proyecto:</strong> {{ report.projectName }}</p>
+            <p><strong>Total de casos cancelados: </strong> 
+              <span class="has-text-weight-bold">{{ report.totalCancelledCases }}</span>
+            </p>
+          </div>
+        </div>
+
+        <ng-template #loading>
+          <p class="is-size-5 has-text-grey">Cargando información del reporte...</p>
+        </ng-template>
+      </div>
+    </section>
+  </div>
+</app-template>

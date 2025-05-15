@@ -48,7 +48,7 @@ export class ReportComponent {
     {
       title: 'Reporte de proyectos',
       description: 'Con opción de aplicar múltiples filtros.',
-      route: '/projects'
+      route: '/projects-report'
     },
     {
       title: 'Top desarrollador por casos',
