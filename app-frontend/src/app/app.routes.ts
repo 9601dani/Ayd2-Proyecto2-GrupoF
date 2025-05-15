@@ -7,7 +7,6 @@ import { MyProfileComponent } from './components/commons/my-profile/my-profile.c
 import { CaseTypeComponent } from './components/admin/case-type/case-type.component';
 import { CompanySettingsComponent } from './components/company/company-settings/company-settings.component';
 import { AdminProjectComponent } from './components/admin/admin-project/admin-project.component';
-import { CaseDetailComponent } from './components/admin/case-detail/case-detail.component';
 import { ReportComponent } from './components/admin/reports/report/report.component';
 import { ProjectsCasesComponent } from './components/admin/reports/projects-cases/projects-cases.component';
 import { TimeCostByProjectComponent } from './components/admin/reports/time-cost-by-project/time-cost-by-project.component';
@@ -20,7 +19,6 @@ import { MyCasesComponent } from './components/dev/my-cases/my-cases.component';
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
     { path: 'home', component: HomeComponent },
-    { path: 'reports', component: HomeComponent },
     { path: 'users', component: RegisterComponent},
     { path: 'projects', component: ProjectComponent},
     { path: 'disabled-projects', component: DisabledProjectComponent},

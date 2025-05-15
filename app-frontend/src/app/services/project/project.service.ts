@@ -75,10 +75,6 @@ export class ProjectService {
     return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
 
-  getCasesWithUserByFkProject(id: number): Observable<any> {
-    return this.http.get(`${this.CASE_API}/active/${id}`);
-  }
-
   /*-------------------------------COMMENTS--------------------------------*/
 
   saveComment(data: any): Observable<any> {
@@ -93,10 +89,6 @@ export class ProjectService {
     return this.http.get(`${this.COMMENT_API}/find-by-case-id/${id}`, {params});
   }
 
-
-  getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
-    return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
-  }
 
   /*-------------------------------MY-CASES--------------------------------*/
 
