@@ -62,7 +62,7 @@ public class UserServiceTest {
     private final BigDecimal SALARY = new BigDecimal(500);
     private final String PHOTO = "photo";
     private final String PHOTO_VALUE = "photo_value";
-    private final String INVALID_PASSWORD = "Invalid password";
+    private final String INVALID_PASSWORD = "Contraseña incorrecta";
 
     private User user;
     private Role role;
@@ -336,7 +336,7 @@ public class UserServiceTest {
         // Act & Assert
         UserNotFoundException ex = assertThrows(UserNotFoundException.class,
                 () -> userService.authenticate(authRequest));
-        assertEquals("User not enabled", ex.getMessage());
+        assertEquals("El usuario se encuentra inactivo", ex.getMessage());
     }
 
     @Test
@@ -426,7 +426,7 @@ public class UserServiceTest {
         UserNotFoundException exception = assertThrows(UserNotFoundException.class,
                 () -> userService.authenticate(request));
 
-        assertEquals("User not found", exception.getMessage());
+        assertEquals("Usuario no encontrado", exception.getMessage());
     }
 
     @Test
