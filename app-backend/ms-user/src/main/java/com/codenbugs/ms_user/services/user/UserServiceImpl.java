@@ -133,17 +133,17 @@ public class UserServiceImpl implements UserService {
         String usernameOrEmail = userAuthRequest.usernameOrEmail();
         String password = userAuthRequest.password();
 
-        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
+        User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(() -> new UserNotFoundException("Usuario no encontrado"));
         String userPassword = user.getPassword();
 
         boolean isValidPassword = passwordEncoder.matches(password, userPassword);
 
         if (!isValidPassword) {
-            throw new UserNotFoundException("Invalid password");
+            throw new UserNotFoundException("Contraseña incorrecta");
         }
 
         if(!user.getIsEnabled()) {
-            throw new UserNotFoundException("User not enabled");
+            throw new UserNotFoundException("El usuario se encuentra inactivo");
         }
 
         TokenResponse tokenResponse = this.tokenService.getTokens(user);
