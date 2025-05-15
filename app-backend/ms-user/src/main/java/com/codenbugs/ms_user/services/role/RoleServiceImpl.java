@@ -12,7 +12,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Transactional(rollbackOn = RoleException.class)
+@Transactional(rollbackOn = Exception.class)
 public class RoleServiceImpl implements RoleService{
 
     private final RoleRepository roleRepository;

@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @Getter
 @Setter
-@Transactional(rollbackOn = UserException.class)
+@Transactional(rollbackOn = Exception.class)
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;

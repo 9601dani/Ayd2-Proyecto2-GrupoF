@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@Transactional(rollbackOn = PhaseCasesException.class)
+@Transactional(rollbackOn = Exception.class)
 public class PhaseCasesServiceImpl implements PhaseCasesService {
 
     private final PhaseCasesRepository phaseCasesRepository;
