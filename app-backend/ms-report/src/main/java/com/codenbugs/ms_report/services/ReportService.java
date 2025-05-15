@@ -24,7 +24,7 @@ public interface ReportService {
 
     List<UserResponseWithName> getReport6();
 
-    List<ProjectResponseWithoutUser> getReport7();
+    List<Report7Dto> getReport7() throws UserNotFoundException;
 
     Report8Dto getReport8() throws UserNotFoundException;
 
