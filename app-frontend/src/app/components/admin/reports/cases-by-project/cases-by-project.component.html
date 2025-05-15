@@ -24,7 +24,6 @@
               <th>ID</th>
               <th>Nombre</th>
               <th>Descripción</th>
-              <th>Tipo</th>
               <th>Fecha límite</th>
               <th>Estado</th>
             </tr>
@@ -34,7 +33,6 @@
               <td>{{ c.id }}</td>
               <td>{{ c.name }}</td>
               <td>{{ c.description }}</td>
-              <td>{{ c.fkCaseType }}</td>
               <td>{{ c.limitDate | date: 'shortDate' }}</td>
               <td>
                 <span class="tag" [ngClass]="c.isCancelled ? 'is-danger' : c.isEnabled ? 'is-success' : 'is-warning'">

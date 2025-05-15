@@ -49,7 +49,7 @@ public class ReportController {
     }
 
     @GetMapping("/report7")
-    public List<ProjectResponseWithoutUser> getReport7() {
+    public List<Report7Dto> getReport7() throws UserNotFoundException {
         return reportService.getReport7();
     }
 

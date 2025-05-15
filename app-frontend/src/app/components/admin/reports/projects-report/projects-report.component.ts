@@ -10,6 +10,7 @@ export interface ProjectResponseWithoutUser {
   description: string;
   isEnabled: boolean;
   fkUser: number;
+  username: string
 }
 
 

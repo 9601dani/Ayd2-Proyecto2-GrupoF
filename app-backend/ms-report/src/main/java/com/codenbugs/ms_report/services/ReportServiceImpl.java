@@ -176,8 +176,17 @@ public class ReportServiceImpl implements ReportService {
     }
 
     @Override
-    public List<ProjectResponseWithoutUser> getReport7() {
-        return this.projectRestClient.getAllProjects();
+    public List<Report7Dto> getReport7() throws UserNotFoundException {
+        List<ProjectResponseWithoutUser> projects =  this.projectRestClient.getAllProjects();
+        List<Report7Dto> reports = new ArrayList<>();
+        for (ProjectResponseWithoutUser project : projects) {
+            UserResponse user = this.userRestClient.findById(project.fkUser());
+
+            Report7Dto rep = new Report7Dto(project.id(), project.name(), project.description(), project.isEnabled(), project.fkUser(), user.username());
+            reports.add(rep);
+        }
+
+        return reports;
     }
 
     @Override
