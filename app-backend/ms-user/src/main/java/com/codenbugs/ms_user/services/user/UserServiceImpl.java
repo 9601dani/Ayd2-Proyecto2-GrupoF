@@ -133,7 +133,9 @@ public class UserServiceImpl implements UserService {
         String usernameOrEmail = userAuthRequest.usernameOrEmail();
         String password = userAuthRequest.password();
 
+        System.out.println("REQUEST: " + userAuthRequest);
         User user = userRepository.findByUsernameOrEmail(usernameOrEmail, usernameOrEmail).orElseThrow(() -> new UserNotFoundException("User not found"));
+        System.out.println("USER: " + user);
         String userPassword = user.getPassword();
 
         boolean isValidPassword = passwordEncoder.matches(password, userPassword);
