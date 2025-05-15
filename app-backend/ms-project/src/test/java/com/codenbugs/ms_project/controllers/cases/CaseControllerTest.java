@@ -46,6 +46,7 @@ public class CaseControllerTest {
     private final Boolean ENABLED = true;
     private final String CANCEL_REASON = "Ya no es necesario";
     private final LocalDateTime CREATED = LocalDateTime.now();
+
     private final Integer HISTORY_ID = 10;
     private final Boolean IS_COMPLETED = false;
     private final String TYPE_CASE_NAME = "Tipo A";
@@ -159,6 +160,5 @@ public class CaseControllerTest {
         mockMvc.perform(get("/v1/cases/details/{id}", CASE_ID))
                 .andExpect(status().isNotFound());
     }
-
 
 }

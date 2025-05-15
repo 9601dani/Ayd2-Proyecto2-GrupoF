@@ -1,6 +1,9 @@
 package com.codenbugs.ms_project.controllers.project;
 
 import com.codenbugs.ms_project.dtos.project.*;
+import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCancelledCasesDto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectIsDisabled;
 import com.codenbugs.ms_project.exceptions.project.ProjectNotFoundException;
@@ -54,6 +57,21 @@ public class ProjectController {
     public ResponseEntity<List<ActiveCaseReponse>> getMyCases(@PathVariable String username) throws UserNotFoundException {
         List<ActiveCaseReponse> myCases = this.projectService.getActiveCasesByUsername(username);
         return new ResponseEntity<>(myCases, HttpStatus.OK);
+    }
+    // Reports
+    @GetMapping("/report1")
+    public List<Report1Dto> getProjectReport() {
+        return projectService.gerReport1();
+    }
+
+    @GetMapping("/top-project-completed")
+    public TopProjectByCompletedCasesDto getTopProjectByCompletedCases() {
+        return projectService.getTopProjectByCompletedCases();
+    }
+
+    @GetMapping("/top-project-cancelled")
+    public TopProjectByCancelledCasesDto getTopProjectByCancelledCases() {
+        return projectService.getTopProjectByCancelledCases();
     }
 
 }

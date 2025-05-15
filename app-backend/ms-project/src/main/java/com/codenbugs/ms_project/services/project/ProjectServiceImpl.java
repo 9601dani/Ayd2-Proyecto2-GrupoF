@@ -2,6 +2,13 @@ package com.codenbugs.ms_project.services.project;
 
 import com.codenbugs.ms_project.clients.UserRestClient;
 import com.codenbugs.ms_project.dtos.project.*;
+import com.codenbugs.ms_project.dtos.project.ProjectEnabledRequest;
+import com.codenbugs.ms_project.dtos.project.ProjectRequest;
+import com.codenbugs.ms_project.dtos.project.ProjectResponse;
+import com.codenbugs.ms_project.dtos.project.ProjectResponseWithoutUser;
+import com.codenbugs.ms_project.dtos.report.Report1Dto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCancelledCasesDto;
+import com.codenbugs.ms_project.dtos.report.TopProjectByCompletedCasesDto;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.project.ProjectAlreadyExists;
 import com.codenbugs.ms_project.exceptions.project.ProjectException;
@@ -109,8 +116,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = optionalProject.get();
 
-        if(request.enable()==project.getIsEnabled()){
-            if(request.enable()){
+        if (request.enable() == project.getIsEnabled()) {
+            if (request.enable()) {
                 throw new ProjectIsDisabled("El proyecto ya está habilitado");
             } else {
                 throw new ProjectIsDisabled("El proyecto ya está deshabilitado");
@@ -175,5 +182,17 @@ public class ProjectServiceImpl implements ProjectService {
         return result;
     }
 
+    public List<Report1Dto> gerReport1() {
+        return this.projectRepository.getReport1();
+    }
 
+    @Override
+    public TopProjectByCompletedCasesDto getTopProjectByCompletedCases() {
+        return projectRepository.getTopProjectByCompletedCases();
+    }
+
+    @Override
+    public TopProjectByCancelledCasesDto getTopProjectByCancelledCases() {
+        return projectRepository.getTopProjectByCancelledCases();
+    }
 }

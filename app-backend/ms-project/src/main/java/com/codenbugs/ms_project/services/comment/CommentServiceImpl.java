@@ -8,19 +8,21 @@ import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.comment.CommentException;
 import com.codenbugs.ms_project.exceptions.comment.CommentNotCreatedException;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
+import com.codenbugs.ms_project.model.cases.Case;
 import com.codenbugs.ms_project.model.comment.Comment;
+import com.codenbugs.ms_project.repositories.cases.CaseRepository;
 import com.codenbugs.ms_project.repositories.comment.CommentRepository;
+import com.codenbugs.ms_project.repositories.project.ProjectRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-@Transactional(rollbackOn = Exception.class)
 @AllArgsConstructor
+@Transactional(rollbackOn = Exception.class)
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;

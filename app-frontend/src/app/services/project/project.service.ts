@@ -71,6 +71,9 @@ export class ProjectService {
     return this.http.get(`${this.CASE_API}/all/${id}`);
   }
 
+  getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
+    return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
+  }
 
   getCasesWithUserByFkProject(id: number): Observable<any> {
     return this.http.get(`${this.CASE_API}/active/${id}`);
@@ -94,7 +97,7 @@ export class ProjectService {
   getCasesByIsCancelled(isCancelled: boolean): Observable<any> {
     return this.http.get(`${this.CASE_API}/cancel/${isCancelled}`);
   }
-  
+
   /*-------------------------------MY-CASES--------------------------------*/
 
   getMyCases(username:string):Observable<any>{
@@ -121,5 +124,9 @@ export class ProjectService {
 
   saveNextPhase(data: any): Observable<any> {
     return this.http.post(`${this.HISTORY_API}`, data);
+  }
+
+  getCasesWithUserByFkProject(id: number): Observable<any> {
+    return this.http.get(`${this.CASE_API}/active/${id}`);
   }
 }

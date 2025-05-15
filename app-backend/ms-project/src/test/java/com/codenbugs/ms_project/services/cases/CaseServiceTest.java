@@ -60,7 +60,6 @@ public class CaseServiceTest {
 
     @Mock
     private TypeCasesRepository typeCasesRepository;
-
     private final Integer ID = 1;
     private final Integer PROJECT_ID = 1;
     private final BigDecimal PROGRESS_PERCENTAGE = BigDecimal.valueOf(50.67);
@@ -229,6 +228,7 @@ public class CaseServiceTest {
     }
 
 
+
     @Test
     public void updateCaseThrowsWhenNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
@@ -237,12 +237,9 @@ public class CaseServiceTest {
             caseService.updateCase(request);
         });
     }
-
-
     @Test
     public void updateCaseNotFound() {
         when(caseRepository.findById(ID)).thenReturn(Optional.empty());
-
         assertThrows(CaseNotFoundException.class, () -> caseService.updateCase(request));
     }
 
