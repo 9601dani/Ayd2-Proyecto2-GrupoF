@@ -23,6 +23,7 @@ import { TopProjectCancelledComponent } from './components/admin/reports/top-pro
 import { CasesByProjectComponent } from './components/admin/reports/cases-by-project/cases-by-project.component';
 import { CasesByUserComponent } from './components/admin/reports/cases-by-user/cases-by-user.component';
 import { CasesByTypeComponent } from './components/admin/reports/cases-by-type/cases-by-type.component';
+import { TimeCostByDateComponent } from './components/admin/reports/time-cost-by-date/time-cost-by-date.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -56,6 +57,10 @@ export const routes: Routes = [
   {
     path: 'time-cost-by-case-type',
     component: TimeCostCaseTypeComponent,
+  },
+  {
+    path: 'time-cost-by-date',
+    component: TimeCostByDateComponent,
   },
   {
     path: 'users-report',

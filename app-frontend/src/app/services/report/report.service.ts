@@ -11,6 +11,7 @@ import { Report9Dto } from '../../components/admin/reports/top-user-by-pay/top-u
 import { TopProjectByCompletedCasesDto } from '../../components/admin/reports/top-project-completed/top-project-completed.component';
 import { TopProjectByCancelledCasesDto } from '../../components/admin/reports/top-project-cancelled/top-project-cancelled.component';
 import { CaseUserReportDto } from '../../components/admin/reports/cases-by-user/cases-by-user.component';
+import { Report5Dto } from '../../components/admin/reports/time-cost-by-date/time-cost-by-date.component';
 
 @Injectable({
   providedIn: 'root',
@@ -56,6 +57,15 @@ export class ReportService {
       params,
     });
   }
+
+  getReport5(dateInit?: string, dateEnd?: string) {
+  const params: any = {};
+  if (dateInit) params.dateInit = dateInit;
+  if (dateEnd) params.dateEnd = dateEnd;
+
+  return this.http.get<Report5Dto>(`${this.REPORT_API}/report5`, { params });
+}
+
 
   getReport6() {
     return this.http.get<UserResponseWithName[]>(`${this.REPORT_API}/report6`);

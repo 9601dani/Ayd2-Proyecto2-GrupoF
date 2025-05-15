@@ -1,0 +1,34 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Reporte de tiempo y dinero por intervalo de fechas</h1>
+
+        <div class="columns is-multiline">
+          <div class="column is-6">
+            <label class="label">Fecha de inicio</label>
+            <input class="input" type="date" [(ngModel)]="dateInit" />
+          </div>
+
+          <div class="column is-6">
+            <label class="label">Fecha de fin</label>
+            <input class="input" type="date" [(ngModel)]="dateEnd" />
+          </div>
+        </div>
+
+        <div class="field mt-3">
+          <button class="button is-link" (click)="loadReport()">Consultar</button>
+        </div>
+
+        <div *ngIf="report" class="box mt-5">
+          <p><strong>Total de horas:</strong> {{ report.totalHours | number:'1.2-2' }}</p>
+          <p><strong>Total invertido:</strong> Q {{ report.totalInvested | number:'1.2-2' }}</p>
+        </div>
+
+        <div *ngIf="!report" class="has-text-grey mt-5">
+          <p class="is-size-5">No se ha generado el reporte.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

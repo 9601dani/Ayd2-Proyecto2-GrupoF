@@ -43,6 +43,14 @@ public class ReportController {
         return reportService.getReport4(typeId);
     }
 
+    @GetMapping("/report5")
+    public Report5Dto getReport5(
+            @RequestParam(required = false) String dateInit,
+            @RequestParam(required = false) String dateEnd
+    ) throws UserNotFoundException {
+        return reportService.getReport5(dateInit, dateEnd);
+    }
+
     @GetMapping("/report6")
     public List<UserResponseWithName> getReport6() {
         return reportService.getReport6();
@@ -82,7 +90,6 @@ public class ReportController {
     public List<CaseUserReportDto> getReport14(@RequestParam(required = false) Integer typeId) throws UserNotFoundException {
         return reportService.getReport14(typeId);
     }
-
 
 
 }

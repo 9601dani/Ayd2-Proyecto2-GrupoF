@@ -38,4 +38,7 @@ public interface HistoryCasePhaseService {
 
     List<CaseUserReportDto> getCasesWithUserInfo();
 
+    List<UserTimeByDateDto> getUserTimeByDate();
+
+
 }
