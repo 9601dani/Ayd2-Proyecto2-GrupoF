@@ -17,6 +17,18 @@
             </div>
           </div>
         </div>
+        <br><br>
+        <button
+          class="button is-primary"
+          (click)="exportPdf()"
+          [disabled]="!report"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Generar PDF</span>
+        </button>
+        <br><br>
 
         <table class="table is-fullwidth is-striped mt-4" *ngIf="report.length > 0">
           <thead>

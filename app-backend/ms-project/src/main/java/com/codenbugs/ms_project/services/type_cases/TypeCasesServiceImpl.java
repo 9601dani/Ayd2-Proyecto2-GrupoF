@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Getter
 @Setter
-@Transactional(rollbackOn = TypeCasesException.class)
+@Transactional(rollbackOn = Exception.class)
 public class TypeCasesServiceImpl implements TypeCasesService {
 
     private final TypeCasesRepository typeCasesRepository;

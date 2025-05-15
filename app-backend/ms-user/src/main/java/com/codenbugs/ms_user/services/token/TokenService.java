@@ -23,7 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Service
-@Transactional(rollbackOn = UserException.class)
+@Transactional(rollbackOn = Exception.class)
 public class TokenService {
 
     private final TokenSettings tokenSettings;

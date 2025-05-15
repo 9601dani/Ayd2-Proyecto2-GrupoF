@@ -19,10 +19,20 @@
         <div class="field mt-3">
           <button class="button is-link" (click)="loadReport()">Consultar</button>
         </div>
+        <button
+          class="button is-primary"
+          (click)="exportPdf()"
+          [disabled]="!report"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Generar PDF</span>
+        </button>
 
         <div *ngIf="report" class="box mt-5">
           <p><strong>Total de horas:</strong> {{ report.totalHours | number:'1.2-2' }}</p>
-          <p><strong>Total invertido:</strong> Q {{ report.totalInvested | number:'1.2-2' }}</p>
+          <p><strong>Total invertido:</strong> {{currency}} {{ report.totalInvested | number:'1.2-2' }}</p>
         </div>
 
         <div *ngIf="!report" class="has-text-grey mt-5">

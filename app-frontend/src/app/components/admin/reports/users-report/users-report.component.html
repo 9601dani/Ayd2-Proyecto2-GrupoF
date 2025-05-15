@@ -27,6 +27,18 @@
           </div>
         </div>
 
+        <br>
+        <button
+          class="button is-primary"
+          (click)="generarPDF()"
+          [disabled]="isExportDisabled"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Generar PDF</span>
+        </button>
+
         <table class="table is-fullwidth is-striped mt-5" *ngIf="filteredUsers.length > 0">
           <thead>
             <tr>

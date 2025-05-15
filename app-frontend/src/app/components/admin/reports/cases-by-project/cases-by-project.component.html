@@ -17,6 +17,13 @@
             </div>
           </div>
         </div>
+        <br><br>
+        <button class="button is-primary mt-4" (click)="exportToPDF()" [disabled]="cases.length === 0">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Exportar PDF</span>
+        </button>
+
+        <br><br>
 
         <table class="table is-striped is-fullwidth mt-5" *ngIf="cases.length > 0">
           <thead>
