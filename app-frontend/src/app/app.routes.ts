@@ -15,6 +15,12 @@ import { TimeCostCaseTypeComponent } from './components/admin/reports/time-cost-
 import { UsersReportComponent } from './components/admin/reports/users-report/users-report.component';
 import {CaseDetailComponent} from './components/admin/case-detail/case-detail.component';
 import { MyCasesComponent } from './components/dev/my-cases/my-cases.component';
+import { ProjectsReportComponent } from './components/admin/reports/projects-report/projects-report.component';
+import { TopUserByCasesComponent } from './components/admin/reports/top-user-by-cases/top-user-by-cases.component';
+import { TopUserByPayComponent } from './components/admin/reports/top-user-by-pay/top-user-by-pay.component';
+import { TopProjectCompletedComponent } from './components/admin/reports/top-project-completed/top-project-completed.component';
+import { TopProjectCancelledComponent } from './components/admin/reports/top-project-cancelled/top-project-cancelled.component';
+import { CasesByProjectComponent } from './components/admin/reports/cases-by-project/cases-by-project.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -53,4 +59,28 @@ export const routes: Routes = [
       path: 'users-report',
       component: UsersReportComponent,
     },
+    {
+    path: 'projects-report',
+    component: ProjectsReportComponent,
+  },
+  {
+    path: 'top-user-by-cases',
+    component: TopUserByCasesComponent,
+  },
+  {
+    path: 'top-user-by-pay',
+    component: TopUserByPayComponent,
+  },
+  {
+    path: 'top-project-completed',
+    component: TopProjectCompletedComponent,
+  },
+  {
+    path: 'top-project-cancelled',
+    component: TopProjectCancelledComponent,
+  },
+  {
+    path: 'cases-by-project',
+    component: CasesByProjectComponent,
+  },
  ];

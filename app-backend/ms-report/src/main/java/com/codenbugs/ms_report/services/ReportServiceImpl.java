@@ -157,12 +157,12 @@ public class ReportServiceImpl implements ReportService {
 
         List<Report4Dto> reports = new ArrayList<>();
 
-        for(Map.Entry<Integer, String> entry : typeMapName.entrySet()) {
+        for (Map.Entry<Integer, String> entry : typeMapName.entrySet()) {
             Report4Dto report = new Report4Dto(entry.getKey(), entry.getValue(), typeMapHour.get(entry.getKey()), typeMapInvested.get(entry.getKey()));
             reports.add(report);
         }
 
-        if(typeId != null) {
+        if (typeId != null) {
             return reports.stream().filter(report4Dto -> report4Dto.typeId().equals(typeId)).toList();
         }
 
@@ -208,5 +208,16 @@ public class ReportServiceImpl implements ReportService {
     @Override
     public TopProjectByCancelledCasesDto getReport11() throws UserNotFoundException {
         return this.projectRestClient.getTopProjectByCancelledCases();
+    }
+
+    @Override
+    public List<CaseUserReportDto> getReport13(Integer userId) {
+        List<CaseUserReportDto> cases = this.historyRestClient.getCasesWithUserInfo();
+
+        if (userId != null) {
+            return cases.stream().filter(caseUserReportDto -> caseUserReportDto.userId().equals(userId)).toList();
+        }
+
+        return cases;
     }
 }

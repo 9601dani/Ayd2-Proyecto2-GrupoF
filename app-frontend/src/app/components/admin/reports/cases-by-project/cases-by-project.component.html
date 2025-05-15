@@ -1,0 +1,61 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Casos por proyecto</h1>
+
+        <div class="field mt-4">
+          <label class="label">Selecciona un proyecto</label>
+          <div class="control">
+            <div class="select is-fullwidth">
+              <select [(ngModel)]="selectedProjectId" (change)="loadCases()">
+                <option [ngValue]="null">-- Selecciona un proyecto --</option>
+                <option *ngFor="let p of projects" [ngValue]="p.id">
+                  {{ p.name }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <br><br>
+        <button class="button is-primary mt-4" (click)="exportToPDF()" [disabled]="cases.length === 0">
+          <mat-icon>picture_as_pdf</mat-icon>
+          <span>Exportar PDF</span>
+        </button>
+
+        <br><br>
+
+        <table class="table is-striped is-fullwidth mt-5" *ngIf="cases.length > 0">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Tipo</th>
+              <th>Fecha límite</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let c of cases">
+              <td>{{ c.id }}</td>
+              <td>{{ c.name }}</td>
+              <td>{{ c.description }}</td>
+              <td>{{ c.fkCaseType }}</td>
+              <td>{{ c.limitDate | date: 'shortDate' }}</td>
+              <td>
+                <span class="tag" [ngClass]="c.isCancelled ? 'is-danger' : c.isEnabled ? 'is-success' : 'is-warning'">
+                  {{ c.isCancelled ? 'Cancelado' : c.isEnabled ? 'Activo' : 'Inactivo' }}
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div *ngIf="cases.length === 0 && selectedProjectId" class="has-text-centered mt-5">
+          <p class="is-size-5 has-text-grey">No se encontraron casos para este proyecto.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+</app-template>

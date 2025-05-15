@@ -15,6 +15,18 @@
               </select>
             </div>
           </div>
+          <br>
+          <button
+            class="button is-primary"
+            (click)="generarPDF()"
+            [disabled]="report.length === 0"
+          >
+            <span class="icon is-small">
+              <mat-icon>picture_as_pdf</mat-icon>
+            </span>
+            <span>Generar PDF</span>
+          </button>
+      
         </div>
 
         <table class="table is-striped is-fullwidth mt-5" *ngIf="report.length > 0">

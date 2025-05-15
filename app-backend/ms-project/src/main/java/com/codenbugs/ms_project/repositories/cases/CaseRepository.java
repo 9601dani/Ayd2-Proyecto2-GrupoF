@@ -33,4 +33,5 @@ public interface CaseRepository extends JpaRepository<Case, Integer> {
 
     Optional<Case> findByIdAndIsEnabled(Integer id, Boolean isEnabled);
 
+
 }

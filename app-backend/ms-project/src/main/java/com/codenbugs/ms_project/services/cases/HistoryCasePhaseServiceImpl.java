@@ -6,10 +6,7 @@ import com.codenbugs.ms_project.dtos.cases.*;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
-import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.TopContributorDto;
-import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
+import com.codenbugs.ms_project.dtos.report.*;
 import com.codenbugs.ms_project.dtos.user.UserResponse;
 import com.codenbugs.ms_project.exceptions.cases.CaseException;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
@@ -191,4 +188,11 @@ public class HistoryCasePhaseServiceImpl implements HistoryCasePhaseService {
     public TopWorkerByHoursDto getTopWorkerByHours() {
         return historyCasePhaseRepository.getTopWorkerByHours();
     }
+
+    @Override
+    public List<CaseUserReportDto> getCasesWithUserInfo() {
+        return historyCasePhaseRepository.findAllCasesWithUserInfo();
+    }
+
+
 }

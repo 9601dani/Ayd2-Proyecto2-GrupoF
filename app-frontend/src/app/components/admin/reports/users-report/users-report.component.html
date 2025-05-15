@@ -7,7 +7,7 @@
         <div class="columns is-multiline">
           <div class="column is-4">
             <label class="label">Buscar por nombre o usuario</label>
-            <input class="input" [(ngModel)]="search" (input)="applyFilters()" placeholder="Ej. developer1, Juan Pérez" />
+            <input class="input" [(ngModel)]="search" (input)="applyFilters()" placeholder="Ej. developer" />
           </div>
 
           <div class="column is-4">
@@ -26,6 +26,18 @@
             </div>
           </div>
         </div>
+
+        <br>
+        <button
+          class="button is-primary"
+          (click)="generarPDF()"
+          [disabled]="isExportDisabled"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Generar PDF</span>
+        </button>
 
         <table class="table is-fullwidth is-striped mt-5" *ngIf="filteredUsers.length > 0">
           <thead>

@@ -34,7 +34,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional(rollbackOn = ProjectException.class)
+@Transactional(rollbackOn = Exception.class)
 @Slf4j
 @RequiredArgsConstructor
 @Getter

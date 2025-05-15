@@ -5,6 +5,7 @@ import com.codenbugs.ms_company.dtos.module.ModuleResponseDto;
 import com.codenbugs.ms_company.dtos.user.UserResponse;
 import com.codenbugs.ms_company.exceptions.UserNotFoundException;
 import com.codenbugs.ms_company.repositories.module.PageRepository;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -18,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Getter
 @Setter
+@Transactional(rollbackOn = Exception.class)
 public class PageServiceImpl implements PageService {
 
     private final PageRepository pageRepository;

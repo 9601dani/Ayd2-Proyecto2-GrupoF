@@ -1,0 +1,36 @@
+<app-template>
+  <div body class="body">
+    <section class="section">
+      <div class="container">
+        <h1 class="title is-3">Desarrollador con mayor salario acumulado</h1>
+        <br>
+        <button
+          class="button is-primary mt-4"
+          (click)="generarPDF()"
+          [disabled]="!loaded"
+        >
+          <span class="icon is-small">
+            <mat-icon>picture_as_pdf</mat-icon>
+          </span>
+          <span>Exportar PDF</span>
+        </button>
+        <br><br><br>
+        <div *ngIf="loaded; else loading">
+          <div class="box">
+            <p><strong>ID:</strong> {{ userReport.userId }}</p>
+            <p><strong>Nombre de usuario:</strong> {{ userReport.userName }}</p>
+            <p><strong>Salario por hora:</strong> Q {{ userReport.salaryPerHour | number:'1.2-2' }}</p>
+            <p><strong>Total de horas trabajadas:</strong> {{ userReport.totalHours | number:'1.2-2' }}</p>
+            <p><strong>Total pagado:</strong>
+              <span class="has-text-weight-bold">Q {{ userReport.totalInvested | number:'1.2-2' }}</span>
+            </p>
+          </div>
+        </div>
+
+        <ng-template #loading>
+          <p class="is-size-5 has-text-grey">Cargando información del reporte...</p>
+        </ng-template>
+      </div>
+    </section>
+  </div>
+</app-template>

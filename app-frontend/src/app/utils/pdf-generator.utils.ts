@@ -22,7 +22,7 @@ export async function generateReportPDF<T>(
   currency: string,
   fecha: string,
   username:String,
-  footerFields?: { label: string, value: number, isCurrency?:boolean }[]
+  footerFields?: { label: string, value: number | string, isCurrency?:boolean }[]
 
 ) {
   const pdfMake = await import('pdfmake/build/pdfmake');
@@ -31,14 +31,18 @@ export async function generateReportPDF<T>(
 
   const tableBody = [
     columns.map(col => ({ text: col.header, style: "tableHeader" })),
-    ...data.map(row =>
-      columns.map(col =>
-        row[col.field] !== null && row[col.field] !== undefined
-          ? `${row[col.field]}`
-          : ""
-      )
+    ...data.map((row: any) => 
+      columns.map(col => {
+        const value = row[col.field];
+        return {
+          text: value !== null && value !== undefined ? String(value) : '',
+          style: "tableCell"
+        };
+      })
     ),
+    
   ];
+  
 
   const content: any[] = [];
 
@@ -63,7 +67,7 @@ export async function generateReportPDF<T>(
   content.push({
     table: {
       headerRows: 1,
-      widths: Array(columns.length).fill("*"),
+      widths: columns.map(() => 'auto'),
       body: tableBody,
     },
     layout: "lightHorizontalLines",
@@ -71,9 +75,10 @@ export async function generateReportPDF<T>(
 
   if (footerFields && footerFields.length > 0) {
     footerFields.forEach(field => {
-      const formattedValue = field.isCurrency
-        ? `${currency} ${field.value.toFixed(2)}`
-        : field.value.toString();
+      const formattedValue = typeof field.value === 'number'
+      ? (field.isCurrency ? `${currency} ${field.value.toFixed(2)}` : field.value.toString())
+      : field.value;
+    
   
       content.push({
         columns: [

@@ -1,15 +1,12 @@
 package com.codenbugs.ms_project.services.cases;
 
 import com.codenbugs.ms_project.dtos.cases.*;
+import com.codenbugs.ms_project.dtos.report.*;
 import com.codenbugs.ms_project.exceptions.cases.CaseNotFoundException;
 import com.codenbugs.ms_project.exceptions.cases.CasePhaseNotFoundException;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseRequest;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseResponseDto;
 import com.codenbugs.ms_project.dtos.cases.HistoryCaseWithCaseDto;
-import com.codenbugs.ms_project.dtos.report.CaseTypeUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.ProjectUserHoursDto;
-import com.codenbugs.ms_project.dtos.report.TopContributorDto;
-import com.codenbugs.ms_project.dtos.report.TopWorkerByHoursDto;
 import com.codenbugs.ms_project.exceptions.user.UserNotFoundException;
 import com.codenbugs.ms_project.model.cases.HistoryCasePhase;
 
@@ -38,4 +35,7 @@ public interface HistoryCasePhaseService {
     TopContributorDto getTopContributor();
 
     TopWorkerByHoursDto getTopWorkerByHours();
+
+    List<CaseUserReportDto> getCasesWithUserInfo();
+
 }

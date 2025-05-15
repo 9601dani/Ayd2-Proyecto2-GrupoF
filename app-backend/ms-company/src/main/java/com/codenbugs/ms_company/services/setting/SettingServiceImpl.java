@@ -21,7 +21,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-@Transactional(rollbackOn = {SettingException.class, NotCreatedException.class})
+@Transactional(rollbackOn = Exception.class)
 public class SettingServiceImpl implements SettingService {
 
     private final SettingRepository settingRepository;
