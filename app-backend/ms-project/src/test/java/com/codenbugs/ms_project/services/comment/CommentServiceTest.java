@@ -63,7 +63,7 @@ public class CommentServiceTest {
 
 
     @Test
-    public void saveComment_shouldReturnCreatedComment() throws CommentNotCreatedException, CaseNotFoundException {
+    public void saveComment_shouldReturnCreatedComment() throws CommentNotCreatedException {
         // Arrange
         NewCommentRequest request = new NewCommentRequest(
                 CONTENT,
@@ -81,11 +81,6 @@ public class CommentServiceTest {
         savedComment.setIdParent(request.idParent());
         savedComment.setCreatedDate(request.createdAt());
 
-        Case commentCase = new Case();
-        commentCase.setFkProject(IDPROJECT);
-
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.of(commentCase));
-        when(projectRepository.existsByIdAndIsEnabled(IDPROJECT, true)).thenReturn(true);
         when(commentRepository.save(any(Comment.class))).thenReturn(savedComment);
 
         // Act
@@ -127,47 +122,6 @@ public class CommentServiceTest {
         verify(userRestClient).findById(IDUSER);
     }
 
-    @Test
-    public void saveComment_shouldThrowCommentException() {
-        // Arrange
-        NewCommentRequest request = new NewCommentRequest(
-                CONTENT,
-                IDUSER,
-                IDCASE,
-                CREATEDAT,
-                IDPARENT
-        );
-
-        Case commentCase = new Case();
-        commentCase.setFkProject(IDPROJECT);
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.of(commentCase));
-        when(projectRepository.existsByIdAndIsEnabled(IDPROJECT, true)).thenReturn(false);
-
-
-        // Act & Assert
-        assertThrows(CommentException.class, () -> {
-            commentService.saveComment(request);
-        });
-    }
-
-    @Test
-    public void saveComment_shouldThrowException_whenProjectCaseNotFound() {
-        // Arrange
-        NewCommentRequest request = new NewCommentRequest(
-                CONTENT,
-                IDUSER,
-                IDCASE,
-                CREATEDAT,
-                IDPARENT
-        );
-
-        when(caseRepository.findByIdAndIsEnabled(IDCASE, true)).thenReturn(Optional.empty());
-
-        // Act & Assert
-        assertThrows(CaseNotFoundException.class, () -> {
-            commentService.saveComment(request);
-        });
-    }
     @Test
     public void getCommentsByCaseId_shouldThrowCommentException_whenUserRestClientFails() throws Exception {
         // Arrange
