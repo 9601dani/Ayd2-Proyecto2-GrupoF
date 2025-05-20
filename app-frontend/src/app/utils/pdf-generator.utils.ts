@@ -1,6 +1,9 @@
 import { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
 import { LocalStorageService } from "../services/commons/local-storage.service";
 
+import pdfMake from 'pdfmake/build/pdfmake';
+import 'pdfmake/build/vfs_fonts';
+
 export type ColumnDefinition<T> = {
   header: string;
   field: keyof T;
@@ -26,10 +29,7 @@ export async function generateReportPDF<T>(
 
 ) {
 
-  await import('pdfmake/build/vfs_fonts.js');
 
-  const pdfMake = (await import('pdfmake/build/pdfmake.min.js')).default;
-  
 
   const tableBody = [
     columns.map(col => ({ text: col.header, style: "tableHeader" })),
