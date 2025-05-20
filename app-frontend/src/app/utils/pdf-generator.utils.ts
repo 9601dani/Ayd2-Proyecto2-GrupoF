@@ -25,13 +25,17 @@ export async function generateReportPDF<T>(
   footerFields?: { label: string, value: number | string, isCurrency?:boolean }[]
 
 ) {
-  const pdfMake = await import('pdfmake/build/pdfmake');
-  const pdfFonts = await import('pdfmake/build/vfs_fonts');
-  (pdfMake as any).vfs = (pdfFonts as any).vfs;
+  const pdfMakeModule = await import('pdfmake/build/pdfmake');
+  const pdfFontsModule = await import('pdfmake/build/vfs_fonts');
+
+  const pdfMake = (pdfMakeModule as any).default;
+  const pdfFonts = (pdfFontsModule as any).default;
+
+  pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
   const tableBody = [
     columns.map(col => ({ text: col.header, style: "tableHeader" })),
-    ...data.map((row: any) => 
+    ...data.map((row: any) =>
       columns.map(col => {
         const value = row[col.field];
         return {
@@ -40,9 +44,9 @@ export async function generateReportPDF<T>(
         };
       })
     ),
-    
+
   ];
-  
+
 
   const content: any[] = [];
 
@@ -78,8 +82,8 @@ export async function generateReportPDF<T>(
       const formattedValue = typeof field.value === 'number'
       ? (field.isCurrency ? `${currency} ${field.value.toFixed(2)}` : field.value.toString())
       : field.value;
-    
-  
+
+
       content.push({
         columns: [
           { text: "", width: "*" },
@@ -92,7 +96,7 @@ export async function generateReportPDF<T>(
         ],
       });
     });
-  }  
+  }
 
   const styles: StyleDictionary = {
     header: {
@@ -120,7 +124,7 @@ export async function generateReportPDF<T>(
   };
 
   pdfMake.createPdf(docDefinition).open();
-  
+
 }
 
 export function getBase64ImageFromUrl(url: string): Promise<string> {
@@ -134,10 +138,10 @@ export function getBase64ImageFromUrl(url: string): Promise<string> {
         const reader = new FileReader();
         reader.onloadend = () => resolve(reader.result as string);
         reader.onerror = reject;
-        reader.readAsDataURL(blob); 
+        reader.readAsDataURL(blob);
       });
     });
 }
 
-  
+
 
